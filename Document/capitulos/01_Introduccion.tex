@@ -3,3 +3,98 @@
 \section{Motivación}
 \section{Objetivos}
 \section{Planificación del proyecto}
+Al planificar el proyecto, es fundamental tener en cuenta que el TFM 
+tiene una carga de 12 créditos ECTS, donde cada 
+crédito representa aproximadamente 25 horas de trabajo. 
+En total, se estima que se necesitarán alrededor de 300 horas para llevar a cabo 
+el proyecto.  Considerando que el segundo cuatrimestre tiene aproximadamente 20 semanas, 
+se requerirá dedicar al TFM unas 15 horas por semana, lo cual equivaldría a unas 3 horas 
+diarias durante 5 días a la semana.
+
+Dada la naturaleza del proyecto, cuya complejidad en términos de requisitos y tamaño 
+del equipo de trabajo no es elevada, se utilizará un ciclo de vida en cascada~\cite{ModeloEnCascada} con realimentación.
+Dicho ciclo de vida se basa en un desarrollo lineal divido en fases, en el cuál antes 
+de empezar la siguiente fase se evalúa los resultados obtenidos en la fase anterior. 
+De esta forma, se pueden adaptar las fases siguientes a los posibles 
+nuevos hallazgos de las fases anteriores.
+Las fases del ciclo de vida son: 
+\begin{itemize}
+  \item Análisis de requisitos: Consiste en reuniones iniciales con los clientes, 
+    en este caso los directores del TFM. Se organiza el análisis bibliográfico 
+    del problema de metrología monocular, se plantean los objetivos y criterios de aceptación.
+  \item Diseño: Consiste en la investigación y selección de métodos conforme 
+    al análisis anterior, tanto para la resolución como la validación de la solución. 
+    Así como pruebas preliminares y diseño del software de experimentación. 
+  \item Implementación: Consiste en la adaptación de las técnicas encontradas, 
+      búsqueda de puntos de mejoría y desarrollo del producto mínimo viable. 
+  \item Pruebas: Realización de diversos experimentos de validación, 
+      comparando desde la metrología con parámetros estimados con una técnica de calibración manual estándar, 
+      calibración basada en características de las cámaras y las estimadas por el algoritmo final.
+\end{itemize}
+\begin{table}[htp]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{|c|c|llll|llll|lllll|llll|llll|}
+\hline
+\rowcolor[HTML]{FFC702} 
+\cellcolor[HTML]{FFC702} & \cellcolor[HTML]{FFC702} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Mayo}} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Junio}} & \multicolumn{5}{c|}{\cellcolor[HTML]{FFC702}\textbf{Julio}} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Agosto}} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Septiembre}} \\ \cline{3-23} 
+\rowcolor[HTML]{FFC702} 
+\multirow{-2}{*}{\cellcolor[HTML]{FFC702}\textbf{Tarea}} & \multirow{-2}{*}{\cellcolor[HTML]{FFC702}\begin{tabular}[c]{@{}c@{}}\textbf{Semanas -}\\ \textbf{Horas}\end{tabular}} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}07} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}14} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}21} & \multicolumn{1}{c|}{\cellcolor[HTML]{FFC702}28} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}04} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}11} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}18} & \multicolumn{1}{c|}{\cellcolor[HTML]{FFC702}25} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}02} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}09} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}16} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}23} & \multicolumn{1}{c|}{\cellcolor[HTML]{FFC702}30} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}06} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}13} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}20} & \multicolumn{1}{c|}{\cellcolor[HTML]{FFC702}27} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}04} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}11} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}18} & \multicolumn{1}{c|}{\cellcolor[HTML]{FFC702}25} \\ \hline
+Análisis de Requisitos & 4 - 60 & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} &  &  &  &   &  &  &  &  &  &  &  &  &  &  &  & &  \\ \cline{1-1}
+Diseño & 4 - 60  &  &  &  & & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B}  & \cellcolor[HTML]{9B9B9B} &  &  & &  &   &  &  & &  &  &  &  \\ \cline{1-1}
+Implementación & 6 - 90 &  &  &  &  &  &  &  &  & & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B}  & &  &  &  &  &  &  \\ \cline{1-1}
+Pruebas & 6 - 90 &  &  &  &  &  &  &  &  &  &  &  &   &  & & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & &  & \\ \hline
+\end{tabular}%
+}
+\caption{Planificación temporal inicial del proyecto.}
+\label{tab:PlanificacionTemporal}
+\end{table}
+
+La planificación del proyecto se puede visualizar en la Tabla~\ref{tab:PlanificacionTemporal}, 
+donde se observa las distintas fases del ciclo de vida. El desarrollo del proyecto empieza 
+tras finalizar las clases lectivas debido a que el alumno estaba compaginando el trabajo con
+los estudios. No obstante, dicha planificación no sufrió retrasos ni modificaciones significativas.
+
+Con respecto a los gastos y materiales necesarios para el desarrollo del proyecto, se necesitó una
+suscripción a \emph{Google Colab Pro}, un portátil personal de gama media, \emph{Google Drive 100GB} y
+otros gastos varios. Además, se asume un salario de 12.56\officialeuro/hora, como para un investigador \emph{senior} o 
+responsable I+D de una empresa tecnológica en España.
+
+Respecto al servidor GPU, con las especificaciones actuales de \emph{Google}, 
+se estima un coste aproximado de 10.000\officialeuro. Se asume una amortización de 2 años, 
+lo que implica un pago diario de 13.70\officialeuro. El desglose total de los costes 
+se puede ver en la siguiente Tabla \ref{tab:TotalGastos}.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\begin{tabular}{ll}
+\hline
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFCB2F}{\textbf{Fecha inicio}}} & \multicolumn{1}{l|}{01/06/2025} \\ \hline
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFCB2F}{\textbf{Fecha fin}}} & \multicolumn{1}{l|}{14/09/2025} \\ \hline
+\multicolumn{1}{|l|}{\cellcolor[HTML]{FFCB2F}{\textbf{Duración}}} & \multicolumn{1}{l|}{136 días, 97 laborables} \\ \hline
+\textbf{} & 
+\end{tabular}
+\caption{Total de horas y días trabajados.}
+\label{tab:TotalTrabajado}
+\end{table}
+
+\begin{table}[H] 
+  \centering
+  \scriptsize
+  \begin{tabular}{ll}
+\hline
+\rowcolor[HTML]{FFCB2F} 
+\multicolumn{1}{|c|}{\cellcolor[HTML]{FFCB2F}{\textbf{Item}}} & \multicolumn{1}{c|}{\cellcolor[HTML]{FFCB2F}{\textbf{Costo}}} \\ \hline
+\multicolumn{1}{|l|}{Salario} & \multicolumn{1}{l|}{10.048,00\officialeuro} \\ \hline
+\multicolumn{1}{|l|}{Portátil de Gama Media} & \multicolumn{1}{l|}{700,00\officialeuro} \\ \hline
+\multicolumn{1}{|l|}{Google Colab Pro} & \multicolumn{1}{l|}{55,95\officialeuro} \\ \hline
+\multicolumn{1}{|l|}{Servidor GPU} & \multicolumn{1}{l|}{2.109,8\officialeuro} \\ \hline
+\multicolumn{1}{|l|}{Google Drive 100GB} & \multicolumn{1}{l|}{10,00\officialeuro} \\ \hline
+\multicolumn{1}{|l|}{Otros} & \multicolumn{1}{l|}{300,00\officialeuro} \\ \hline
+\multicolumn{1}{|r|}{\cellcolor[HTML]{FFCB2F}{\textbf{Total}}} & \multicolumn{1}{l|}{ 13.223,75 \officialeuro} \\ \hline
+\textbf{} & 
+\end{tabular}
+\caption{Estimación final de coste del proyecto.}
+\label{tab:TotalGastos}
+\end{table}
