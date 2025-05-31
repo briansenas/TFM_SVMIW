@@ -1,6 +1,81 @@
 \chapter{Fundamentos Teóricos}
 \section{Modelado de cámara}
-\section{Homografías}
+La formación de imágenes en sistemas de visión por computadora se basa en la proyección perspectiva, 
+un modelo geométrico que describe cómo los puntos del espacio tridimensional (3D), habitualmente denominado
+las coordenadas del mundo, se proyectan sobre un plano bidimensional (2D), el plano de la imagen. 
+En la Figura~\ref{fig:PinHole} se observa el modelo fundamental, de cámara estenopeica, 
+que idealiza la cámara como un sistema sin lentes donde los rayos de luz pasan por un solo punto. 
+Un punto perteneciente al espacio 3D, $P=(X,Y,Z)$, se proyecta
+sobre el plano de imagen utilizando las relaciones definidas en la Ecuación~\ref{eq:2DProyection},
+tras aplicar la semejanza entre triángulos~\cite{Hartley2004,VisionBookMIT}. 
+\begin{equation}\label{eq:2DProyection}
+    x=f\cdot\frac{X}{Z}, \; y=f\cdot\frac{Y}{Z}
+\end{equation}
+
+\begin{figure}[!ht]
+\begin{center}
+    \includegraphics[width=0.7\textwidth]{imagenes/chapter2/pinhole-model}
+\end{center}
+\caption{
+    Se observa la geometría subyaciente del modelo de cámara estenopeico sacada de~\cite{Hartley2004}.
+    La distancia entre el punto principal, P, y el centro de la cámara se denomina distancia focal, f, y
+    nos permite obtener la relación entre la coordenadas del plano de imagen y del punto en las coordenadas 
+    del mundo utilizando trigonometría.
+}
+\label{fig:PinHole}
+\end{figure}
+
+La Ecuación~\ref{eq:2DProyection} define la proyección de perspectiva, donde objetos distantes aparentan más pequeños,
+con un escalado inverso a su distancia en el eje Z. Este modelo también se aplica a la visión humana.
+Esta transformación se puede expresar de forma matricial mediante coordenadas homogéneas. Si $P=(X,Y,Z,1)^T$ y $p=(x, y, 1)^T$, 
+la proyección se puede expresar acorde a la Ecuación~\ref{eq:ProyectionFormula}.
+
+\begin{equation}\label{eq:ProyectionFormula}
+    s\begin{bmatrix}x\\y\\1\end{bmatrix} = K\cdot\left[R|t\right]\cdot\begin{bmatrix}X\\Y\\Z\\1\end{bmatrix}
+\end{equation}
+
+Donde $K$ es la matriz intrínseca de la cámara, que contiene los parámetros internos como la distancia focal y el 
+punto principal, véase la Ecuación~\ref{eq:KMatrix}. $[R|t]$ es la concatenación de la matriz de rotación R y
+el vector de traslación t, que definen la posición y orientación de la cámara respecto al eje del mundo (parámetros extrínsecos).
+Por último, $s$ sería un factor de escala. Este modelo permite modelar coordenadas 3D del mundo a píxeles de la imagen, véase la 
+Figura~\ref{fig:WorldToImageCoordinates}. 
+
+\begin{figure}[!ht]
+\begin{center}
+    \includegraphics[width=0.5\textwidth]{imagenes/chapter2/world_and_camera_coordinates}
+\end{center}
+\caption{Visualización de las transformaciones necesarias, $[R|t]$, para transformar las coordenadas 3D a coordenadas 2D, sacada de~\cite{VisionBookMIT}.}
+\label{fig:WorldToImageCoordinates}
+\end{figure}
+
+\begin{equation}\label{eq:KMatrix}
+    K = \begin{bmatrix}
+        f & q_x & cx &\\
+        q_y & f & cy &\\
+        0 & 0 & 1 &\\
+    \end{bmatrix}
+\end{equation}
+Donde $f$ es la distancia focal, $(q_x, q_y)$ son distorsiones de inclinación y $(c_x, c_y)$ es la correspondencia al punto principal (central) del sensor de la imagen.
+Los parámetros $f$ y $c$ se pueden estimar a partir las características de las cámaras, si se conoce dicha información, o mediante 
+métodos de calibración. Con la Figura~\ref{fig:ImageSensor} se observa que la posición de los píxeles escala 
+con la distancia focal, $f$, de forma que se utiliza una constante $a$ en su lugar con la relación física con 
+la cámara dada por la Ecuación~\ref{eq:EstimateAlpha}.
+\begin{equation}\label{eq:EstimateAlpha}
+    a = f\frac{N}{w}
+\end{equation}
+Donde $N$ es la longitud de la imagen en píxeles y $w$ es la longitud del sensor de la cámara.
+No obstante, en caso de no poseer información al respecto del sensor se puede utilizar patrones de imágenes conocidas,
+como un tablero de ajedrez, para estimar-los.
+Finalmente, hasta el momento no se ha introducido ningún parámetro de distorsión al modelo de cámara. Sin embargo, 
+existen diferentes distorsiones que pueden ocurrir como inclinación o distorsiones radiales. Estos son parámetros
+adicionales que deben estimarse para obtener una re-proyección precisa.
+\begin{figure}
+\begin{center}
+    \includegraphics[width=0.5\textwidth]{imagenes/chapter2/pinhole_and_sensor}
+\end{center}
+\caption{Proyección de una imagen sobre el sensor de una cámara~\cite{VisionBookMIT}.}
+\label{fig:ImageSensor}
+\end{figure}
 \section{Metrología de vista única}
 \section{Aprendizaje automático y profundo}
 \subsection{Aprendizaje automático}
