@@ -1,5 +1,46 @@
 \chapter{Introducción}
-\section{Definición del Problema}   
+\section{Definición del problema}   
+La metrología monocular, es decir, a partir de una única imagen, conocida como \emph{Single View Metrology} (SVM) en inglés, se 
+refiere a la estimación de propiedades métricas del mundo tridimensional a partir de una sola vista bidimensional~\cite{VisionBookMIT,Hartley2004}. 
+Este enfoque es especialmente útil en situaciones donde no es posible o práctico capturar múltiples imágenes desde diferentes ángulos, ya 
+sea por limitaciones físicas, temporales o logísticas. El interés en este campo ha crecido en paralelo con los avances en visión 
+por computador, aprendizaje profundo y la disponibilidad de grandes conjuntos de datos. Desde sus orígenes, técnicas 
+como las presentadas por~\cite{CriminisiApplications, CriminisiReconstruction, CriminisiPaintings} han demostrado que es posible 
+inferir medidas reales si se cuenta con ciertos supuestos geométricos, como líneas paralelas, puntos de fuga o planos rectangulares.
+\par
+Sin embargo, la aplicación de SVM en entornos naturales o no controlados, conocida como \emph{Single View Metrology in the Wild}~\cite{SVMIW}, 
+plantea una serie de dificultades. En primer lugar, los métodos clásicos dependen fuertemente de la existencia de 
+estructuras geométricas visibles y bien definidas~\cite{VisionBookMIT}, lo que limita su aplicabilidad a imágenes reales 
+donde estas condiciones raramente se cumplen. Además, factores como la iluminación variable, la distorsión por lente, la oclusión, 
+la falta de información de calibración de cámara, y la diversidad de escalas y perspectivas complican aún más la estimación precisa 
+de medidas métricas~\cite{VisionBookMIT}, véase la Figura~\ref{fig:PerspectiveIlusion}.
+
+\begin{figure}[!ht]
+\begin{center}
+    \subfloat{\includegraphics[width=0.325\textwidth]{imagenes/chapter2/LegoLeftSmall}}
+    \subfloat{\includegraphics[width=0.33\textwidth]{imagenes/chapter2/LegoRightBig}}
+    \subfloat{\includegraphics[width=0.2\textwidth]{imagenes/chapter2/AmesRoom}}
+\end{center}
+\caption{Ilusión óptica que ocasiona a que un mismo objeto, el muñeco de lego, se vea de diferente tamaño según la posición en la habitación
+de Ames (menor en la imagen a la izquierda que en la imagen central). La habitación de Ames está construida de forma irregular de forma que al mirar desde un punto en concreto aparenta completamente rectangular, véase la imagen a la derecha.
+Ilustraciones sacadas de~\cite{VisionBookMIT}.
+}\label{fig:PerspectiveIlusion}
+\end{figure}
+
+El auge del aprendizaje profundo ha abierto nuevas oportunidades para abordar estas limitaciones, permitiendo inferir información a 
+partir de patrones visuales aprendidos en grandes conjuntos de datos~\cite{PascalVisualObjectChallenge, ImageNet, EffectivenessOfData}. Sin embargo, estas aproximaciones
+aún enfrentan desafíos importantes. Uno de ellos es la ambigüedad inherente a la escala absoluta en imágenes monoculares.
+Aunque es posible inferir relaciones métricas relativas o proporcionales, sin una referencia explícita o contexto adicional, 
+la escala real sigue siendo indeterminada~\cite{DepthFromSingleImage}. Asimismo, la falta de conjuntos de datos etiquetados específicamente para 
+tareas de metrología en imágenes reales dificulta la evaluación objetiva del desempeño de estos sistemas~\cite{SVMIW,Metric3Dv2,}.
+
+Dado este panorama, el presente trabajo busca investigar cómo se puede avanzar hacia sistemas robustos de metrología monocular en el mundo real, 
+combinando principios geométricos clásicos con técnicas modernas de aprendizaje automático. Progresar en esta línea de investigación 
+permitiría construir herramientas prácticas para usuarios sin conocimientos técnicas, como aplicaciones móviles para 
+estimación de dimensiones, reconstrucción histórica o inspección visual, democratizando el acceso a capacidades avanzadas 
+de visión por computador, con impacto directo a sectores industriales y sociales.
+El proyecto esta disponible en \url{https://github.com/briansenas/TFM_SVMIW}.
+
 \section{Motivación}
 La metrología es una disciplina fundamental en múltiples ámbitos industriales y científicos, ya que permite realizar mediciones precisas del entorno físico. 
 Sin embargo, muchas de las técnicas actuales requieren equipamiento especializado, múltiples vistas o configuraciones controladas del entorno (saber la posición y rotación de la cámara, las características de la misma, la distancia al objeto o más).
@@ -9,7 +50,7 @@ sin tener información a priori.
 Este campo emergente busca desarrollar métodos robustos y generalizables que funcionen en imágenes capturas en condiciones reales, como pueden ser 
 fotografías de redes sociales, grabaciones de seguridad o vídeos deportivos. Esto plantea retos técnicos significativos.
 No obstante, la posibilidad de extraer información métrica a partir de imágenes tomadas con cámaras convencionales, sin necesidad de calibración previa o escenas controladas, 
-abre la puerta a una amplia gama de aplicaciones reales~\cite{HoiemPopUp,HoiemObjectsInPerspective,CriminisiApplications, CriminisiReconstruction, CriminisiPaintings, SingleViewExerciseQuantification}. 
+abre la puerta a una amplia gama de aplicaciones reales~\cite{HoiemPopUp,HoiemObjectsInPerspective,CriminisiApplications, CriminisiReconstruction, CriminisiPaintings, SingleViewExerciseQuantification, ObjectsIntoPhotos}. 
 \begin{enumerate}
     \item \textbf{Entornos forenses:} Estimación de la estatura de sospechosos o víctimas a partir de grabaciones de cámaras de vigilancia, sin necesidad de intervención pericial directa.
     \item \textbf{Seguridad en espacios públicos:} Sistemas inteligentes capaces de realizar estimaciones biométricas sin infraestructura adicional.

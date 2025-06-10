@@ -102,3 +102,96 @@ author = {Clara Mercadal-Baudart and Chao-Jung Liu and Garreth Farrell and Molly
 %abstract = {Sports physiotherapists and coaches are tasked with evaluating the movement quality of athletes across the spectrum of ability and experience. However, the accuracy of visual observation is low and existing technology outside of expensive lab-based solutions has limited adoption, leading to an unmet need for an efficient and accurate means to measure static and dynamic joint angles during movement, converted to movement metrics useable by practitioners. This paper proposes a set of pose landmarks for computing frequently used joint angles as metrics of interest to sports physiotherapists and coaches in assessing common strength-building human exercise movements. It then proposes a set of rules for computing these metrics for a range of common exercises (single and double drop jumps and counter-movement jumps, deadlifts and various squats) from anatomical key-points detected using video, and evaluates the accuracy of these using a published 3D human pose model trained with ground truth data derived from VICON motion capture of common rehabilitation exercises. Results show a set of mathematically defined metrics which are derived from the chosen pose landmarks, and which are sufficient to compute the metrics for each of the exercises under consideration. Comparison to ground truth data showed that root mean square angle errors were within 10° for all exercises for the following metrics: shin angle, knee varus/valgus and left/right flexion, hip flexion and pelvic tilt, trunk angle, spinal flexion lower/upper/mid and rib flare. Larger errors (though still all within 15°) were observed for shoulder flexion and ASIS asymmetry in some exercises, notably front squats and drop-jumps. In conclusion, the contribution of this paper is that a set of sufficient key-points and associated metrics for exercise assessment from 3D human pose have been uniquely defined. Further, we found generally very good accuracy of the Strided Transformer 3D pose model in predicting these metrics for the chosen set of exercises from a single mobile device camera, when trained on a suitable set of functional exercises recorded using a VICON motion capture system. Future assessment of generalization is needed.}
 }
 
+@InProceedings{SVMIW,
+author="Zhu, Rui
+and Yang, Xingyi
+and Hold-Geoffroy, Yannick
+and Perazzi, Federico
+and Eisenmann, Jonathan
+and Sunkavalli, Kalyan
+and Chandraker, Manmohan",
+editor="Vedaldi, Andrea
+and Bischof, Horst
+and Brox, Thomas
+and Frahm, Jan-Michael",
+title="Single View Metrology in the Wild",
+booktitle="Computer Vision -- ECCV 2020",
+year="2020",
+publisher="Springer International Publishing",
+%address="Cham",
+pages="316--333",
+%abstract="Most 3D reconstruction methods may only recover scene properties up to a global scale ambiguity. We present a novel approach to single view metrology that can recover the absolute scale of a scene represented by 3D heights of objects or camera height above the ground as well as camera parameters of orientation and field of view, using just a monocular image acquired in unconstrained condition. Our method relies on data-driven priors learned by a deep network specifically designed to imbibe weakly supervised constraints from the interplay of the unknown camera with 3D entities such as object heights, through estimation of bounding box projections. We leverage categorical priors for objects such as humans or cars that commonly occur in natural images, as references for scale estimation. We demonstrate state-of-the-art qualitative and quantitative results on several datasets as well as applications including virtual object insertion. Furthermore, the perceptual quality of our outputs is validated by a user study.",
+%isbn="978-3-030-58621-8"
+}
+
+Rendering synthetic objects into legacy photographs
+@article{ObjectsIntoPhotos,
+  author       = {Kevin Karsch and
+                  Varsha Hedau and
+                  David A. Forsyth and
+                  Derek Hoiem},
+  title        = {Rendering Synthetic Objects into Legacy Photographs},
+  journal      = {CoRR},
+  %volume       = {abs/1912.11565},
+  year         = {2019},
+  %url          = {http://arxiv.org/abs/1912.11565},
+  eprinttype    = {arXiv},
+%  eprint       = {1912.11565},
+%  timestamp    = {Fri, 03 Jan 2020 16:10:45 +0100},
+%  biburl       = {https://dblp.org/rec/journals/corr/abs-1912-11565.bib},
+%  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+
+@misc{DepthFromSingleImage,
+      title={Depth Map Prediction from a Single Image using a Multi-Scale Deep Network}, 
+      author={David Eigen and Christian Puhrsch and Rob Fergus},
+      year={2014},
+      %eprint={1406.2283},
+      archivePrefix={arXiv},
+      %primaryClass={cs.CV},
+      %url={https://arxiv.org/abs/1406.2283}, 
+}
+
+@inproceedings{PascalVisualObjectChallenge,
+  author = {Everingham, Mark and Van Gool, Luc and Williams, Christopher K.I. and Winn, John and Zisserman, Andrew},
+  title = {The PASCAL Visual Object Classes (VOC) Challenge},
+  booktitle = {International Journal of Computer Vision},
+  volume = {88},
+  pages = {303-338},
+  year = {2010},
+  %doi = {10.1007/s11263-009-0275-4}
+}
+
+@article{ImageNet,
+  author = {Deng, Jia and Dong, Wei and Socher, Richard and Li, Li-Jia and Li, Kai and Fei-Fei, Li},
+  title = {ImageNet: A Large-Scale Hierarchical Image Database},
+  booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year = {2009},
+  pages = {248-255},
+  %doi = {10.1109/CVPR.2009.5206848}
+}
+
+@misc{EffectivenessOfData,
+      title={Revisiting Unreasonable Effectiveness of Data in Deep Learning Era}, 
+      author={Chen Sun and Abhinav Shrivastava and Saurabh Singh and Abhinav Gupta},
+      year={2017},
+      %eprint={1707.02968},
+      archivePrefix={arXiv},
+      %primaryClass={cs.CV},
+      %url={https://arxiv.org/abs/1707.02968}, 
+}
+@article{Metric3Dv2,
+   title={Metric3D v2: A Versatile Monocular Geometric Foundation Model for Zero-Shot Metric Depth and Surface Normal Estimation},
+   volume={46},
+   %ISSN={1939-3539},
+   %url={http://dx.doi.org/10.1109/TPAMI.2024.3444912},
+   %doi={10.1109/tpami.2024.3444912},
+   number={12},
+   journal={IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI)},
+   publisher={Institute of Electrical and Electronics Engineers (IEEE)},
+   author={Hu, Mu and Yin, Wei and Zhang, Chi and Cai, Zhipeng and Long, Xiaoxiao and Chen, Hao and Wang, Kaixuan and Yu, Gang and Shen, Chunhua and Shen, Shaojie},
+   year={2024},
+   %month=dec, 
+	pages={10579–10596} 
+}
+
