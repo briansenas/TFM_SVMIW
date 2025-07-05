@@ -53,7 +53,7 @@ def extract_realsense_frames(
 
     base_name = os.path.splitext(os.path.basename(bag_path))[0]
     if output_dir is None:
-        output_dir = os.path.join(os.path.dirname(bag_path), f"{base_name}_frames")
+        output_dir = os.path.join(os.path.dirname(bag_path), f"{base_name}-frames")
 
     os.makedirs(output_dir, exist_ok=True)
     files = glob.glob(os.path.join(output_dir, "frame_*.png"))
@@ -103,7 +103,7 @@ def extract_realsense_frames(
                 break
             if relative_time >= next_capture_time:
                 color_image = np.asanyarray(color_frame.get_data())
-                filename = os.path.join(output_dir, f"frame_{saved_count:05d}.png")
+                filename = os.path.join(output_dir, f"frame_{saved_count+1:05d}.png")
                 cv2.imwrite(filename, color_image)
                 saved_count += 1
                 next_capture_time += rate
@@ -131,7 +131,7 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
     )
     parser.add_argument(
         "--bag",
-        default=os.path.join("data", "realsense", "stream_raw.bag"),
+        default=os.path.join("data", "realsense", "stream-raw.bag"),
         help="Path to the RealSense .bag file",
     )
     parser.add_argument("--output", help="Directory to save extracted frames")
