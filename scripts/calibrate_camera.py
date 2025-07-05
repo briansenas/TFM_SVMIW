@@ -147,7 +147,7 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
     parser.add_argument(
         "--square-size",
         type=int,
-        default=0.25,
+        default=0.025,
         help="Size of the chessboard squares in meters",
     )
     parser.add_argument(
