@@ -5,5 +5,10 @@ description = "Single View Metrology in the Wild Master's Thesis helper scripts"
 readme = "README.md"
 requires-python = ">=3.11.12"
 dependencies = [
+    "numpy>=2.3.1",
+    "opencv-python>=4.11.0.86",
     "pre-commit>=4.2.0",
+    "pyyaml>=6.0.2",
+    "tqdm>=4.67.1",
+    "ultralytics>=8.3.162",
 ]
