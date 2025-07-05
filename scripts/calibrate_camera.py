@@ -69,7 +69,7 @@ def calibrate_camera(
     if not objpoints:
         raise RuntimeError("No valid chessboard patterns were found in the images.")
 
-    ret, camera_matrix, dist_coeffs, rvecs, tvecs = cv2.calibrateCamera(
+    ret, camera_matrix, dist_coeffs, _, _ = cv2.calibrateCamera(
         objpoints,
         imgpoints,
         gray.shape[::-1],
