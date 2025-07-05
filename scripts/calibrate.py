@@ -1,0 +1,134 @@
+from __future__ import annotations
+
+import argparse
+import glob
+import os
+
+import cv2
+import numpy as np
+import yaml
+from tqdm import tqdm
+
+
+def calibrate_camera(
+    input_dir: str,
+    board_width: int,
+    board_height: int,
+    output_file: str,
+) -> None:
+    """
+    Calibrates a camera using images of a chessboard pattern.
+
+    Args:
+        input_dir (str): Directory containing calibration images (e.g., extracted frames).
+        board_width (int): Number of inner corners per chessboard row.
+        board_height (int): Number of inner corners per chessboard column.
+        output_file (str): Directory where the calibration parameters will be saved.
+    """
+    if not os.path.isdir(input_dir):
+        raise NotADirectoryError(f"Input directory does not exist: {input_dir}")
+
+    output_dir = os.path.dirname(output_file)
+    os.makedirs(output_dir, exist_ok=True)
+    image_paths = sorted(glob.glob(os.path.join(input_dir, "*.png")))
+
+    if not image_paths:
+        raise FileNotFoundError("No PNG images found in the input directory.")
+
+    # Prepare object points (0,0,0), (1,0,0), ..., (width-1,height-1,0)
+    objp = np.zeros((board_height * board_width, 3), np.float32)
+    objp[:, :2] = np.mgrid[0:board_width, 0:board_height].T.reshape(-1, 2)
+
+    objpoints = []  # 3D points in real world space
+    imgpoints = []  # 2D points in image plane
+
+    for image_path in tqdm(image_paths, desc="Processing frames"):
+        img = cv2.imread(image_path)
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+        ret, corners = cv2.findChessboardCorners(
+            gray,
+            (board_width, board_height),
+            None,
+        )
+        if ret:
+            objpoints.append(objp)
+            corners2 = cv2.cornerSubPix(
+                gray,
+                corners,
+                (11, 11),
+                (-1, -1),
+                criteria=(
+                    cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER,
+                    30,
+                    0.001,
+                ),
+            )
+            imgpoints.append(corners2)
+
+    if not objpoints:
+        raise RuntimeError("No valid chessboard patterns were found in the images.")
+
+    ret, camera_matrix, dist_coeffs, rvecs, tvecs = cv2.calibrateCamera(
+        objpoints,
+        imgpoints,
+        gray.shape[::-1],
+        None,
+        None,
+    )
+
+    calibration_data = {
+        "camera_matrix": camera_matrix.tolist(),
+        "dist_coeffs": dist_coeffs.tolist(),
+        "reprojection_error": float(ret),
+    }
+
+    with open(output_file, "w") as f:
+        yaml.dump(calibration_data, f)
+
+    print(f"Camera calibration saved to: {output_file}")
+
+
+def register_subparser(subparsers: argparse._SubParsersAction) -> None:
+    """
+    Registers the 'calibrate-camera' subparser for CLI.
+
+    Args:
+        subparsers (argparse._SubParsersAction): The subparsers object from the main parser.
+    """
+    parser = subparsers.add_parser(
+        "calibrate-camera",
+        help="Calibrate a camera using extracted chessboard images.",
+    )
+    parser.add_argument(
+        "--input",
+        type=str,
+        default=os.path.join("data", "cam1__stream_rgb_frames"),
+        help="Path to the input directory with chessboard images.",
+    )
+    parser.add_argument(
+        "--board-width",
+        type=int,
+        default=9,
+        help="Number of inner corners per chessboard row.",
+    )
+    parser.add_argument(
+        "--board-height",
+        type=int,
+        default=6,
+        help="Number of inner corners per chessboard column.",
+    )
+    parser.add_argument(
+        "--output",
+        type=str,
+        default=os.path.join("data", "intrinsics", "cam1.yaml"),
+        help="Directory where the calibration parameters will be saved.",
+    )
+    parser.set_defaults(
+        func=lambda args: calibrate_camera(
+            args.input,
+            args.board_width,
+            args.board_height,
+            args.output,
+        ),
+    )

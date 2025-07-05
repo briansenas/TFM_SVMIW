@@ -52,3 +52,4 @@ repos:
     hooks:
       - id: mypy
         exclude: ^testing/resources/
+        additional_dependencies: ["types-PyYAML"]
