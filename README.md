@@ -148,6 +148,20 @@ Outputs a new file named `video-cut.mp4`.
 
 ---
 
+### 🎥 5. Extracting Frames from RealSense `.bag` Files
+
+This script allows you to extract color frames from a **RealSense `.bag` file** recorded with Intel RealSense cameras. You can control:
+
+```bash
+python extract_realsense_frames.py extract-realsense-frames \
+  --bag path/to/your_file.bag \
+  --output path/to/output_dir \
+  --rate 1.0 \
+  --start 00:00:10 \
+  --end 00:00:30
+```
+This command extracts one frame every 0.5 seconds between 5 and 20 seconds of the video.
+
 ## 🧠 Notes
 
 * Make sure `ffmpeg` is installed and accessible in your system path. For linux: `sudo apt install ffmpeg`.
