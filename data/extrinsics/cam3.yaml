@@ -1,0 +1,3 @@
+camera_height: 1.73             # meters
+camera_pitch: 13                # degrees downward
+distance_to_object: 2.85        # meters
