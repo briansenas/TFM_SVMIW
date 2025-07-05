@@ -825,6 +825,15 @@ wheels = [
 ]
 
 [[package]]
+name = "pyrealsense2"
+version = "2.55.1.6486"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/1e/8b/208170a2bd1c7899b01f57ac4bd1d67436735056f77b7941cb133621c4dc/pyrealsense2-2.55.1.6486-cp311-cp311-manylinux1_x86_64.whl", hash = "sha256:178f92caec6e8e212a7ced66c678dec47462b0b77e929fa576d02eea297bb177", size = 3453751, upload-time = "2024-04-21T06:37:20.389Z" },
+    { url = "https://files.pythonhosted.org/packages/43/0a/f30f3030b59feadbb62b1400475516e800b934623bbbb8092feb0bb2335d/pyrealsense2-2.55.1.6486-cp311-cp311-win_amd64.whl", hash = "sha256:e01939a63bac3e1a4da742f7e1dbc618a4ec03ee0f7b3690ae5d1ad0c983aca8", size = 2781943, upload-time = "2024-04-21T06:37:22.515Z" },
+]
+
+[[package]]
 name = "python-dateutil"
 version = "2.9.0.post0"
 source = { registry = "https://pypi.org/simple" }
@@ -980,6 +989,7 @@ dependencies = [
     { name = "numpy" },
     { name = "opencv-python" },
     { name = "pre-commit" },
+    { name = "pyrealsense2" },
     { name = "pyyaml" },
     { name = "tqdm" },
     { name = "ultralytics" },
@@ -990,6 +1000,7 @@ requires-dist = [
     { name = "numpy", specifier = ">=2.3.1" },
     { name = "opencv-python", specifier = ">=4.11.0.86" },
     { name = "pre-commit", specifier = ">=4.2.0" },
+    { name = "pyrealsense2", specifier = ">=2.55.1.6486" },
     { name = "pyyaml", specifier = ">=6.0.2" },
     { name = "tqdm", specifier = ">=4.67.1" },
     { name = "ultralytics", specifier = ">=8.3.162" },

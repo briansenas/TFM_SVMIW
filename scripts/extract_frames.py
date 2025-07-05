@@ -64,7 +64,7 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
     parser.add_argument(
         "--rate",
         type=float,
-        default=10,
+        default=1,
         help="Frame extraction rate (frames per second).",
     )
     parser.set_defaults(func=lambda args: extract_frames(args.input, args.rate))
