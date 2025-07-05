@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import glob
 import os
 import subprocess
 
@@ -21,6 +22,9 @@ def extract_frames(input_path: str, rate: float) -> None:
     output_dir = os.path.join(base_dir, f"{base_name}_frames")
 
     os.makedirs(output_dir, exist_ok=True)
+    files = glob.glob(os.path.join(output_dir, "frame_*.png"))
+    for file in files:
+        os.remove(file)
 
     output_pattern = os.path.join(output_dir, "frame_%05d.png")
     command = [
@@ -54,13 +58,13 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
     parser.add_argument(
         "--input",
         type=str,
-        required=True,
+        default=os.path.join("data", "cam1-cut.mkv"),
         help="Path to the input video file.",
     )
     parser.add_argument(
         "--rate",
         type=float,
-        required=True,
+        default=10,
         help="Frame extraction rate (frames per second).",
     )
     parser.set_defaults(func=lambda args: extract_frames(args.input, args.rate))
