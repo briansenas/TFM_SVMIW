@@ -19,7 +19,7 @@ def extract_frames(input_path: str, rate: float) -> None:
 
     base_dir = os.path.dirname(os.path.abspath(input_path))
     base_name = os.path.splitext(os.path.basename(input_path))[0]
-    output_dir = os.path.join(base_dir, f"{base_name}_frames")
+    output_dir = os.path.join(base_dir, f"{base_name}-frames")
 
     os.makedirs(output_dir, exist_ok=True)
     files = glob.glob(os.path.join(output_dir, "frame_*.png"))
