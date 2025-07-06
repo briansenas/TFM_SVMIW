@@ -1,13 +1,13 @@
 \chapter{Fundamentos Teóricos}
 \section{Modelado de cámara}
-La formación de imágenes en sistemas de visión por computadora se basa en la proyección perspectiva, 
+La formación de imágenes en sistemas de visión por computadora se basa en la proyección perspectiva,
 un modelo geométrico que describe cómo los puntos del espacio tridimensional (3D), habitualmente denominado
-las coordenadas del mundo, se proyectan sobre un plano bidimensional (2D), el plano de la imagen. 
-En la Figura~\ref{fig:PinHole} se observa el modelo fundamental, de cámara estenopeica, 
-que idealiza la cámara como un sistema sin lentes donde los rayos de luz pasan por un solo punto. 
+las coordenadas del mundo, se proyectan sobre un plano bidimensional (2D), el plano de la imagen.
+En la Figura~\ref{fig:PinHole} se observa el modelo fundamental, de cámara estenopeica,
+que idealiza la cámara como un sistema sin lentes donde los rayos de luz pasan por un solo punto.
 Un punto perteneciente al espacio 3D, $P=(X,Y,Z)$, se proyecta
 sobre el plano de imagen utilizando las relaciones definidas en la Ecuación~\ref{eq:2DProyection},
-tras aplicar la semejanza entre triángulos~\cite{Hartley2004,VisionBookMIT}. 
+tras aplicar la semejanza entre triángulos~\cite{Hartley2004,VisionBookMIT}.
 \begin{equation}\label{eq:2DProyection}
     x=f\cdot\frac{X}{Z}, \; y=f\cdot\frac{Y}{Z}
 \end{equation}
@@ -19,7 +19,7 @@ tras aplicar la semejanza entre triángulos~\cite{Hartley2004,VisionBookMIT}.
 \caption{
     Se observa la geometría subyaciente del modelo de cámara estenopeico sacada de~\cite{Hartley2004}.
     La distancia entre el punto principal, P, y el centro de la cámara se denomina distancia focal, f, y
-    nos permite obtener la relación entre la coordenadas del plano de imagen y del punto en las coordenadas 
+    nos permite obtener la relación entre la coordenadas del plano de imagen y del punto en las coordenadas
     del mundo utilizando trigonometría.
 }
 \label{fig:PinHole}
@@ -27,18 +27,18 @@ tras aplicar la semejanza entre triángulos~\cite{Hartley2004,VisionBookMIT}.
 
 La Ecuación~\ref{eq:2DProyection} define la proyección de perspectiva, donde objetos distantes aparentan más pequeños,
 con un escalado inverso a su distancia en el eje Z. Este modelo también se aplica a la visión humana.
-Esta transformación se puede expresar de forma matricial mediante coordenadas homogéneas. Si $P=(X,Y,Z,1)^T$ y $p=(x, y, 1)^T$, 
+Esta transformación se puede expresar de forma matricial mediante coordenadas homogéneas. Si $P=(X,Y,Z,1)^T$ y $p=(x, y, 1)^T$,
 la proyección se puede expresar acorde a la Ecuación~\ref{eq:ProyectionFormula}.
 
 \begin{equation}\label{eq:ProyectionFormula}
     s\begin{bmatrix}x\\y\\1\end{bmatrix} = K\cdot\left[R|t\right]\cdot\begin{bmatrix}X\\Y\\Z\\1\end{bmatrix}
 \end{equation}
 
-Donde $K$ es la matriz intrínseca de la cámara, que contiene los parámetros internos como la distancia focal y el 
+Donde $K$ es la matriz intrínseca de la cámara, que contiene los parámetros internos como la distancia focal y el
 punto principal, véase la Ecuación~\ref{eq:KMatrix}. $[R|t]$ es la concatenación de la matriz de rotación R y
 el vector de traslación t, que definen la posición y orientación de la cámara respecto al eje del mundo (parámetros extrínsecos).
-Por último, $s$ sería un factor de escala. Este modelo permite modelar coordenadas 3D del mundo a píxeles de la imagen, véase la 
-Figura~\ref{fig:WorldToImageCoordinates}. 
+Por último, $s$ sería un factor de escala. Este modelo permite modelar coordenadas 3D del mundo a píxeles de la imagen, véase la
+Figura~\ref{fig:WorldToImageCoordinates}.
 
 \begin{figure}[htp]
 \begin{center}
@@ -56,9 +56,9 @@ Figura~\ref{fig:WorldToImageCoordinates}.
     \end{bmatrix}
 \end{equation}
 Donde $f$ es la distancia focal, $(q_x, q_y)$ son distorsiones de inclinación y $(c_x, c_y)$ es la correspondencia al punto principal (central) del sensor de la imagen.
-Los parámetros $f$ y $c$ se pueden estimar a partir las características de las cámaras, si se conoce dicha información, o mediante 
-métodos de calibración. Con la Figura~\ref{fig:ImageSensor} se observa que la posición de los píxeles escala 
-con la distancia focal, $f$, de forma que se utiliza una constante $a$ en su lugar con la relación física con 
+Los parámetros $f$ y $c$ se pueden estimar a partir las características de las cámaras, si se conoce dicha información, o mediante
+métodos de calibración. Con la Figura~\ref{fig:ImageSensor} se observa que la posición de los píxeles escala
+con la distancia focal, $f$, de forma que se utiliza una constante $a$ en su lugar con la relación física con
 la cámara dada por la Ecuación~\ref{eq:EstimateAlpha}.
 \begin{equation}\label{eq:EstimateAlpha}
     a = f\frac{N}{w}
@@ -66,7 +66,7 @@ la cámara dada por la Ecuación~\ref{eq:EstimateAlpha}.
 Donde $N$ es la longitud de la imagen en píxeles y $w$ es la longitud del sensor de la cámara.
 No obstante, en caso de no poseer información al respecto del sensor se puede utilizar patrones de imágenes conocidas,
 como un tablero de ajedrez, para estimar-los.
-Finalmente, hasta el momento no se ha introducido ningún parámetro de distorsión al modelo de cámara. Sin embargo, 
+Finalmente, hasta el momento no se ha introducido ningún parámetro de distorsión al modelo de cámara. Sin embargo,
 existen diferentes distorsiones que pueden ocurrir como inclinación o distorsiones radiales. Estos son parámetros
 adicionales que deben estimarse para obtener una re-proyección precisa.
 \begin{figure}[htp]
@@ -77,33 +77,33 @@ adicionales que deben estimarse para obtener una re-proyección precisa.
 \label{fig:ImageSensor}
 \end{figure}
 \section{Metrología de vista única}
-La metrología de vista única (SVM) se refiere al conjunto de técnicas y principios que permite la extracción 
-de información geométrica del espacio 3D a partir de una única imagen 2D, habitualmente captura por una 
+La metrología de vista única (SVM) se refiere al conjunto de técnicas y principios que permite la extracción
+de información geométrica del espacio 3D a partir de una única imagen 2D, habitualmente captura por una
 cámara de perspectiva. En contra de los métodos tradicionales de fotometría o métodos multivista que
-dependen de vistas calibradas para triangular la profundidad, SVM tiene la restricción de utilizar solamente 
+dependen de vistas calibradas para triangular la profundidad, SVM tiene la restricción de utilizar solamente
 una imagen y, aún así, obtener la escala absoluta de los objetos detectados~\cite{SVMIW}.
-\par 
-Es un problema realmente desafiante dada la pérdida de información de profundidad en proceso de obtención 
-de la imagen. Al proyectar una escena 3D sobre el plano de imagen 2D, se colapsan los distintos puntos de 
-profundidad sobre la misma coordenada de píxel. Como resultado, múltiples configuraciones de la escena 3D 
-pueden resultar en la misma imagen, haciendo que el proceso inverso, de obtener información 3D a partir de 
+\par
+Es un problema realmente desafiante dada la pérdida de información de profundidad en proceso de obtención
+de la imagen. Al proyectar una escena 3D sobre el plano de imagen 2D, se colapsan los distintos puntos de
+profundidad sobre la misma coordenada de píxel. Como resultado, múltiples configuraciones de la escena 3D
+pueden resultar en la misma imagen, haciendo que el proceso inverso, de obtener información 3D a partir de
 la imagen 2D, sea realmente costoso sin suposiciones adicionales.
 \par
 Es por ello, que los métodos de SVM se basan en principios de geometría proyectiva, utilizando información
-sobre los puntos de fuga, ortogonalidad, paralelismo y otras informaciones de la escena con fin de obtener 
-los parámetros intrínsecos y extrínsecos de la cámara. Los primeros refieren a la distancia focal, tamaño 
-del sensor y otros factores de la cámara, mientras que los segundos se refieren a su posición en el mundo, 
+sobre los puntos de fuga, ortogonalidad, paralelismo y otras informaciones de la escena con fin de obtener
+los parámetros intrínsecos y extrínsecos de la cámara. Los primeros refieren a la distancia focal, tamaño
+del sensor y otros factores de la cámara, mientras que los segundos se refieren a su posición en el mundo,
 como la altura y la distancia al objeto de referencia. La premisa subyaciente de los métodos SVM es que,
 aunque generalmente se pierden información de profundidad, existen invariantes geométricas que se preservan y
 nos permiten razonar sobre la estructura y la escala~\cite{VisionBookMIT,Hartley2004}(véase las Figuras~\ref{fig:PalmaHorizon} y~\ref{fig:OfficeMeasurements}).
-\par 
+\par
 \begin{figure}[htp]
 \begin{center}
     \subfloat{\includegraphics[width=0.6\textwidth]{imagenes/chapter2/palma_horizon}}
     \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter2/horizon_line}}
 \end{center}
 \caption{Se observa como todas las líneas paralelas convergen a los mismos puntos de fuga.
-Con dicha premisa geométrica, 
+Con dicha premisa geométrica,
 la línea del horizonte se puede calcular como se indica en la imagen a la derecha, como la intersección de cuatro líneas, paralelas dos a dos.
 Imágenes extraídas de~\cite{VisionBookMIT}.
 }
@@ -113,15 +113,15 @@ Imágenes extraídas de~\cite{VisionBookMIT}.
 Algunas de esas invariantes podrían ser dimensiones conocidas o restricciones geométricas (paralelismo u ortogonalidad de paredes y pisos).
 Otro desafío inherente son los efectos de los errores en el modelo de cámara, distorsiones ópticas o supuestos de perspectiva inadecuados.
 Estos factores pueden introducir desviaciones significativas en las estimaciones.
-\par 
-En los últimos años, se ha observado una integración creciente de métodos de aprendizaje profundo en la metrología de vista única. 
-Las redes neuronales, entrenadas con grandes volúmenes de datos, han aprendido a capturar ``priors'' geométricos que permiten 
-estimar automáticamente la escala y profundidad de los objetos a partir de una sola imagen. La combinación del enfoque 
+\par
+En los últimos años, se ha observado una integración creciente de métodos de aprendizaje profundo en la metrología de vista única.
+Las redes neuronales, entrenadas con grandes volúmenes de datos, han aprendido a capturar ``priors'' geométricos que permiten
+estimar automáticamente la escala y profundidad de los objetos a partir de una sola imagen. La combinación del enfoque
 impulsado por datos con fundamentos geométricas de metrología de vista única nos permite obtener mediciones fundamentadas y explicables.
 
 \begin{figure}[htp]
 \begin{center}
-    \includegraphics[width=0.5\textwidth]{imagenes/chapter2/office-measurements}
+    \includegraphics[width=0.4\textwidth]{imagenes/chapter2/office-measurements}
 \end{center}
 \caption{Ejemplo visual de información extraíble a partir una sola imagen si se conoce la longitud de alguna de líneas, extraída de~\cite{VisionBookMIT}.
 }
@@ -129,74 +129,73 @@ impulsado por datos con fundamentos geométricas de metrología de vista única 
 \end{figure}
 
 \section{Aprendizaje automático y profundo}
-El aprendizaje automático~\cite{IAModernApproach} es una rama del campo de la inteligencia artificial, 
+El aprendizaje automático~\cite{IAModernApproach} es una rama del campo de la inteligencia artificial,
 cuyo objetivo principal es dotar a las máquinas de la capacidad de aprender a partir de los datos sin ser explícitamente
-programadas para ello. El aprendizaje automático permite extraer patrones y realizar predicciones en base a los datos por 
-medio de algoritmos y modelos estadísticos~\cite{LearningFromData}. Esta capacidad resulta especialmente valiosa para 
+programadas para ello. El aprendizaje automático permite extraer patrones y realizar predicciones en base a los datos por
+medio de algoritmos y modelos estadísticos~\cite{LearningFromData}. Esta capacidad resulta especialmente valiosa para
 problemas complejos, difíciles de definir, que no tengan una solución analítica directa o en los que obtenerla resulte computacionalmente costoso.
-\par 
-Dentro del ámbito del aprendizaje automático (DL, por sus siglas en inglés), ha cobrado gran relevancia el aprendizaje profundo, 
-que a diferencia de los modelos anteriores donde tenemos un conjunto de variables 
-extraídas por un humano experto, las características sobre la cual inferimos 
+\par
+Dentro del ámbito del aprendizaje automático (DL, por sus siglas en inglés), ha cobrado gran relevancia el aprendizaje profundo,
+que a diferencia de los modelos anteriores donde tenemos un conjunto de variables
+extraídas por un humano experto, las características sobre la cual inferimos
 son obtenidas por el propio modelo automáticamente~\cite{DeepLMITPress, DeepLearningNature, DeepLearningInNN}.
-Los modelos de aprendizaje profundo están fuertemente inspirados en la estructura y funcionamiento del cerebro humano (véase la Figura~\ref{fig:ANNVisualization}). 
-En términos generales, la extracción automática de características suele 
+Los modelos de aprendizaje profundo están fuertemente inspirados en la estructura y funcionamiento del cerebro humano (véase la Figura~\ref{fig:ANNVisualization}).
+En términos generales, la extracción automática de características suele
 desempeñar mejores resultados frente a las características extraídas manualmente.
 \par
 \begin{figure}[htp]
   \centering
   \includegraphics[width=0.7\textwidth]{imagenes/chapter2/ANNVisualization.png}
   \caption[Ejemplo gráfico de una red neuronal.]
-  {Ejemplo gráfico de una red neuronal~\cite{NeuronImages, NeuronSimilarity,ShallowAndDeepNN}. 
-    (a) y (b) muestran una neurona biológica y una artificial, respectivamente. 
-    (c) describe el proceso mediante el cual las neurones se comunican entre sí para transmitir información (sinapsis). 
-    (d) muestra dos redes neuronales artificiales: 
-    a la izquierda, una red neuronal superficial (\emph{shallow}), con una única 
+  {Ejemplo gráfico de una red neuronal~\cite{NeuronImages, NeuronSimilarity,ShallowAndDeepNN}.
+    (a) y (b) muestran una neurona biológica y una artificial, respectivamente.
+    (c) describe el proceso mediante el cual las neurones se comunican entre sí para transmitir información (sinapsis).
+    (d) muestra dos redes neuronales artificiales:
+    a la izquierda, una red neuronal superficial (\emph{shallow}), con una única
     capa oculta; a la derecha, una red neuronal profunda (\emph{deep}), con múltiples capas ocultas.
   }
   \label{fig:ANNVisualization}
 \end{figure}
-En particular, las redes neuronales artificiales (ANN, por sus siglas en inglés) simulan de forma abstracta el comportamiento 
-de las neuronas biológicas~\cite{ANNForPattern, ANNCambridge}. Estas redes constan de una serie de capas: una capa de entrada, 
-una o varias capas ocultas y una capa de salida. El proceso de aprendizaje en una red neuronal se puede dividir en tres etapas 
-principales: entrada, procesamiento y salida. En la fase de entrada, los datos iniciales se introducen en la red. 
-Durante el procesamiento, las distintas capas transforman progresivamente la información mediante combinaciones lineales (ponderadas) 
-y funciones de activación no lineales, permitiendo así la construcción de representaciones internas cada vez más abstractas. 
-Finalmente, en la etapa de salida, la red produce una predicción que se compara con el valor deseado. 
-A partir de este error, calculado mediante una función de pérdida, se ajustan los pesos de la red a través de 
+En particular, las redes neuronales artificiales (ANN, por sus siglas en inglés) simulan de forma abstracta el comportamiento
+de las neuronas biológicas~\cite{ANNForPattern, ANNCambridge}. Estas redes constan de una serie de capas: una capa de entrada,
+una o varias capas ocultas y una capa de salida. El proceso de aprendizaje en una red neuronal se puede dividir en tres etapas
+principales: entrada, procesamiento y salida. En la fase de entrada, los datos iniciales se introducen en la red.
+Durante el procesamiento, las distintas capas transforman progresivamente la información mediante combinaciones lineales (ponderadas)
+y funciones de activación no lineales, permitiendo así la construcción de representaciones internas cada vez más abstractas.
+Finalmente, en la etapa de salida, la red produce una predicción que se compara con el valor deseado.
+A partir de este error, calculado mediante una función de pérdida, se ajustan los pesos de la red a través de
 algoritmos de optimización, permitiendo la mejora continua.
 \par
 
 El aprendizaje de una red neuronal se logra mediante ese proceso iterativo, llamado entrenamiento.
-Se repite el proceso descrito anteriormente varias veces con distintos ejemplos. El conjunto de datos es muy relevante para el correcto 
-aprendizaje. Debe de ser representativo, extenso y limpio de anormalidades ya que estaremos extrayendo características 
-y relevancias a partir de ellos. El desarrollo de estas técnicas ha supuesto un avance fundamental en múltiples campos, como la 
+Se repite el proceso descrito anteriormente varias veces con distintos ejemplos. El conjunto de datos es muy relevante para el correcto
+aprendizaje. Debe de ser representativo, extenso y limpio de anormalidades ya que estaremos extrayendo características
+y relevancias a partir de ellos. El desarrollo de estas técnicas ha supuesto un avance fundamental en múltiples campos, como la
 visión por computador. Permitiendo mejorar la detección de objetos, estimaciones de profundidad y metrología.
 \section{Detección de objetos}
-La detección de objetos es una de las tareas fundamentales dentro del campo de la visión por computador. Consiste en identificar y localizar 
-instancias de objetos de interés dentro de una imagen o secuencia de vídeo. A diferencia de la clasificación de imágenes, donde se 
+La detección de objetos es una de las tareas fundamentales dentro del campo de la visión por computador. Consiste en identificar y localizar
+instancias de objetos de interés dentro de una imagen o secuencia de vídeo. A diferencia de la clasificación de imágenes, donde se
 asigna una etiqueta global a la imagen (por ejemplo, un 1 si la imagen posee un gato), la detección implica además la estimación de la posición
 espacial de los objetos (indicar dónde en la imagen está el gato)~\cite{ObjectDetectionSurvey}.
 \par
-En las primeras etapas, los detectores tradicionales combinaban la extracción de características manuales como Viola-Jones o HOG con 
-clasificadores estadísticos~\cite{ObjectDetectionSurvey}. Se utilizaba ventanas deslizantes, que extraían trozos de la imagen, para calcular 
-características locales. A continuación, se utilizaban dichas características para clasificar la presencia de objetos por medio de un 
-clasificador estadístico, que aprendía con ejemplos de imágenes etiquetadas durante su entrenamiento (véase la Figura~\ref{fig:SelectiveSearch}). 
+En las primeras etapas, los detectores tradicionales combinaban la extracción de características manuales como Viola-Jones o HOG con
+clasificadores estadísticos~\cite{ObjectDetectionSurvey}. Se utilizaba ventanas deslizantes, que extraían trozos de la imagen, para calcular
+características locales. A continuación, se utilizaban dichas características para clasificar la presencia de objetos por medio de un
+clasificador estadístico, que aprendía con ejemplos de imágenes etiquetadas durante su entrenamiento (véase la Figura~\ref{fig:SelectiveSearch}).
 Sin embargo, estos enfoques presentaban importantes limitaciones en precisión, velocidad y fiabilidad frente a datos no vistos.
+\par
+La transición hacia modelos de aprendizaje más complejos ha sido impulsada por la disponibilidad de grandes conjuntos de datos anotados y
+por los avances en aprendizaje profundo~\cite{ObjectDetectionSurvey}. Sin embargo, muchos de los principios fundacionales siguen siendo
+los mismos: la combinación de representación visual, inferencia estadística y coherencia geométrica.
 
-\begin{figure}[htp]
+\begin{figure}[H]
 \begin{center}
     \includegraphics[width=0.7\textwidth]{imagenes/chapter2/selective_search}
 \end{center}
 \caption{
 Visualización del proceso de ventana deslizante en busca de objetos~\cite{VisionBookMIT}, en este caso se busca un coche.
-Se extraen características a múltiples escalas, se obtienen propuestas que se filtran en base al nivel de confianza del modelo. Finalmente, 
+Se extraen características a múltiples escalas, se obtienen propuestas que se filtran en base al nivel de confianza del modelo. Finalmente,
 se ajusta la detección con métodos de refinamiento, como la eliminación de detecciones solapadas.
 }
 \label{fig:SelectiveSearch}
 \end{figure}
-
-\par 
-La transición hacia modelos de aprendizaje más complejos ha sido impulsada por la disponibilidad de grandes conjuntos de datos anotados y 
-por los avances en aprendizaje profundo~\cite{ObjectDetectionSurvey}. Sin embargo, muchos de los principios fundacionales siguen siendo 
-los mismos: la combinación de representación visual, inferencia estadística y coherencia geométrica.
