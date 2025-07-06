@@ -12,7 +12,7 @@ tras aplicar la semejanza entre triángulos~\cite{Hartley2004,VisionBookMIT}.
     x=f\cdot\frac{X}{Z}, \; y=f\cdot\frac{Y}{Z}
 \end{equation}
 
-\begin{figure}[!ht]
+\begin{figure}[htp]
 \begin{center}
     \includegraphics[width=0.7\textwidth]{imagenes/chapter2/pinhole-model}
 \end{center}
@@ -40,7 +40,7 @@ el vector de traslación t, que definen la posición y orientación de la cámar
 Por último, $s$ sería un factor de escala. Este modelo permite modelar coordenadas 3D del mundo a píxeles de la imagen, véase la 
 Figura~\ref{fig:WorldToImageCoordinates}. 
 
-\begin{figure}[!ht]
+\begin{figure}[htp]
 \begin{center}
     \includegraphics[width=0.5\textwidth]{imagenes/chapter2/world_and_camera_coordinates}
 \end{center}
@@ -69,7 +69,7 @@ como un tablero de ajedrez, para estimar-los.
 Finalmente, hasta el momento no se ha introducido ningún parámetro de distorsión al modelo de cámara. Sin embargo, 
 existen diferentes distorsiones que pueden ocurrir como inclinación o distorsiones radiales. Estos son parámetros
 adicionales que deben estimarse para obtener una re-proyección precisa.
-\begin{figure}
+\begin{figure}[htp]
 \begin{center}
     \includegraphics[width=0.5\textwidth]{imagenes/chapter2/pinhole_and_sensor}
 \end{center}
@@ -95,9 +95,9 @@ los parámetros intrínsecos y extrínsecos de la cámara. Los primeros refieren
 del sensor y otros factores de la cámara, mientras que los segundos se refieren a su posición en el mundo, 
 como la altura y la distancia al objeto de referencia. La premisa subyaciente de los métodos SVM es que,
 aunque generalmente se pierden información de profundidad, existen invariantes geométricas que se preservan y
-nos permiten razonar sobre la estructura y la escala~\cite{VisionBookMIT,Hartley2004}(véase la Figura~\ref{fig:PalmaHorizon}).
+nos permiten razonar sobre la estructura y la escala~\cite{VisionBookMIT,Hartley2004}(véase las Figuras~\ref{fig:PalmaHorizon} y~\ref{fig:OfficeMeasurements}).
 \par 
-\begin{figure}[!ht]
+\begin{figure}[htp]
 \begin{center}
     \subfloat{\includegraphics[width=0.6\textwidth]{imagenes/chapter2/palma_horizon}}
     \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter2/horizon_line}}
@@ -119,16 +119,84 @@ Las redes neuronales, entrenadas con grandes volúmenes de datos, han aprendido 
 estimar automáticamente la escala y profundidad de los objetos a partir de una sola imagen. La combinación del enfoque 
 impulsado por datos con fundamentos geométricas de metrología de vista única nos permite obtener mediciones fundamentadas y explicables.
 
-\begin{figure}[!ht]
+\begin{figure}[htp]
 \begin{center}
     \includegraphics[width=0.5\textwidth]{imagenes/chapter2/office-measurements}
 \end{center}
 \caption{Ejemplo visual de información extraíble a partir una sola imagen si se conoce la longitud de alguna de líneas, extraída de~\cite{VisionBookMIT}.
 }
-\label{fig:PalmaHorizon}
+\label{fig:OfficeMeasurements}
 \end{figure}
 
 \section{Aprendizaje automático y profundo}
-\subsection{Aprendizaje automático}
-\subsection{Aprendizaje profundo}
+El aprendizaje automático~\cite{IAModernApproach} es una rama del campo de la inteligencia artificial, 
+cuyo objetivo principal es dotar a las máquinas de la capacidad de aprender a partir de los datos sin ser explícitamente
+programadas para ello. El aprendizaje automático permite extraer patrones y realizar predicciones en base a los datos por 
+medio de algoritmos y modelos estadísticos~\cite{LearningFromData}. Esta capacidad resulta especialmente valiosa para 
+problemas complejos, difíciles de definir, que no tengan una solución analítica directa o en los que obtenerla resulte computacionalmente costoso.
+\par 
+Dentro del ámbito del aprendizaje automático (DL, por sus siglas en inglés), ha cobrado gran relevancia el aprendizaje profundo, 
+que a diferencia de los modelos anteriores donde tenemos un conjunto de variables 
+extraídas por un humano experto, las características sobre la cual inferimos 
+son obtenidas por el propio modelo automáticamente~\cite{DeepLMITPress, DeepLearningNature, DeepLearningInNN}.
+Los modelos de aprendizaje profundo están fuertemente inspirados en la estructura y funcionamiento del cerebro humano (véase la Figura~\ref{fig:ANNVisualization}). 
+En términos generales, la extracción automática de características suele 
+desempeñar mejores resultados frente a las características extraídas manualmente.
+\par
+\begin{figure}[htp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{imagenes/chapter2/ANNVisualization.png}
+  \caption[Ejemplo gráfico de una red neuronal.]
+  {Ejemplo gráfico de una red neuronal~\cite{NeuronImages, NeuronSimilarity,ShallowAndDeepNN}. 
+    (a) y (b) muestran una neurona biológica y una artificial, respectivamente. 
+    (c) describe el proceso mediante el cual las neurones se comunican entre sí para transmitir información (sinapsis). 
+    (d) muestra dos redes neuronales artificiales: 
+    a la izquierda, una red neuronal superficial (\emph{shallow}), con una única 
+    capa oculta; a la derecha, una red neuronal profunda (\emph{deep}), con múltiples capas ocultas.
+  }
+  \label{fig:ANNVisualization}
+\end{figure}
+En particular, las redes neuronales artificiales (ANN, por sus siglas en inglés) simulan de forma abstracta el comportamiento 
+de las neuronas biológicas~\cite{ANNForPattern, ANNCambridge}. Estas redes constan de una serie de capas: una capa de entrada, 
+una o varias capas ocultas y una capa de salida. El proceso de aprendizaje en una red neuronal se puede dividir en tres etapas 
+principales: entrada, procesamiento y salida. En la fase de entrada, los datos iniciales se introducen en la red. 
+Durante el procesamiento, las distintas capas transforman progresivamente la información mediante combinaciones lineales (ponderadas) 
+y funciones de activación no lineales, permitiendo así la construcción de representaciones internas cada vez más abstractas. 
+Finalmente, en la etapa de salida, la red produce una predicción que se compara con el valor deseado. 
+A partir de este error, calculado mediante una función de pérdida, se ajustan los pesos de la red a través de 
+algoritmos de optimización, permitiendo la mejora continua.
+\par
+
+El aprendizaje de una red neuronal se logra mediante ese proceso iterativo, llamado entrenamiento.
+Se repite el proceso descrito anteriormente varias veces con distintos ejemplos. El conjunto de datos es muy relevante para el correcto 
+aprendizaje. Debe de ser representativo, extenso y limpio de anormalidades ya que estaremos extrayendo características 
+y relevancias a partir de ellos. El desarrollo de estas técnicas ha supuesto un avance fundamental en múltiples campos, como la 
+visión por computador. Permitiendo mejorar la detección de objetos, estimaciones de profundidad y metrología.
 \section{Detección de objetos}
+La detección de objetos es una de las tareas fundamentales dentro del campo de la visión por computador. Consiste en identificar y localizar 
+instancias de objetos de interés dentro de una imagen o secuencia de vídeo. A diferencia de la clasificación de imágenes, donde se 
+asigna una etiqueta global a la imagen (por ejemplo, un 1 si la imagen posee un gato), la detección implica además la estimación de la posición
+espacial de los objetos (indicar dónde en la imagen está el gato)~\cite{ObjectDetectionSurvey}.
+\par
+En las primeras etapas, los detectores tradicionales combinaban la extracción de características manuales como Viola-Jones o HOG con 
+clasificadores estadísticos~\cite{ObjectDetectionSurvey}. Se utilizaba ventanas deslizantes, que extraían trozos de la imagen, para calcular 
+características locales. A continuación, se utilizaban dichas características para clasificar la presencia de objetos por medio de un 
+clasificador estadístico, que aprendía con ejemplos de imágenes etiquetadas durante su entrenamiento (véase la Figura~\ref{fig:SelectiveSearch}). 
+Sin embargo, estos enfoques presentaban importantes limitaciones en precisión, velocidad y fiabilidad frente a datos no vistos.
+
+\begin{figure}[htp]
+\begin{center}
+    \includegraphics[width=0.7\textwidth]{imagenes/chapter2/selective_search}
+\end{center}
+\caption{
+Visualización del proceso de ventana deslizante en busca de objetos~\cite{VisionBookMIT}, en este caso se busca un coche.
+Se extraen características a múltiples escalas, se obtienen propuestas que se filtran en base al nivel de confianza del modelo. Finalmente, 
+se ajusta la detección con métodos de refinamiento, como la eliminación de detecciones solapadas.
+}
+\label{fig:SelectiveSearch}
+\end{figure}
+
+\par 
+La transición hacia modelos de aprendizaje más complejos ha sido impulsada por la disponibilidad de grandes conjuntos de datos anotados y 
+por los avances en aprendizaje profundo~\cite{ObjectDetectionSurvey}. Sin embargo, muchos de los principios fundacionales siguen siendo 
+los mismos: la combinación de representación visual, inferencia estadística y coherencia geométrica.
