@@ -1,16 +1,17 @@
 # Single View Metrology in the Wild Master's Thesis.
 ## 📚 Table of Contents
 
-- [Overview](#camera-tools)
-- [Project Structure](#project-structure)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Extract Frames](#1-extract-frames)
-  - [Calibrate Camera](#2-calibrate-camera)
-  - [Estimate Human Height](#3-estimate-human-height)
-  - [Cut Video](#4-cut-video)
-- [Notes](#notes)
-- [License](#license)
+- [Overview](#-camera-tools)
+- [Project Structure](#-project-structure)
+- [Installation](#-installation)
+- [Usage](#-usage)
+  - [Extract Frames](#-1-extract-frames)
+  - [Calibrate Camera](#-2-calibrate-camera)
+  - [Estimate Human Height](#-3-estimate-human-height)
+  - [Cut Video](#-4-cut-video)
+  - [Extract Realsense Frames](#-5-extracting-frames-from-realsense-bag-files)
+- [Notes](#-notes)
+- [License](#-license)
 
 ## 🎥 Camera Tools
 
@@ -148,7 +149,7 @@ Outputs a new file named `video-cut.mp4`.
 
 ---
 
-### 🎥 5. Extracting Frames from RealSense `.bag` Files
+### ✅ 5. Extracting Frames from RealSense `.bag` Files
 
 This script allows you to extract color frames from a **RealSense `.bag` file** recorded with Intel RealSense cameras. You can control:
 
