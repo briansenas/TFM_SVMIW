@@ -40,12 +40,13 @@ Each feature is implemented as a standalone script with a `register_subparser()`
 ├── LICENSE
 ├── pyproject.toml
 ├── README.md
-├── scripts/                   # Folder for auto-loaded modules
-│   ├── extract_frames.py          # Extract frames from a video
-│   ├── calibrate_camera.py        # Calibrate camera using chessboard frames
-│   ├── estimate_height.py         # Estimate person height using YOLO + calibration
-│   ├── cut_video.py               # Cut video segments using ffmpeg
-├── main.py                    # Entry point if you wish to unify all commands
+├── scripts/                     # Folder for auto-loaded modules
+│   ├── extract_frames.py            # Extract frames from a video
+│   ├── calibrate_camera.py          # Calibrate camera using chessboard frames
+│   ├── estimate_height.py           # Estimate person height using YOLO + calibration
+│   ├── cut_video.py                 # Cut video segments using ffmpeg
+|   └── extract_realsense_frames.py  # Extract frames from a video from a .bag file
+├── main.py                      # Entry point if you wish to unify all commands
 ├── uv.lock
 └── yolov8n.pt
 ````
@@ -86,7 +87,7 @@ Each script is executable from the command line and includes its own subparser f
 Extract frames from a video at a given frame rate.
 
 ```bash
-python extract_frames.py extract-frames \
+python main.py extract-frames \
   --input path/to/video.mp4 \
   --rate 1
 ```
@@ -100,7 +101,7 @@ This will save one frame per second in a new folder next to the video.
 Calibrate a camera using extracted chessboard images.
 
 ```bash
-python calibrate_camera.py calibrate-camera \
+python main.py calibrate-camera \
   --input path/to/frames \
   --board-height 6 --board-width 6 \
   --output calibration/intrinsics.yaml
@@ -115,7 +116,7 @@ You’ll get an intrinsics YAML file with camera matrix and distortion coefficie
 Estimate the height of a visible person in an image using YOLO and calibration data.
 
 ```bash
-python estimate_height.py estimate-height \
+python main.py estimate-height \
   --image frames/img001.png \
   --intrinsics calibration/intrinsics.yaml \
   --extrinsics calibration/extrinsics_config.yaml \
@@ -139,7 +140,7 @@ distance_to_object: 3.0         # meters
 Trim a video between start and end timestamps.
 
 ```bash
-python cut_video.py cut-video \
+python main.py cut-video \
   --input video.mp4 \
   --start 00:01:30 \
   --end 00:03:00
@@ -154,7 +155,7 @@ Outputs a new file named `video-cut.mp4`.
 This script allows you to extract color frames from a **RealSense `.bag` file** recorded with Intel RealSense cameras. You can control:
 
 ```bash
-python extract_realsense_frames.py extract-realsense-frames \
+python main.py extract-realsense-frames \
   --bag path/to/your_file.bag \
   --output path/to/output_dir \
   --rate 1.0 \
