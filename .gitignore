@@ -1,3 +1,5 @@
+yolov8n.pt
+data/
 # ----- MY STUFF-----
 *.bcf-SAVE-ERROR
 *.pdf
