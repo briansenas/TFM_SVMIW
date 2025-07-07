@@ -1,4 +1,5 @@
 yolov8n.pt
+*.pt
 data/
 # ----- MY STUFF-----
 *.bcf-SAVE-ERROR
