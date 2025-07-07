@@ -68,3 +68,11 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
         help="Frame extraction rate (frames per second).",
     )
     parser.set_defaults(func=lambda args: extract_frames(args.input, args.rate))
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    subparsers = parser.add_subparsers(dest="command", required=True)
+    register_subparser(subparsers)
+    args = parser.parse_args()
+    args.func(args)

@@ -171,3 +171,11 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
             args.output,
         ),
     )
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser("Calibrate Camera Tool")
+    subparsers = parser.add_subparsers(dest="command", required=True)
+    register_subparser(subparsers)
+    args = parser.parse_args()
+    args.func(args)

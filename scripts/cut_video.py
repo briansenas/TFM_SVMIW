@@ -77,7 +77,7 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Video Tools")
+    parser = argparse.ArgumentParser(description="Cut Video Tool")
     subparsers = parser.add_subparsers(dest="command", required=True)
     register_subparser(subparsers)
     args = parser.parse_args()
