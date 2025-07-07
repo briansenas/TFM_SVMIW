@@ -1,8 +1,74 @@
-\chapter*{}
-\section*{Búsqueda en Scopus}
+\chapter{}
+\section{Búsqueda en Scopus}
 Se utiliza la siguiente combinación de búsqueda por terminología, palabras claves y conceptos relacionados con metrología de vista única:
 \begin{lstlisting}[language=,basicstyle=\ttfamily\small,breaklines=true,frame=single,backgroundcolor=\color{gray!10}]
 (TITLE-ABS-KEY("single view metrology" OR "single-view metrology" OR "single image 3D reconstruction" OR "monocular 3D reconstruction" OR "geometry from a single image" OR "single view geometry"))
 AND (LIMIT-TO(SUBJAREA, "COMP") OR LIMIT-TO(SUBJAREA, "ENG"))
 AND (LIMIT-TO(DOCTYPE, "ar") OR LIMIT-TO(DOCTYPE, "cp"))
 \end{lstlisting}
+
+\section{Configuración por Localización}\label{app:LocationConfig}
+\begin{table}[htp]
+\scriptsize
+\centering
+\begin{tabular}{lccc}
+\hline
+\textbf{Cámara} & \textbf{Altura (m)} & \textbf{Posición relativa a RS} \\
+\hline
+RS (RealSense) & 1.593 & (0, 0, 0) \\
+Cam1 (Tapo C120) & 1.509 & (-0.4000, -0.0840, +0.4000) \\
+Cam2 (Dahua) & -- & -- \\
+Cam3 (Hikvision) & -- & -- \\
+\hline
+\end{tabular}
+\caption{Sala de Seminarios}\label{tab:SeminarRoom}
+\end{table}
+
+\begin{table}[htp]
+\centering
+\scriptsize
+\begin{tabular}{lccc}
+\hline
+\textbf{Cámara} & \textbf{Altura (m)} & \textbf{Posición relativa a RS} \\
+\hline
+RS (RealSense) & 1.555 & (0, 0, 0) \\
+Cam1 (Tapo C120) & 1.332 & (+0.4510, -0.2230, +1.9280) \\
+Cam2 (Dahua) & 1.498 & (-0.7630, -0.0570, +1.4980) \\
+Cam3 (Hikvision) & -- & -- \\
+\hline
+\end{tabular}
+\caption{Aparcamiento}\label{tab:ParkingLot}
+\end{table}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\begin{tabular}{lccc}
+\hline
+\textbf{Cámara} & \textbf{Altura (m)} & \textbf{Posición relativa a RS} \\
+\hline
+RS (RealSense) & 1.530 & (0, 0, 0) \\
+Cam1 (Tapo C120) & 1.350 & (-0.6260, -0.1800, +0.2640) \\
+Cam2 (Dahua) & 1.790 & (-0.4250, +0.2600, -0.1200) \\
+Cam3 (Hikvision) & 2.250 & (-0.7100, +0.7200, -0.5950) \\
+\hline
+\end{tabular}
+\caption{Acera}\label{tab:Sidewalk}
+\end{table}
+
+\begin{table}[H]
+\centering
+\scriptsize
+\begin{tabular}{lccc}
+\hline
+\textbf{Cámara} & \textbf{Altura (m)} & \textbf{Posición relativa a RS} \\
+\hline
+RS (RealSense) & 1.810 & (0, 0, 0) \\
+Cam1 (Tapo C120) & -- & -- \\
+Cam2 (Dahua) & -- & -- \\
+Cam3 (Hikvision) [idai10] & 2.050 & (-1.2130, +0.2400, 0) \\
+Cam3 (Hikvision) & 2.050 & (-1.2130, +0.2400, +0.6120) \\
+\hline
+\end{tabular}
+\caption{Rampa de Entrada. Hay un posicionamiento distinto para la cámara 3, para 1 sujeto específico (idai10).}\label{tab:EntranceRamp}
+\end{table}
