@@ -1,17 +1,24 @@
-camera_matrix:
-- - 1160.7
-  - 0.0
-  - 1280
-- - 0.0
-  - 860.2
-  - 720
-- - 0.0
-  - 0.0
-  - 1.0
-dist_coeffs:
-- - 0.0
-  - 0.0
-  - 0.0
-  - 0.0
-  - 0.0
-reprojection_error: 1.6548063481911754
+distortion_coefficients:
+  radial:
+    k1: 0.0
+    k2: 0.0
+    k3: 0.0
+    k4: 0.0
+    k5: 0.0
+    k6: 0.0
+  tangential:
+    p1: 0.0
+    p2: 0.0
+focal_length_mm:
+  fx: 3.023617736804193
+  fy: 3.0107717233198814
+focal_length_pixels:
+  fx: 1160.7
+  fy: 1280
+principal_point_mm:
+  cx: 2.707362973470773
+  cy: 1.3506398196153353
+principal_point_pixels:
+  cx: 860.2
+  cy: 720
+skew: 0.0
