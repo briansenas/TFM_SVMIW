@@ -19,6 +19,11 @@ Or you can use the `main.py` orchestrator (recommended):
 python main.py undistort-image --config config/cam1.yaml
 ```
 
+To run multiple inferences at once you can make use of `xargs` (Linux):
+```bash
+ls config | xargs -I{} sh -c 'config={};python main.py estimate-height --config config/${config}
+```
+
 ### ✅ 1. Extract Frames
 
 Extract frames from a video at a given frame rate.
