@@ -7,6 +7,17 @@
   - [Estimate Human Height](#-3-estimate-human-height)
   - [Cut Video](#-4-cut-video)
   - [Extract Realsense Frames](#-5-extracting-frames-from-realsense-bag-files)
+  - [Undistort Image](#-6-undistort-image)
+  - [Filter Frames](#-7-filter-frames)
+
+You can run the scripts as standalone using the following structure:
+```bash
+python -m scripts/undistort_image undistort_image --config config/cam1.yaml
+```
+Or you can use the `main.py` orchestrator (recommended):
+```bash
+python main.py undistort-image --config config/cam1.yaml
+```
 
 ### ✅ 1. Extract Frames
 
@@ -14,7 +25,8 @@ Extract frames from a video at a given frame rate.
 
 ```bash
 python main.py extract-frames \
-  --input path/to/video.mp4 \
+  --frames path/to/video.mp4 \
+  --frames-dir path/to/output/dir \
   --rate 1
 ```
 
@@ -29,8 +41,9 @@ Calibrate a camera using extracted chessboard images.
 ```bash
 python main.py calibrate-camera \
   --input path/to/frames \
-  --board-height 6 --board-width 6 \
-  --output calibration/intrinsics.yaml
+  --board-height 6 --board-width 9 \
+  --sensor-height 5.7 --sensor-width 3.2 \
+  --output data/intrinsics/cam.yaml
 ```
 
 You’ll get an intrinsics YAML file with camera matrix and distortion coefficients.
@@ -67,7 +80,7 @@ Trim a video between start and end timestamps.
 
 ```bash
 python main.py cut-video \
-  --input video.mp4 \
+  --video video.mp4 \
   --start 00:01:30 \
   --end 00:03:00
 ```
@@ -82,10 +95,36 @@ This script allows you to extract color frames from a **RealSense `.bag` file** 
 
 ```bash
 python main.py extract-realsense-frames \
-  --bag path/to/your_file.bag \
-  --output path/to/output_dir \
+  --frames path/to/your_file.bag \
+  --frames-dir path/to/output_dir \
   --rate 1.0 \
   --start 00:00:10 \
   --end 00:00:30
 ```
 This command extracts one frame every 0.5 seconds between 5 and 20 seconds of the video.
+
+### ✅ 6. Undistort Image
+
+Applies the camera calibration parameters to undistort a image.
+
+```bash
+python main.py undistort_image\
+  --distorted-image path/to/image.png \
+  --undistorted-image path/to/output.png \
+  --rate 1
+```
+
+---
+
+### ✅ 7. Filter frames
+
+Checks if a whole person is detected in a image. The person must be standing on the ground.
+
+```bash
+python main.py filter_frames\
+  --input-dir path/to/input/dir \
+  --output-dir path/to/output/dir \
+  --margin 10
+```
+
+---
