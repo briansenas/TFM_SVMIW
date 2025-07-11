@@ -1,0 +1,15 @@
+sensor_width: 4.8
+sensor_height: 3.6
+input: "data/cam3-cut-frames"
+output: "data/intrinsics/cam3.yaml"
+video: "data/cam3.mkv"
+frames: "data/cam3-cut.mkv"
+frames_dir: "data/cam3-cut-frames"
+distorted_image: "data/cam3-cut-frames/frame_00001.png"
+undistorted_image: "data/cam3-cut-undistort/frame_00001.png"
+image: "data/cam3-cut-undistort/frame_00001.png"
+start: "00:00:08"
+end: "00:00:27"
+intrinsics: "data/intrinsics/cam3.yaml"
+extrinsics: "data/extrinsics/cam3.yaml"
+rate: 10

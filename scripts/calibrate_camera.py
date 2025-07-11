@@ -9,6 +9,11 @@ import numpy as np
 import yaml
 from tqdm import tqdm
 
+from scripts.lib.utils import get_config_parser
+from scripts.lib.utils import load_yaml_defaults
+
+COMMAND_NAME = "calibrate-camera"
+
 
 def save_calibration_yaml(
     output_file: str,
@@ -203,7 +208,9 @@ def calibrate_camera(
     print(f"Camera calibration saved to: {output_file}")
 
 
-def register_subparser(subparsers: argparse._SubParsersAction) -> None:
+def register_subparser(
+    subparsers: argparse._SubParsersAction,
+) -> argparse.ArgumentParser:
     """
     Registers the 'calibrate-camera' subparser for CLI.
 
@@ -211,8 +218,10 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
         subparsers (argparse._SubParsersAction): The subparsers object from the main parser.
     """
     parser = subparsers.add_parser(
-        "calibrate-camera",
+        COMMAND_NAME,
         help="Calibrate a camera using extracted chessboard images.",
+        parents=[get_config_parser()],
+        conflict_handler="resolve",
     )
     parser.add_argument(
         "--input",
@@ -272,11 +281,16 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
             (args.sensor_width, args.sensor_height),
         ),
     )
+    return parser
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("Calibrate Camera Tool")
     subparsers = parser.add_subparsers(dest="command", required=True)
-    register_subparser(subparsers)
+    subparser = register_subparser(subparsers)
+    # Load defaults into the subparser if config is given
+    args, _ = parser.parse_known_args()
+    if args.config and args.command:
+        load_yaml_defaults(subparser, args.config)
     args = parser.parse_args()
     args.func(args)

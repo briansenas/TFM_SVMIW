@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import argparse
+
 import numpy as np
 import yaml
 
@@ -54,3 +56,24 @@ def load_camera_parameters(yaml_path: str):
         "camera_matrix": camera_matrix,
         "dist_coeffs": dist_coeffs,
     }
+
+
+def load_yaml_defaults(parser: argparse.ArgumentParser, config_file: str):
+    if config_file:
+        with open(config_file) as f:
+            config = yaml.safe_load(f)
+
+        # Filter config keys to match known argparse arguments
+        valid_keys = {action.dest for action in parser._actions}
+        filtered_config = {k: v for k, v in config.items() if k in valid_keys}
+        print(filtered_config)
+        parser.set_defaults(**filtered_config)
+
+
+def get_config_parser():
+    parser = argparse.ArgumentParser(
+        "Config YAML File Parser",
+        conflict_handler="resolve",
+    )
+    parser.add_argument("--config", type=str)
+    return parser

@@ -8,6 +8,11 @@ import cv2
 import numpy as np
 import pyrealsense2 as rs
 
+from scripts.lib.utils import get_config_parser
+from scripts.lib.utils import load_yaml_defaults
+
+COMMAND_NAME = "extract-realsense-frames"
+
 
 def parse_timestamp(hhmmss: str) -> float:
     """
@@ -33,7 +38,7 @@ def parse_timestamp(hhmmss: str) -> float:
 
 def extract_realsense_frames(
     bag_path: str,
-    output_dir: str | None = None,
+    output_dir: str,
     rate: float = 1.0,
     start_time: float = 0.0,
     end_time: float | None = None,
@@ -50,10 +55,6 @@ def extract_realsense_frames(
     """
     if not os.path.isfile(bag_path):
         raise FileNotFoundError(f"File not found: {bag_path}")
-
-    base_name = os.path.splitext(os.path.basename(bag_path))[0]
-    if output_dir is None:
-        output_dir = os.path.join(os.path.dirname(bag_path), f"{base_name}-frames")
 
     os.makedirs(output_dir, exist_ok=True)
     files = glob.glob(os.path.join(output_dir, "frame_*.png"))
@@ -118,7 +119,9 @@ def extract_realsense_frames(
         print(f"✅ Saved {saved_count} frames from {frame_count} processed.")
 
 
-def register_subparser(subparsers: argparse._SubParsersAction) -> None:
+def register_subparser(
+    subparsers: argparse._SubParsersAction,
+) -> argparse.ArgumentParser:
     """
     Registers the 'extract-realsense-frames' subcommand.
 
@@ -126,15 +129,21 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
         subparsers (argparse._SubParsersAction): The subparser object to register with.
     """
     parser = subparsers.add_parser(
-        "extract-realsense-frames",
+        COMMAND_NAME,
         help="Extract frames from a RealSense .bag file with timing controls.",
+        parents=[get_config_parser()],
+        conflict_handler="resolve",
     )
     parser.add_argument(
-        "--bag",
+        "--frames",
         default=os.path.join("data", "realsense", "stream-raw.bag"),
         help="Path to the RealSense .bag file",
     )
-    parser.add_argument("--output", help="Directory to save extracted frames")
+    parser.add_argument(
+        "--frames-dir",
+        default=os.path.join("data", "cam4-cut-frames"),
+        help="Directory to output the extracted frames",
+    )
     parser.add_argument(
         "--rate",
         type=float,
@@ -158,14 +167,15 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
         start_seconds = parse_timestamp(args.start)
         end_seconds = parse_timestamp(args.end) if args.end else None
         extract_realsense_frames(
-            bag_path=args.bag,
-            output_dir=args.output,
+            bag_path=args.frames,
+            output_dir=args.frames_dir,
             rate=args.rate,
             start_time=start_seconds,
             end_time=end_seconds,
         )
 
     parser.set_defaults(func=wrapped)
+    return parser
 
 
 if __name__ == "__main__":
@@ -174,5 +184,10 @@ if __name__ == "__main__":
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
     register_subparser(subparsers)
+    subparser = register_subparser(subparsers)
+    # Load defaults into the subparser if config is given
+    args, _ = parser.parse_known_args()
+    if args.config and args.command:
+        load_yaml_defaults(subparser, args.config)
     args = parser.parse_args()
     args.func(args)

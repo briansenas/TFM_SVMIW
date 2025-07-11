@@ -4,6 +4,11 @@ import argparse
 import os
 import subprocess
 
+from scripts.lib.utils import get_config_parser
+from scripts.lib.utils import load_yaml_defaults
+
+COMMAND_NAME = "cut-video"
+
 
 def cut_video(input_path: str, start_time: str, end_time: str) -> None:
     """
@@ -47,7 +52,9 @@ def cut_video(input_path: str, start_time: str, end_time: str) -> None:
         print(f"❌ FFmpeg error: {e}")
 
 
-def register_subparser(subparsers: argparse._SubParsersAction) -> None:
+def register_subparser(
+    subparsers: argparse._SubParsersAction,
+) -> argparse.ArgumentParser:
     """
     Registers the 'cut-video' subparser command.
 
@@ -55,11 +62,13 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
         subparsers (argparse._SubParsersAction): The subparser container.
     """
     parser = subparsers.add_parser(
-        "cut-video",
+        COMMAND_NAME,
         help="Cut a video between two timestamps using ffmpeg.",
+        parents=[get_config_parser()],
+        conflict_handler="resolve",
     )
     parser.add_argument(
-        "--input",
+        "--video",
         default=os.path.join("data", "cam1.mkv"),
         help="Path to input video.",
     )
@@ -73,12 +82,17 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
         default="00:00:27",
         help="End timestamp (e.g., 00:02:00).",
     )
-    parser.set_defaults(func=lambda args: cut_video(args.input, args.start, args.end))
+    parser.set_defaults(func=lambda args: cut_video(args.video, args.start, args.end))
+    return parser
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Cut Video Tool")
     subparsers = parser.add_subparsers(dest="command", required=True)
-    register_subparser(subparsers)
+    subparser = register_subparser(subparsers)
+    # Load defaults into the subparser if config is given
+    args, _ = parser.parse_known_args()
+    if args.config and args.command:
+        load_yaml_defaults(subparser, args.config)
     args = parser.parse_args()
     args.func(args)

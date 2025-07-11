@@ -1,0 +1,15 @@
+sensor_width: 6.4
+sensor_height: 3.6
+input: "data/cam2-cut-frames"
+video: "data/cam2.mkv"
+frames: "data/cam2-cut.mkv"
+frames_dir: "data/cam2-cut-frames"
+output: "data/intrinsics/cam2.yaml"
+distorted_image: "data/cam2-cut-frames/frame_00001.png"
+undistorted_image: "data/cam2-cut-undistort/frame_00001.png"
+image: "data/cam2-cut-undistort/frame_00001.png"
+start: "00:00:08"
+end: "00:00:27"
+intrinsics: "data/intrinsics/cam2.yaml"
+extrinsics: "data/extrinsics/cam2.yaml"
+rate: 1

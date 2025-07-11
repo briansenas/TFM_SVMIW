@@ -1,0 +1,15 @@
+sensor_width: 5.7
+sensor_height: 3.1
+video: "data/cam1.mkv"
+frames: "data/cam1-cut.mkv"
+frames_dir: "data/cam1-cut-frames"
+input: "data/cam1-cut-frames"
+output: "data/intrinsics/cam1.yaml"
+distorted_image: "data/cam1-cut-frames/frame_00001.png"
+undistorted_image: "data/cam1-cut-undistort/frame_00001.png"
+image: "data/cam1-cut-undistort/frame_00001.png"
+start: "00:00:08"
+end: "00:00:27"
+intrinsics: "data/intrinsics/cam1.yaml"
+extrinsics: "data/extrinsics/cam1.yaml"
+rate: 1

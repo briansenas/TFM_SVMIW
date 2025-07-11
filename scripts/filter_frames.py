@@ -7,6 +7,8 @@ from typing import Any
 import cv2
 from ultralytics import YOLO
 
+COMMAND_NAME = "filter-frames"
+
 
 def is_whole_person_in_frame(
     yolo_result: Any,
@@ -99,7 +101,7 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
         subparsers: Subparsers object from argparse.ArgumentParser().
     """
     parser = subparsers.add_parser(
-        "filter-frames",
+        COMMAND_NAME,
         help="Filter image frames where a whole person is visible",
     )
     parser.add_argument(
@@ -118,6 +120,7 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
         help="Marging to tolerate against the image bottom edge",
     )
     parser.set_defaults(func=main)
+    return parser
 
 
 def main(args: argparse.Namespace) -> None:

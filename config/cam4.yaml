@@ -1,0 +1,14 @@
+sensor_width: 3.6
+sensor_height: 2.7
+input: "data/realsense/stream-raw-frames"
+frames: "data/realsense/stream-raw.bag"
+frames_dir: "data/cam4-cut-frames"
+output: "data/intrinsics/cam4.yaml"
+distorted_image: "data/cam4-cut-frames/frame_00001.png"
+undistorted_image: "data/cam4-cut-undistort/frame_00001.png"
+image: "data/cam4-cut-undistort/frame_00001.png"
+start: "00:00:08"
+end: "00:00:27"
+intrinsics: "data/intrinsics/cam4.yaml"
+extrinsics: "data/extrinsics/cam4.yaml"
+rate: 1

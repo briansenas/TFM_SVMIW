@@ -6,7 +6,11 @@ import os
 import cv2
 import numpy as np
 
-from .lib.utils import load_camera_parameters
+from scripts.lib.utils import get_config_parser
+from scripts.lib.utils import load_camera_parameters
+from scripts.lib.utils import load_yaml_defaults
+
+COMMAND_NAME = "undistort-image"
 
 
 def undistort_image(
@@ -46,7 +50,7 @@ def undistort_image(
             camera_matrix,
             dist_coeffs,
             (w, h),
-            1,
+            0,
         )[0]
         undistorted = cv2.undistort(
             image,
@@ -76,7 +80,9 @@ def undistort_image(
     print(f"✅ Undistorted image saved to: {output_path}")
 
 
-def register_subparser(subparsers: argparse._SubParsersAction) -> None:
+def register_subparser(
+    subparsers: argparse._SubParsersAction,
+) -> argparse.ArgumentParser:
     """
     Registers the 'undistort-image' subcommand for CLI.
 
@@ -84,17 +90,17 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
         subparsers (argparse._SubParsersAction): The subparser object to register with.
     """
     parser = subparsers.add_parser(
-        "undistort-image",
+        COMMAND_NAME,
         help="Undistort a photo using camera calibration intrinsics.",
+        parents=[get_config_parser()],
+        conflict_handler="resolve",
     )
     parser.add_argument(
-        "--image",
-        required=True,
+        "--distorted-image",
         help="Path to the distorted input image.",
     )
     parser.add_argument(
         "--intrinsics",
-        required=True,
         help="Path to the YAML file with camera_matrix and dist_coeffs.",
     )
     parser.add_argument(
@@ -103,20 +109,29 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
         help="Flag that determines the camera model used.",
     )
     parser.add_argument(
-        "--output",
-        required=True,
+        "--undistorted-image",
         help="Path to save the undistorted output image.",
     )
 
     def run(args):
-        undistort_image(args.image, args.intrinsics, args.output, args.fisheye)
+        undistort_image(
+            args.distorted_image,
+            args.intrinsics,
+            args.undistorted_image,
+            args.fisheye,
+        )
 
     parser.set_defaults(func=run)
+    return parser
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Image Undistortion Tool")
     subparsers = parser.add_subparsers(dest="command", required=True)
-    register_subparser(subparsers)
+    subparser = register_subparser(subparsers)
+    # Load defaults into the subparser if config is given
+    args, _ = parser.parse_known_args()
+    if args.config and args.command:
+        load_yaml_defaults(subparser, args.config)
     args = parser.parse_args()
     args.func(args)

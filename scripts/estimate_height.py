@@ -8,7 +8,11 @@ import numpy as np
 import yaml
 from ultralytics import YOLO
 
-from .lib.utils import load_camera_parameters
+from scripts.lib.utils import get_config_parser
+from scripts.lib.utils import load_camera_parameters
+from scripts.lib.utils import load_yaml_defaults
+
+COMMAND_NAME = "estimate-height"
 
 
 def compute_extrinsics_from_config(config_path: str) -> tuple[np.ndarray, np.ndarray]:
@@ -101,13 +105,17 @@ def detect_and_estimate(image_path, intrinsics_path, extrinsics_config, model_pa
     print(f"✅ Estimated height: {height:.2f} meters")
 
 
-def register_subparser(subparsers: argparse._SubParsersAction) -> None:
+def register_subparser(
+    subparsers: argparse._SubParsersAction,
+) -> argparse.ArgumentParser:
     """Registers subparser CLI."""
     parser = subparsers.add_parser(
-        "estimate-height",
+        COMMAND_NAME,
         help="Estimate height from an image.",
+        parents=[get_config_parser()],
+        conflict_handler="resolve",
     )
-    parser.add_argument("--image", type=str, required=True, help="Input image path.")
+    parser.add_argument("--image", type=str, help="Input image path.")
     parser.add_argument(
         "--intrinsics",
         type=str,
@@ -134,6 +142,7 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
             args.model,
         ),
     )
+    return parser
 
 
 if __name__ == "__main__":
@@ -141,6 +150,10 @@ if __name__ == "__main__":
         description="Estimate person height using YOLO and camera calibration.",
     )
     subparsers = parser.add_subparsers(dest="command", required=True)
-    register_subparser(subparsers)
+    subparser = register_subparser(subparsers)
+    # Load defaults into the subparser if config is given
+    args, _ = parser.parse_known_args()
+    if args.config and args.command:
+        load_yaml_defaults(subparser, args.config)
     args = parser.parse_args()
     args.func(args)
