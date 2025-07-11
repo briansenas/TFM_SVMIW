@@ -8,12 +8,7 @@ import numpy as np
 import yaml
 from ultralytics import YOLO
 
-
-def load_intrinsics(path: str) -> np.ndarray:
-    """Loads camera matrix from YAML file."""
-    with open(path) as f:
-        data = yaml.safe_load(f)
-    return np.array(data["camera_matrix"], dtype=np.float32)
+from .lib.utils import load_camera_parameters
 
 
 def compute_extrinsics_from_config(config_path: str) -> tuple[np.ndarray, np.ndarray]:
@@ -75,7 +70,8 @@ def estimate_height_from_bbox(bbox, K, R, t):
 
 def detect_and_estimate(image_path, intrinsics_path, extrinsics_config, model_path):
     """Main pipeline: detect people and estimate height."""
-    K = load_intrinsics(intrinsics_path)
+    calib = load_camera_parameters(intrinsics_path)
+    K = np.array(calib["camera_matrix"], dtype=np.float32)
     R, t = compute_extrinsics_from_config(extrinsics_config)
 
     # Load image

@@ -5,7 +5,8 @@ import os
 
 import cv2
 import numpy as np
-import yaml
+
+from .lib.utils import load_camera_parameters
 
 
 def undistort_image(
@@ -33,9 +34,7 @@ def undistort_image(
         raise ValueError(f"Unable to load image: {image_path}")
 
     # Load calibration data
-    with open(intrinsics_path) as f:
-        calib = yaml.safe_load(f)
-
+    calib = load_camera_parameters(intrinsics_path)
     camera_matrix = np.array(calib["camera_matrix"], dtype=np.float32)
     dist_coeffs = np.array(calib["dist_coeffs"], dtype=np.float32)
 

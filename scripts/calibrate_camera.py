@@ -10,6 +10,92 @@ import yaml
 from tqdm import tqdm
 
 
+def save_calibration_yaml(
+    output_file: str,
+    camera_matrix: np.ndarray,
+    dist_coeffs: np.ndarray,
+    image_size: tuple[int, int],
+    sensor_size_mm: tuple[float, float],
+    skew: float = 0.0,
+):
+    """
+    Saves OpenCV calibration results into a structured YAML file.
+
+    The format matches:
+      distortion_coefficients:
+        radial:
+          k1: …
+          k2: …
+          k3: …
+          k4: …
+          k5: …
+          k6: …
+        tangential:
+          p1: …
+          p2: …
+      focal_length_mm:
+        fx: …
+        fy: …
+      focal_length_pixels:
+        fx: …
+        fy: …
+      principal_point_mm:
+        cx: …
+        cy: …
+      principal_point_pixels:
+        cx: …
+        cy: …
+      skew: …
+
+    Args:
+        output_file (str): Path to write the YAML file.
+        camera_matrix (np.ndarray): 3×3 matrix from calibrateCamera.
+        dist_coeffs (np.ndarray): Distortion vector (k1,k2,p1,p2,k3…).
+        image_size (tuple[int,int]): (width_px, height_px).
+        sensor_size_mm (tuple[float,float]): (sensor_width_mm, sensor_height_mm).
+        skew (float): Skew coefficient (usually 0).
+    """
+    fx_px, fy_px = float(camera_matrix[0, 0]), float(camera_matrix[1, 1])
+    cx_px, cy_px = float(camera_matrix[0, 2]), float(camera_matrix[1, 2])
+    sensor_w_mm, sensor_h_mm = sensor_size_mm
+    img_w, img_h = image_size
+
+    # Compute focal lengths in mm
+    fx_mm = float(fx_px * (sensor_w_mm / img_w))
+    fy_mm = float(fy_px * (sensor_h_mm / img_h))
+
+    # Distortion: radial = k1,k2,k3,k4,k5,k6; tangential = p1,p2
+    dc = dist_coeffs.flatten()
+    radial_keys = ["k1", "k2", "k3", "k4", "k5", "k6"]
+    tangential_keys = ["p1", "p2"]
+    radial_vals = {
+        k: float(dc[i]) if i < len(dc) else 0.0 for i, k in enumerate(radial_keys)
+    }
+    tangential_vals = {
+        k: float(dc[2 + i]) if 2 + i < len(dc) else 0.0
+        for i, k in enumerate(tangential_keys)
+    }
+
+    data = {
+        "distortion_coefficients": {
+            "radial": radial_vals,
+            "tangential": tangential_vals,
+        },
+        "focal_length_mm": {"fx": fx_mm, "fy": fy_mm},
+        "focal_length_pixels": {"fx": fx_px, "fy": fy_px},
+        "principal_point_mm": {
+            "cx": cx_px * (sensor_w_mm / img_w),
+            "cy": cy_px * (sensor_h_mm / img_h),
+        },
+        "principal_point_pixels": {"cx": cx_px, "cy": cy_px},
+        "skew": float(skew),
+    }
+
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
+    with open(output_file, "w", encoding="utf-8") as f:
+        yaml.dump(data, f, sort_keys=False)
+
+
 def calibrate_camera(
     input_dir: str,
     board_width: int,
@@ -17,6 +103,7 @@ def calibrate_camera(
     square_size: float,
     fisheye: bool,
     output_file: str,
+    sensor_size: tuple[float, float],
 ) -> None:
     """
     Calibrates a camera using images of a chessboard pattern.
@@ -74,11 +161,12 @@ def calibrate_camera(
     if not objpoints:
         raise RuntimeError("No valid chessboard patterns were found in the images.")
 
+    image_size = gray.shape[::-1]
     if not fisheye:
         ret, camera_matrix, dist_coeffs, _, _ = cv2.calibrateCamera(
             objpoints,
             imgpoints,
-            gray.shape[::-1],
+            image_size,
             None,
             None,
         )
@@ -103,14 +191,14 @@ def calibrate_camera(
             (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 100, 1e-6),
         )
 
-    calibration_data = {
-        "camera_matrix": camera_matrix.tolist(),
-        "dist_coeffs": dist_coeffs.tolist(),
-        "reprojection_error": float(ret),
-    }
-
-    with open(output_file, "w") as f:
-        yaml.dump(calibration_data, f)
+    save_calibration_yaml(
+        output_file,
+        camera_matrix,
+        dist_coeffs,
+        image_size=image_size,
+        sensor_size_mm=sensor_size,
+        skew=camera_matrix[0, 1],
+    )
 
     print(f"Camera calibration saved to: {output_file}")
 
@@ -151,6 +239,18 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
         help="Size of the chessboard squares in meters",
     )
     parser.add_argument(
+        "--sensor-width",
+        type=float,
+        default=5.7,
+        help="Width of the sensor",
+    )
+    parser.add_argument(
+        "--sensor-height",
+        type=float,
+        default=3,
+        help="Height of the sensor",
+    )
+    parser.add_argument(
         "--fisheye",
         action="store_true",
         help="Flag to determine whether to the camera has a fisheye model.",
@@ -169,6 +269,7 @@ def register_subparser(subparsers: argparse._SubParsersAction) -> None:
             args.square_size,
             args.fisheye,
             args.output,
+            (args.sensor_width, args.sensor_height),
         ),
     )
 
