@@ -1,0 +1,3 @@
+[submodule "ScaleNet"]
+	path = ScaleNet
+	url = https://github.com/briansenas/ScaleNet
