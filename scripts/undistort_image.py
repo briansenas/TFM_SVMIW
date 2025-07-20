@@ -77,7 +77,7 @@ def undistort_image(
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     cv2.imwrite(output_path, undistorted)
-    print(f"✅ Undistorted image saved to: {output_path}")
+    print(f"Undistorted image saved to: {output_path}")
 
 
 def register_subparser(

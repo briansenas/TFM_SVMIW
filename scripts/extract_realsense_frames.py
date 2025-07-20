@@ -71,11 +71,11 @@ def extract_realsense_frames(
     playback = device.as_playback()
     playback.set_real_time(False)
 
-    print(f"📦 Processing: {bag_path}")
+    print(f"Processing: {bag_path}")
     print(
-        f"🎥 Frame rate: Every {rate:.2f}s | Time window: {start_time}s to {str(end_time) + 's' or 'EOF'}",
+        f"Frame rate: Every {rate:.2f}s | Time window: {start_time}s to {str(end_time) + 's' or 'EOF'}",
     )
-    print(f"💾 Output dir: {output_dir}")
+    print(f"Output dir: {output_dir}")
 
     frame_count = 0
     saved_count = 0
@@ -112,11 +112,11 @@ def extract_realsense_frames(
             frame_count += 1
 
     except RuntimeError:
-        print("🛑 End of stream reached.")
+        print("End of stream reached.")
 
     finally:
         pipeline.stop()
-        print(f"✅ Saved {saved_count} frames from {frame_count} processed.")
+        print(f"Saved {saved_count} frames from {frame_count} processed.")
 
 
 def register_subparser(

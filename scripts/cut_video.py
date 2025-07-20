@@ -41,15 +41,15 @@ def cut_video(input_path: str, start_time: str, end_time: str) -> None:
         output_path,
     ]
 
-    print(f"🔧 Cutting video: {input_path}")
-    print(f"⏱️  From: {start_time} To: {end_time}")
-    print(f"💾 Saving to: {output_path}")
+    print(f"Cutting video: {input_path}")
+    print(f"From: {start_time} To: {end_time}")
+    print(f"Saving to: {output_path}")
 
     try:
         subprocess.run(cmd, check=True)
-        print("✅ Video cut successfully.")
+        print("Video cut successfully.")
     except subprocess.CalledProcessError as e:
-        print(f"❌ FFmpeg error: {e}")
+        print(f"FFmpeg error: {e}")
 
 
 def register_subparser(

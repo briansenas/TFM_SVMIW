@@ -96,13 +96,13 @@ def detect_and_estimate(image_path, intrinsics_path, extrinsics_config, model_pa
     ]
 
     if not person_bboxes:
-        print("❌ No person detected.")
+        print("No person detected.")
         return
 
     # Choose tallest person (bounding box with largest height in pixels)
     bbox = max(person_bboxes, key=lambda b: b[3] - b[1])
     height = estimate_height_from_bbox(bbox, K, R, t)
-    print(f"✅ Estimated height: {height:.2f} meters")
+    print(f"Estimated height: {height:.2f} meters")
 
 
 def register_subparser(
