@@ -55,7 +55,7 @@ Figura~\ref{fig:WorldToImageCoordinates}.
         0 & 0 & 1 &\\
     \end{bmatrix}
 \end{equation}
-Donde $f$ es la distancia focal, $(q_x, q_y)$ son distorsiones de inclinación y $(c_x, c_y)$ es la correspondencia al punto principal (central) del sensor de la imagen.
+En la Ecuación~\ref{eq:KMatrix}, $f$ es la distancia focal, $(q_x, q_y)$ son distorsiones de inclinación y $(c_x, c_y)$ es la correspondencia al punto principal (central) del sensor de la imagen.
 Los parámetros $f$ y $c$ se pueden estimar a partir las características de las cámaras, si se conoce dicha información, o mediante
 métodos de calibración. Con la Figura~\ref{fig:ImageSensor} se observa que la posición de los píxeles escala
 con la distancia focal, $f$, de forma que se utiliza una constante $a$ en su lugar con la relación física con
@@ -135,7 +135,7 @@ programadas para ello. El aprendizaje automático permite extraer patrones y rea
 medio de algoritmos y modelos estadísticos~\cite{LearningFromData}. Esta capacidad resulta especialmente valiosa para
 problemas complejos, difíciles de definir, que no tengan una solución analítica directa o en los que obtenerla resulte computacionalmente costoso.
 \par
-Dentro del ámbito del aprendizaje automático (DL, por sus siglas en inglés), ha cobrado gran relevancia el aprendizaje profundo,
+Dentro del ámbito del aprendizaje automático, ha cobrado gran relevancia el aprendizaje profundo,
 que a diferencia de los modelos anteriores donde tenemos un conjunto de variables
 extraídas por un humano experto, las características sobre la cual inferimos
 son obtenidas por el propio modelo automáticamente~\cite{DeepLMITPress, DeepLearningNature, DeepLearningInNN}.
@@ -156,7 +156,7 @@ desempeñar mejores resultados frente a las características extraídas manualme
   }
   \label{fig:ANNVisualization}
 \end{figure}
-En particular, las redes neuronales artificiales (ANN, por sus siglas en inglés) simulan de forma abstracta el comportamiento
+En particular, las redes neuronales artificiales, simulan de forma abstracta el comportamiento
 de las neuronas biológicas~\cite{ANNForPattern, ANNCambridge}. Estas redes constan de una serie de capas: una capa de entrada,
 una o varias capas ocultas y una capa de salida. El proceso de aprendizaje en una red neuronal se puede dividir en tres etapas
 principales: entrada, procesamiento y salida. En la fase de entrada, los datos iniciales se introducen en la red.
@@ -169,13 +169,13 @@ algoritmos de optimización, permitiendo la mejora continua.
 
 El aprendizaje de una red neuronal se logra mediante ese proceso iterativo, llamado entrenamiento.
 Se repite el proceso descrito anteriormente varias veces con distintos ejemplos. El conjunto de datos es muy relevante para el correcto
-aprendizaje. Debe de ser representativo, extenso y limpio de anormalidades ya que estaremos extrayendo características
-y relevancias a partir de ellos. El desarrollo de estas técnicas ha supuesto un avance fundamental en múltiples campos, como la
+aprendizaje. Debe de ser representativo, extenso y limpio de anormalidades, ya que estaremos extrayendo características
+relevantes a partir de ellos. El desarrollo de estas técnicas ha supuesto un avance fundamental en múltiples campos, como la
 visión por computador. Permitiendo mejorar la detección de objetos, estimaciones de profundidad y metrología.
 \section{Detección de objetos}
 La detección de objetos es una de las tareas fundamentales dentro del campo de la visión por computador. Consiste en identificar y localizar
 instancias de objetos de interés dentro de una imagen o secuencia de vídeo. A diferencia de la clasificación de imágenes, donde se
-asigna una etiqueta global a la imagen (por ejemplo, un 1 si la imagen posee un gato), la detección implica además la estimación de la posición
+asigna una etiqueta global a la imagen (por ejemplo, un 1 si la imagen posee un gato), la detección implica, además, la estimación de la posición
 espacial de los objetos (indicar dónde en la imagen está el gato)~\cite{ObjectDetectionSurvey}.
 \par
 En las primeras etapas, los detectores tradicionales combinaban la extracción de características manuales como Viola-Jones o HOG con
