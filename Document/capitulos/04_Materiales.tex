@@ -5,6 +5,11 @@ se ha empleado un conjunto de datos privado, capturado específicamente con fine
 Dicho conjunto fue recogido en diversas localizaciones del entorno urbano mediante un sistema multicámara,
 en el que se estableció como referencia principal una cámara con sensor de profundidad. A continuación,
 se describen las cámaras utilizadas, así como su disposición relativa y características técnicas.
+Además de dicho dataset, se han empleado los conjuntos de datos de~\cite{SVMIW} para validar el método 
+por aprendizaje automático descrito, así como entrenar un modelo propio para la resolución del problema planteado (metrología de vista única).
+Estos son COCO-Scale, una variante del conjunto de datos COCO~\cite{COCO} con ejemplos filtrados (más detalles en la Sección~\ref{sec:COCO-Scale}),
+un subconjunto de SUN360~\cite{SUN360} para validar el modelo de calibración y, por último, Flickr360~\cite{Flickr360} para refinar el modelo de calibración.
+
 \subsection{Sistema de captura}
 \begin{table}[htp]
 \scriptsize
@@ -31,17 +36,88 @@ la información tanto en memoria como a través de la red. Se obtienen grabacion
 una rampa de entrada, un aparcamiento y una acera (véase la Figura~\ref{fig:DataExamples}).
 \begin{figure}[htp]
 \begin{center}
-    \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/ParkingLot.jpg}}
-    \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/EntranceRamp.jpg}}\\
-    \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/SeminarRoom.jpg}}
-    \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/Sidewalk.jpg}}
+    \subfloat{\includegraphics[width=0.25\textwidth]{imagenes/chapter4/ParkingLot.jpg}}
+    \subfloat{\includegraphics[width=0.25\textwidth]{imagenes/chapter4/EntranceRamp.jpg}}\\
+    \subfloat{\includegraphics[width=0.25\textwidth]{imagenes/chapter4/SeminarRoom.jpg}}
+    \subfloat{\includegraphics[width=0.25\textwidth]{imagenes/chapter4/Sidewalk.jpg}}
 \end{center}
 \caption{Ejemplo de grabaciones realizadas en las diferentes ubicaciones.}
 \label{fig:DataExamples}
 \end{figure}
-
 % Nice end phrase perhaps?
 Este conjunto de datos, capturado bajo condiciones reales y desde múltiples puntos de vista, ha permitido una evaluación robusta de
 los métodos propuestos, facilitando el análisis de su rendimiento frente a diferentes configuraciones geométricas y
 tipos de cámaras de vigilancia.
+\label{sec:COCO-Scale}
+\subsection{Estimación metrológica}
+\subsubsection{COCO-Scale}
+COCO-Scale consiste en una modificación del conjunto de datos COCO~\cite{COCO}, obtenida durante el desarrollo de los 
+experimentos de~\cite{SVMIW}. COCO~\cite{COCO} es un conjunto de datos a larga escala, creado para la detección de objetos, 
+segmentación, estimación de pose y generación de texto descriptivos. Existen múltiples versiones, dado que se actualiza continuamente. 
+En concreto, COCO-Scale deriva de la versión 2017 de COCO, que contiene 118K imágenes de entrenamiento y 5K de validación. En esa versión, 
+existen 80 categorías de objetos y más de 1.5 millones de instancias segmentadas.
+\par 
+No obstante, al tratar de una versión filtrada, COCO-Scale recoge únicamente aquellas imágenes que son aptas 
+para la estimación de escala y geometría a partir de una sola vista. Para ello, se filtran imágenes que 
+contengan humanos o coches, para crear dos versiones del dataset, situados en un plano válido (en el suelo, césped o similar).
+En el caso del dataset con personas, deben ser visibles tanto la cabeza como los tobillos, para poder realizar una estimación adecuada (véase la Figura~\ref{fig:COCO-ScaleSample}).
+El filtrado se realiza utilizando un modelo, Mask R-CNN~\cite{MaskRCNN}, capaz de detectar las personas y estimar los puntos de interés de su cuerpo, como tobillos y cabeza.
+En este trabajo, se utiliza solamente el conjunto de datos con personas. El número de imágenes de entrenamiento son 10.547, con 2.648 de validación.
+\begin{figure}[htp]
+  \begin{center}
+    \subfloat{\includegraphics[width=0.25\textwidth]{imagenes/chapter4/COCOScale/sample-000000_reproj.jpg}}
+    \subfloat{\includegraphics[width=0.15\textwidth]{imagenes/chapter4/COCOScale/sample-000002_reproj.jpg}}\\
+    \subfloat{\includegraphics[width=0.25\textwidth ]{imagenes/chapter4/COCOScale/sample-000006_reproj.jpg}}
+    \subfloat{\includegraphics[width=0.20\textwidth]{imagenes/chapter4/COCOScale/sample-000009_reproj.jpg}}
+  \end{center}
+  \caption{Ejemplos de imágenes sacadas de COCO-Scale~\cite{SVMIW}. Se observan diferentes tamaños de imagen, rango de colores y las personas detectadas.}\label{fig:COCO-ScaleSample}
+\end{figure}
+\subsection{Calibración de cámara}
+Para la generación del conjunto de datos de calibración de cámara, se utiliza el esquema de generación definido 
+en~\cite{CalibDataGeneration}. La idea consiste en obtener 7 imágenes retificadas a partir de cada panorámica utilizando el modelo 
+de cámara fundamental (estenopeica). Se utilizan distribuciones Cauchy para la rotación de la cámara, ratios de imágenes que 
+siguen la distribución de Flickr y ImageNet~\cite{ImageNet}, con mayor énfasis ratio 4:3 por ser el más común. En la Figura~\ref{fig:CalibSample}, se 
+observa un ejemplo de imágen panorámica y los trozos obtenidos con parámetros de cámara definidos aleatoriamente, acorde a las distribuciones definidas.
+\begin{figure}[htp]
+  \begin{center}
+    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter4/Calib/pano_acizdacpcaveub.jpg}}\\
+    \subfloat{\includegraphics[width=0.3\textwidth]{imagenes/chapter4/Calib/pano_acizdacpcaveub.jpg-4.jpg}}
+    \subfloat{\includegraphics[width=0.2\textwidth]{imagenes/chapter4/Calib/pano_acizdacpcaveub.jpg-5.jpg}}
+    \subfloat{\includegraphics[width=0.2\textwidth]{imagenes/chapter4/Calib/pano_acizdacpcaveub.jpg-6.jpg}}
+  \end{center}
+  \caption{Ejemplo de imagen panorámica, de la cual se extraen 3 trozos,con parámetros de cámara diferentes, utilizando el algoritmo de~\cite{CalibDataGeneration}.}\label{fig:CalibSample}
+\end{figure}
+
+\subsubsection{SUN360}
+El dataset SUN360~\cite{SUN360} consiste en un conjunto de imágenes panorámicas esféricas 
+de 360\textdegree$\times$180\textdegree que cubren una amplia variedad de escenas interiores y exteriores con alta resolución. 
+Originalmente, contenía 67.583 panoramas categorizados por tipo de lugar (80 categorías), y ha sido utilizado extensamente para tareas de reconocimiento de escena, estimación de orientación y percepción global de entornos (véase la Figura~\ref{fig:SUN360Samples}).
+Actualmente, el acceso al dataset completo ha desaparecido, y solo se encuentran disponibles pequeños subconjuntos bajo otros nombres. Un ejemplo es~\cite{SUN360Extended}, que conserva 666 panoramas de escenas interiores, extraídas de SUN360.
+No obstante, para entrenar el modelo de calibración sería necesario un conjunto de datos mucho más grande, haciendo necesario recorrer a otros conjuntos de imágenes panorámicas que puedan suplantar su lugar, como Flickr360~\cite{Flickr360}.
+\begin{figure}[htp]
+  \begin{center}
+    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter4/SUN360/pano_0.jpg}}\\
+    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter4/SUN360/pano_1.jpg}}
+  \end{center}
+  \caption{Ejemplos de escenas panorámicas de SUN360~\cite{SUN360}.}\label{fig:SUN360Samples}
+\end{figure}
+\subsubsection{Flickr360}
+El conjunto de datos Flickr360~\cite{Flickr360} fue creado para la competición \emph{NTIRE 2023 Challenge}, cuyo objetivo era 
+obtener imágenes panorámicas de alta resolución a partir de sus versiones de baja resolución. Está compuesto por 3150 imágenes 
+panorámicas equirectangulares de alta resolución, capturadas tanto de repositorios públicos, como Flickr bajo licencias libres, como 
+con cámaras 360\textdegree.
+Las escenas cubren una gran variedad de contextos, véase la Figura~\ref{fig:Flickr360Sample}, tanto interiores como exteriores, aportando diversidad espacial y ambiental.
+De las imágenes de alta resolución se derivan ejemplos de baja resolución, que en nuestro caso servirían para adaptar el modelo a imágenes 
+con ruido o posibles artefactos no deseados.
+\begin{figure}[htp]
+  \begin{center}
+    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter4/Flickr360/00003.png}}\\
+    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter4/Flickr360/00010.png}}
+  \end{center}
+  \caption{Ejemplos de escenas panorámicas de Flickr360~\cite{Flickr360}}\label{fig:Flickr360Sample}
+\end{figure}
 \section{Métodos}
+\subsection{Calibración y estimación manual}
+% Explicar brevemente como funciona
+\subsection{Calibración y estimación automática}
+% Explicar brevemente como funciona, incluir diagrama DDP
