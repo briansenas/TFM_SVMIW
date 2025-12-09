@@ -1,330 +1,312 @@
 @book{ModeloEnCascada,
-    title = {Software Engineering: A Practitioner's Approach},
-    author = {Pressman, R. S.},
-    % edition= 8,
-    year = {2005},
-    publisher = {Palgrave Macmillan},
+  title = {Software Engineering: A Practitioner's Approach},
+  author = {Pressman, R. S.},
+  publisher = {Palgrave Macmillan},
 }
 
 @book{VisionBookMIT,
-    title     = {Foundations of Computer Vision},
-    author    = {Antonio Torralba and Phillip Isola and William T. Freeman},
-    year      = {2024},
-    publisher = {The MIT Press},
-    % address   = {Cambridge, MA},
-    % isbn      = {9780262048972}
+  title = {Foundations of Computer Vision},
+  author = {Antonio Torralba and Phillip Isola and William T. Freeman},
+  year = {2024},
+  publisher = {The MIT Press},
 }
 
 @book{Hartley2004,
-    title        = {Multiple View Geometry in Computer Vision},
-    author       = {Richard I. Hartley and Andrew Zisserman},
-    year         = {2004},
-    publisher    = {Cambridge University Press},
-    % address      = {Cambridge, UK},
-    % edition      = {Second},
-    % isbn         = {9780521540513},
-    % doi          = {10.1017/CBO9780511811685}
+  title = {Multiple View Geometry in Computer Vision},
+  author = {Richard I. Hartley and Andrew Zisserman},
+  year = {2004},
+  publisher = {Cambridge University Press},
 }
 
-@InProceedings{CriminisiApplications,
-    author="Criminisi, Antonio",
-    %editor="Van Gool, Luc",
-    title="Single-View Metrology: Algorithms and Applications",
-    booktitle="Pattern Recognition",
-    year="2002",
-    publisher="Springer Berlin Heidelberg",
-    %address="Berlin, Heidelberg",
-    pages="224--239",
-    % abstract="This paper addresses the problem of extracting three-dimensional geometric information from a single, uncalibrated image of a scene.",
-    %isbn="978-3-540-45783-1"
+@inproceedings{CriminisiApplications,
+  author = "Criminisi, Antonio",
+  title = "Single-View Metrology: Algorithms and Applications",
+  booktitle = "Pattern Recognition",
+  year = "2002",
+  publisher = "Springer Berlin Heidelberg",
+  pages = "22--239",
 }
 
 @techreport{CriminisiPaintings,
-    author = {Criminisi, Antonio and Kemp, Martin and Zisserman, Andrew},
-    title = {Bringing Pictorial Space to Life: computer techniques for the analysis of paintings},
-    year = {2002},
-    %month = {November},
-    %abstract = {This paper explores the use of computer graphics and computer vision techniques in the history of art. The focus is on analysing the geometry of perspective paintings to learn about the perspectival skills of artists and explore the evolution of linear perspective in history. Algorithms for a systematic analysis of the two- and three-dimensional geometry of paintings are drawn from the work on "single-view reconstruction" and applied to interpreting works of art from the Italian Renaissance and later periods. Since a perspectival painting is not a photograph of an actual subject but an artificial construction subject to imaginative manipulation and inadvertent inaccuracies, the internal consistency of its geometry must be assessed before carrying out any geometric analysis. Some simple techniques to analyse the consistency and perspectival accuracy of the geometry of a painting are discussed. Moreover, this work presents new algorithms for generating new views of a painted scene or portions of it, analysing shapes and proportions of objects, filling in occluded areas, performing a complete threedimensional reconstruction of a painting and a rigorous analysis of possible reconstruction ambiguities. The validity of the techniques described here is demonstrated on a number of historical paintings and frescoes. Whenever possible, the computer-generated results are compared to those obtained by art historians through careful manual analysis. This research represents a further attempt to build a constructive dialogue between two very different disciplines: computer science and history of art. Despite their fundamental differences, science and art can learn and be enriched by each other's procedures.},
-    % url = {https://www.microsoft.com/en-us/research/publication/bringing-pictorial-space-to-life-computer-techniques-for-the-analysis-of-paintings/},
-    pages = {53},
-    %edition = {on-line Proc. Computers and the History of Art (CHArt)},
-    %number = {MSR-TR-2002-64},
-    %note = {Proceedings of the 2011 SIAM International Conference on Data Mining (SDM'2011)},
+  author = {Criminisi, Antonio and Kemp, Martin and Zisserman, Andrew},
+  title = {Bringing Pictorial Space to Life: computer techniques for the
+           analysis of paintings},
+  year = {2002},
+  pages = {53},
 }
 
 @article{CriminisiReconstruction,
-    author = {Criminisi, Antonio},
-    year = {2001},
-    %month = {01},
-    %pages = {},
-    title = {Accurate Visual Metrology from Single and Multiple Uncalibrated Images},
-    %isbn = {978-1-4471-1040-8},
-    %doi = {10.1007/978-0-85729-327-5}
+  author = {Criminisi, Antonio},
+  year = {2001},
+  title = {Accurate Visual Metrology from Single and Multiple Uncalibrated
+           Images},
 }
 
 @article{HoiemPopUp,
-    author = {Hoiem, Derek and Efros, Alexei and Hebert, Martial},
-    year = {2005},
-    %month = {07},
-    pages = {577-584},
-    title = {Automatic photo pop-up},
-    %volume = {24},
-    journal = {ACM Trans. Graph.},
-    %doi = {10.1145/1186822.1073232}
+  author = {Hoiem, Derek and Efros, Alexei and Hebert, Martial},
+  year = {2005},
+  pages = {577-584},
+  title = {Automatic photo pop-up},
+  journal = {ACM Trans. Graph.},
 }
 
 @article{HoiemObjectsInPerspective,
-    author    = {Derek Hoiem and Alexei A. Efros and Martial Hebert},
-    title     = {Putting Objects in Perspective},
-    journal   = {International Journal of Computer Vision},
-    %volume    = {80},
-    %number    = {1},
-    pages     = {3--15},
-    year      = {2008},
-    %doi       = {10.1007/s11263-008-0137-5},
-    %url       = {https://doi.org/10.1007/s11263-008-0137-5},
-    %issn      = {1573-1405},
-    %abstract  = {Image understanding requires not only individually estimating elements of the visual world but also capturing the interplay among them. In this paper, we provide a framework for placing local object detection in the context of the overall 3D scene by modeling the interdependence of objects, surface orientations, and camera viewpoint. Most object detection methods consider all scales and locations in the image as equally likely. We show that with probabilistic estimates of 3D geometry, both in terms of surfaces and world coordinates, we can put objects into perspective and model the scale and location variance in the image. Our approach reflects the cyclical nature of the problem by allowing probabilistic object hypotheses to refine geometry and vice-versa. Our framework allows painless substitution of almost any object detector and is easily extended to include other aspects of image understanding. Our results confirm the benefits of our integrated approach.}
+  author = {Derek Hoiem and Alexei A. Efros and Martial Hebert},
+  title = {Putting Objects in Perspective},
+  journal = {International Journal of Computer Vision},
+  pages = {3-15},
+  year = {2008},
 }
 
 @article{SingleViewExerciseQuantification,
-    title = {Exercise quantification from single camera view markerless 3D pose estimation},
-    journal = {Heliyon},
-    %volume = {10},
-    %number = {6},
-    pages = {e27596},
-    year = {2024},
-    %issn = {2405-8440},
-    %doi = {https://doi.org/10.1016/j.heliyon.2024.e27596},
-    %url = {https://www.sciencedirect.com/science/article/pii/S2405844024036272},
-    author = {Clara Mercadal-Baudart and Chao-Jung Liu and Garreth Farrell and Molly Boyne and Jorge {González Escribano} and Aljosa Smolic and Ciaran Simms},
-    %keywords = {Pose estimation, Motion capture, Sports biomechanics, Injury biomechanics, Computer vision, Markerless},
-    %abstract = {Sports physiotherapists and coaches are tasked with evaluating the movement quality of athletes across the spectrum of ability and experience. However, the accuracy of visual observation is low and existing technology outside of expensive lab-based solutions has limited adoption, leading to an unmet need for an efficient and accurate means to measure static and dynamic joint angles during movement, converted to movement metrics useable by practitioners. This paper proposes a set of pose landmarks for computing frequently used joint angles as metrics of interest to sports physiotherapists and coaches in assessing common strength-building human exercise movements. It then proposes a set of rules for computing these metrics for a range of common exercises (single and double drop jumps and counter-movement jumps, deadlifts and various squats) from anatomical key-points detected using video, and evaluates the accuracy of these using a published 3D human pose model trained with ground truth data derived from VICON motion capture of common rehabilitation exercises. Results show a set of mathematically defined metrics which are derived from the chosen pose landmarks, and which are sufficient to compute the metrics for each of the exercises under consideration. Comparison to ground truth data showed that root mean square angle errors were within 10° for all exercises for the following metrics: shin angle, knee varus/valgus and left/right flexion, hip flexion and pelvic tilt, trunk angle, spinal flexion lower/upper/mid and rib flare. Larger errors (though still all within 15°) were observed for shoulder flexion and ASIS asymmetry in some exercises, notably front squats and drop-jumps. In conclusion, the contribution of this paper is that a set of sufficient key-points and associated metrics for exercise assessment from 3D human pose have been uniquely defined. Further, we found generally very good accuracy of the Strided Transformer 3D pose model in predicting these metrics for the chosen set of exercises from a single mobile device camera, when trained on a suitable set of functional exercises recorded using a VICON motion capture system. Future assessment of generalization is needed.}
+  title = {Exercise quantification from single camera view markerless 3D pose
+           estimation},
+  journal = {Heliyon},
+  volume = {10},
+  year = {2024},
+  author = {Clara Mercadal-Baudart and Chao-Jung Liu and Garreth Farrell and
+            Molly Boyne and Jorge {González Escribano} and Aljosa Smolic and
+            Ciaran Simms},
 }
 
-@InProceedings{SVMIW,
-    author="Zhu, Rui
-    and Yang, Xingyi
-    and Hold-Geoffroy, Yannick
-    and Perazzi, Federico
-    and Eisenmann, Jonathan
-    and Sunkavalli, Kalyan
-    and Chandraker, Manmohan",
-    editor="Vedaldi, Andrea
-    and Bischof, Horst
-    and Brox, Thomas
-    and Frahm, Jan-Michael",
-    title="Single View Metrology in the Wild",
-    booktitle="Computer Vision -- ECCV 2020",
-    year="2020",
-    publisher="Springer International Publishing",
-    %address="Cham",
-    pages="316--333",
-    %abstract="Most 3D reconstruction methods may only recover scene properties up to a global scale ambiguity. We present a novel approach to single view metrology that can recover the absolute scale of a scene represented by 3D heights of objects or camera height above the ground as well as camera parameters of orientation and field of view, using just a monocular image acquired in unconstrained condition. Our method relies on data-driven priors learned by a deep network specifically designed to imbibe weakly supervised constraints from the interplay of the unknown camera with 3D entities such as object heights, through estimation of bounding box projections. We leverage categorical priors for objects such as humans or cars that commonly occur in natural images, as references for scale estimation. We demonstrate state-of-the-art qualitative and quantitative results on several datasets as well as applications including virtual object insertion. Furthermore, the perceptual quality of our outputs is validated by a user study.",
-    %isbn="978-3-030-58621-8"
+@inproceedings{SVMIW,
+  author = "Zhu, Rui and Yang, Xingyi and Hold-Geoffroy, Yannick and Perazzi,
+            Federico and Eisenmann, Jonathan and Sunkavalli, Kalyan and
+            Chandraker, Manmohan",
+  editor = "Vedaldi, Andrea and Bischof, Horst and Brox, Thomas and Frahm,
+            Jan-Michael",
+  title = "Single View Metrology in the Wild",
+  booktitle = "Computer Vision -- ECCV 2020",
+  year = "2020",
+  publisher = "Springer International Publishing",
+  pages = "316--333",
 }
 
     Rendering synthetic objects into legacy photographs
 @article{ObjectsIntoPhotos,
-    author       = {Kevin Karsch and
-                    Varsha Hedau and
-                    David A. Forsyth and
-                    Derek Hoiem},
-    title        = {Rendering Synthetic Objects into Legacy Photographs},
-    journal      = {CoRR},
-    %volume       = {abs/1912.11565},
-    year         = {2019},
-    %url          = {http://arxiv.org/abs/1912.11565},
-    eprinttype    = {arXiv},
-    %  eprint       = {1912.11565},
-    %  timestamp    = {Fri, 03 Jan 2020 16:10:45 +0100},
-    %  biburl       = {https://dblp.org/rec/journals/corr/abs-1912-11565.bib},
-    %  bibsource    = {dblp computer science bibliography, https://dblp.org}
+  author = {Kevin Karsch and Varsha Hedau and David A. Forsyth and Derek Hoiem},
+  title = {Rendering Synthetic Objects into Legacy Photographs},
+  journal = {CoRR},
+  year = {2019},
+  eprinttype = {arXiv},
 }
 
 @misc{DepthFromSingleImage,
-    title={Depth Map Prediction from a Single Image using a Multi-Scale Deep Network},
-    author={David Eigen and Christian Puhrsch and Rob Fergus},
-    year={2014},
-    %eprint={1406.2283},
-    archivePrefix={arXiv},
-    %primaryClass={cs.CV},
-    %url={https://arxiv.org/abs/1406.2283},
+  title = {Depth Map Prediction from a Single Image using a Multi-Scale Deep
+           Network},
+  author = {David Eigen and Christian Puhrsch and Rob Fergus},
+  year = {2014},
+  archivePrefix = {arXiv},
 }
 
 @inproceedings{PascalVisualObjectChallenge,
-    author = {Everingham, Mark and Van Gool, Luc and Williams, Christopher K.I. and Winn, John and Zisserman, Andrew},
-    title = {The PASCAL Visual Object Classes (VOC) Challenge},
-    booktitle = {International Journal of Computer Vision},
-    volume = {88},
-    pages = {303-338},
-    year = {2010},
-    %doi = {10.1007/s11263-009-0275-4}
+  author = {Everingham, Mark and Van Gool, Luc and Williams, Christopher K.I.
+            and Winn, John and Zisserman, Andrew},
+  title = {The PASCAL Visual Object Classes (VOC) Challenge},
+  booktitle = {International Journal of Computer Vision},
+  volume = {88},
+  pages = {303-338},
+  year = {2010},
 }
 
 @article{ImageNet,
-    author = {Deng, Jia and Dong, Wei and Socher, Richard and Li, Li-Jia and Li, Kai and Fei-Fei, Li},
-    title = {ImageNet: A Large-Scale Hierarchical Image Database},
-    booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
-    year = {2009},
-    pages = {248-255},
-    %doi = {10.1109/CVPR.2009.5206848}
+  author = {Deng, Jia and Dong, Wei and Socher, Richard and Li, Li-Jia and Li,
+            Kai and Fei-Fei, Li},
+  title = {ImageNet: A Large-Scale Hierarchical Image Database},
+  booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern
+               Recognition (CVPR)},
+  year = {2009},
+  pages = {248-255},
 }
 
 @misc{EffectivenessOfData,
-    title={Revisiting Unreasonable Effectiveness of Data in Deep Learning Era},
-    author={Chen Sun and Abhinav Shrivastava and Saurabh Singh and Abhinav Gupta},
-    year={2017},
-    %eprint={1707.02968},
-    archivePrefix={arXiv},
-    %primaryClass={cs.CV},
-    %url={https://arxiv.org/abs/1707.02968},
+  title = {Revisiting Unreasonable Effectiveness of Data in Deep Learning Era},
+  author = {Chen Sun and Abhinav Shrivastava and Saurabh Singh and Abhinav Gupta
+            },
+  year = {2017},
+  archivePrefix = {arXiv},
 }
 @article{Metric3Dv2,
-    title={Metric3D v2: A Versatile Monocular Geometric Foundation Model for Zero-Shot Metric Depth and Surface Normal Estimation},
-    volume={46},
-    %ISSN={1939-3539},
-    %url={http://dx.doi.org/10.1109/TPAMI.2024.3444912},
-    %doi={10.1109/tpami.2024.3444912},
-    number={12},
-    journal={IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI)},
-    publisher={Institute of Electrical and Electronics Engineers (IEEE)},
-    author={Hu, Mu and Yin, Wei and Zhang, Chi and Cai, Zhipeng and Long, Xiaoxiao and Chen, Hao and Wang, Kaixuan and Yu, Gang and Shen, Chunhua and Shen, Shaojie},
-    year={2024},
-    %month=dec,
-    pages={10579–10596}
+  title = {Metric3D v2: A Versatile Monocular Geometric Foundation Model for
+           Zero-Shot Metric Depth and Surface Normal Estimation},
+  volume = {46},
+  number = {12},
+  journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence
+             (TPAMI)},
+  publisher = {Institute of Electrical and Electronics Engineers (IEEE)},
+  author = {Hu, Mu and Yin, Wei and Zhang, Chi and Cai, Zhipeng and Long,
+            Xiaoxiao and Chen, Hao and Wang, Kaixuan and Yu, Gang and Shen,
+            Chunhua and Shen, Shaojie},
+  year = {2024},
+  pages = {10579–10596},
 }
 
 @book{LearningFromData,
-    author = {Abu-Mostafa, Yaser S. and Magdon-Ismail, Malik and Lin, Hsuan-Tien},
-    description = {Learning From Data: Yaser S. Abu-Mostafa, Malik Magdon-Ismail, Hsuan-Tien Lin: 9781600490064: Amazon.com: Books},
-    publisher = {AMLBook},
-    title = {Learning From Data},
-    year = 2012
+  author = {Abu-Mostafa, Yaser S. and Magdon-Ismail, Malik and Lin, Hsuan-Tien},
+  description = {Learning From Data: Yaser S. Abu-Mostafa, Malik Magdon-Ismail,
+                 Hsuan-Tien Lin: 9781600490064: Amazon.com: Books},
+  publisher = {AMLBook},
+  title = {Learning From Data},
+  year = 2012,
 }
 
 @book{IAModernApproach,
-    author = {Russell, Stuart and Norvig, Peter},
-    edition = 4,
-    publisher = {Prentice Hall},
-    % timestamp = {2020-02-01T18:23:11.000+0100},
-    title = {Artificial Intelligence: A Modern Approach},
-    year = 2010
+  author = {Russell, Stuart and Norvig, Peter},
+  edition = 4,
+  publisher = {Prentice Hall},
+  title = {Artificial Intelligence: A Modern Approach},
+  year = 2010,
 }
 @book{DeepLMITPress,
-    title={Deep Learning},
-    author={Ian Goodfellow and Yoshua Bengio and Aaron Courville},
-    publisher={MIT Press},
-    year={2016}
+  title = {Deep Learning},
+  author = {Ian Goodfellow and Yoshua Bengio and Aaron Courville},
+  publisher = {MIT Press},
+  year = {2016},
 }
-@Article{DeepLearningNature,
-    author={LeCun, Yann
-            and Bengio, Yoshua
-            and Hinton, Geoffrey},
-    title={Deep learning},
-    journal={Nature},
-    year={2015},
-    volume={521},
-    number={7553},
-    pages={436-444},
+@article{DeepLearningNature,
+  author = {LeCun, Yann and Bengio, Yoshua and Hinton, Geoffrey},
+  title = {Deep learning},
+  journal = {Nature},
+  year = {2015},
+  volume = {521},
+  number = {7553},
+  pages = {436-444},
 }
 @article{DeepLearningInNN,
-    year = 2015,
-    publisher = {Elsevier {BV} },
-    volume = {61},
-    pages = {85--117},
-    author = {Jürgen Schmidhuber},
-    title = {Deep learning in neural networks: An overview},
-    journal = {Neural Networks}
+  year = 2015,
+  publisher = {Elsevier {BV} },
+  volume = {61},
+  pages = {85--117},
+  author = {Jürgen Schmidhuber},
+  title = {Deep learning in neural networks: An overview},
+  journal = {Neural Networks},
 }
 
 @book{ANNForPattern,
-    author = {Bishop, C.M.},
-    publisher = {Oxford University Press},
-    title = {{Neural networks for pattern recognition}},
-    year = 1995
+  author = {Bishop, C.M.},
+  publisher = {Oxford University Press},
+  title = {{Neural networks for pattern recognition}},
+  year = 1995,
 }
 
 @book{ANNCambridge,
-    place={Cambridge},
-    title={Pattern Recognition and Neural Networks},
-    publisher={Cambridge University Press},
-    author={Ripley, Brian D.},
-    year={1996}
+  place = {Cambridge},
+  title = {Pattern Recognition and Neural Networks},
+  publisher = {Cambridge University Press},
+  author = {Ripley, Brian D.},
+  year = {1996},
 }
 
 @article{NeuronImages,
-author = {Meng, Zhenzhu and Hu, Yating and Ancey, Christophe},
-year = {2020},
-pages = {600},
-title = {Using a Data Driven Approach to Predict Waves Generated by Gravity Driven Mass Flows},
-number = {2},
-volume = {12},
-journal = {Water},
+  author = {Meng, Zhenzhu and Hu, Yating and Ancey, Christophe},
+  year = {2020},
+  pages = {600},
+  title = {Using a Data Driven Approach to Predict Waves Generated by Gravity
+           Driven Mass Flows},
+  number = {2},
+  volume = {12},
+  journal = {Water},
 }
 
 @article{NeuronSimilarity,
-author = {Akgün, Ergün and Demir, Metin},
-year = {2018},
-pages = {19},
-title = {Modeling Course Achievements of Elementary Education Teacher Candidates with Artificial Neural Networks},
-volume = {5},
-journal = {International Journal of Assessment Tools in Education},
+  author = {Akgün, Ergün and Demir, Metin},
+  year = {2018},
+  pages = {19},
+  title = {Modeling Course Achievements of Elementary Education Teacher
+           Candidates with Artificial Neural Networks},
+  volume = {5},
+  journal = {International Journal of Assessment Tools in Education},
 }
 
 
 @article{ShallowAndDeepNN,
-author={Bakiya, A. and Kamalanand, K. and Rajinikanth, V. and Nayak, Ramesh Sunder and Kadry, Seifedine},
-title={Deep neural network assisted diagnosis of time-frequency transformed electromyograms},
-journal={Multimedia Tools and Applications},
-year={2020},
-volume={79},
-number={15},
-pages={11051-11068},
+  author = {Bakiya, A. and Kamalanand, K. and Rajinikanth, V. and Nayak, Ramesh
+            Sunder and Kadry, Seifedine},
+  title = {Deep neural network assisted diagnosis of time-frequency transformed
+           electromyograms},
+  journal = {Multimedia Tools and Applications},
+  year = {2020},
+  volume = {79},
+  number = {15},
+  pages = {11051-11068},
 }
 
 @misc{ObjectDetectionSurvey,
-      title={A Survey of Modern Deep Learning based Object Detection Models},
-      author={Syed Sahil Abbas Zaidi and Mohammad Samar Ansari and Asra Aslam and Nadia Kanwal and Mamoona Asghar and Brian Lee},
-      year={2021},
-      %eprint={2104.11892},
-      archivePrefix={arXiv},
-      %primaryClass={cs.CV},
-      %url={https://arxiv.org/abs/2104.11892},
+  title = {A Survey of Modern Deep Learning based Object Detection Models},
+  author = {Syed Sahil Abbas Zaidi and Mohammad Samar Ansari and Asra Aslam and
+            Nadia Kanwal and Mamoona Asghar and Brian Lee},
+  year = {2021},
+  archivePrefix = {arXiv},
 }
 @article{Chen2006,
-title = {A method of visual metrology from uncalibrated images},
-journal = {Pattern Recognition Letters},
-volume = {27},
-number = {13},
-pages = {1447-1456},
-year = {2006},
-%issn = {0167-8655},
-%doi = {https://doi.org/10.1016/j.patrec.2006.01.017},
-%url = {https://www.sciencedirect.com/science/article/pii/S0167865506000614},
-author = {Zezhi Chen and Nick Pears and Bojian Liang},
-%keywords = {Reciprocal-polar (RP) transform, Homography matrix, Fundamental matrix, Metrology, Focus of expansion (FOE), Uncalibrated image},
-%abstract = {A method of measuring the height of any feature above a reference plane from a pair of uncalibrated images, separated by a (near) pure translation is presented. The output of the algorithm is a feature height, expressed as a fraction of the height of the camera above the reference plane. There are three contributions. Firstly a robust method of computing the dual epipole or focus of expansion (FOE) under pure translation is presented. Secondly, a novel reciprocal-polar (RP) image rectification scheme is presented, which allows planar image motion, expressed as a planar homography, to be accurately detected and recovered by 1D correlation. The technique can work even when there are no corner features on the reference plane and even over large image distortions caused by large camera motion, which would cause correlation techniques in the original image space to fail. Thirdly, we present a projective construct to enable measurement of the relative (or affine) feature height. Results show that our algorithm performs very well against outliers and noise. The mean of absolute error is 1.8mm, and the mean of relative error is only 0.13% with two outliers removed.}
+  title = {A method of visual metrology from uncalibrated images},
+  journal = {Pattern Recognition Letters},
+  volume = {27},
+  number = {13},
+  pages = {1447-1456},
+  year = {2006},
+  author = {Zezhi Chen and Nick Pears and Bojian Liang},
 }
 
-@INPROCEEDINGS{Make3D,
-  author={Saxena, Ashutosh and Sun, Min and Ng, Andrew Y.},
-  booktitle={2007 IEEE 11th International Conference on Computer Vision},
-  title={Learning 3-D Scene Structure from a Single Still Image},
-  year={2007},
-  %volume={},
-  %number={},
-  pages={1-8},
-  %keywords={Layout;Markov random fields;Supervised learning;Sun;Computer science;Inference algorithms;Art;Rendering (computer graphics);Internet;Humans},
-  %doi={10.1109/ICCV.2007.4408828}
+@inproceedings{Make3D,
+  author = {Saxena, Ashutosh and Sun, Min and Ng, Andrew Y.},
+  booktitle = {IEEE 11th International Conference on Computer Vision},
+  title = {Learning 3-D Scene Structure from a Single Still Image},
+  year = {2007},
+  pages = {1-8},
 }
 
 @misc{DepthMapMultiScale,
-      title={Depth Map Prediction from a Single Image using a Multi-Scale Deep Network},
-      author={David Eugen and Christian Puhrsch and Rob Fergus},
-      year={2014},
-      %eprint={1406.2283},
-      archivePrefix={arXiv},
-      %primaryClass={cs.CV},
-      %url={https://arxiv.org/abs/1406.2283},
+  title = {Depth Map Prediction from a Single Image using a Multi-Scale Deep
+           Network},
+  author = {David Eugen and Christian Puhrsch and Rob Fergus},
+  year = {2014},
+}
+@misc{COCO,
+  title = {COCO Dataset — Common Objects in Context},
+  author = {Tsung-Yi Lin and Michael Maire and Serge Belongie and Lubomir
+            Bourdev and Ross Girshick and James Hays and Pietro Perona and Deva
+            Ramanan and C.\ Lawrence Zitnick and Piotr Dollár},
+  year = {2014},
+  url = {https://cocodataset.org/#home},
+}
+@misc{Flickr360,
+  title = {Flickr360 — 360{\textdegree} Panoramic Images Dataset for
+           Omnidirectional Super-Resolution},
+  author = {M. Cao and C. Mou and F. Yu and X. Wang and Y. Zheng and J. Zhang
+            and C. Dong and G. Li and Y. Shan and R. Timofte},
+  howpublished = {\url{https://github.com/360SR/360SR-Challenge}},
+  year = {2023},
+}
+@inproceedings{SUN360,
+  title = {Recognizing scene viewpoint using panoramic place representation},
+  author = {Xiao, Jianxiong and Ehinger, Krista A and Oliva, Aude and Torralba,
+            Antonio},
+  booktitle = {2012 IEEE Conference on Computer Vision and Pattern Recognition},
+  year = {2012},
+}
+@inproceedings{SUN360Extended,
+  author = {J. {Guerrero-Viu} and C. {Fernandez-Labrador} and C. {Demonceaux}
+            and J. J. {Guerrero}},
+  title = {What’s in my Room? Object Recognition on Indoor Panoramic Images},
+  booktitle = {2020 IEEE International Conference on Robotics and Automation
+               (ICRA)},
+  year = {2020},
+  pages = {567-573},
+}
+@misc{MaskRCNN,
+  title = {maskrcnn-benchmark: Fast, modular reference implementation of
+           Instance Segmentation and Object Detection algorithms in PyTorch},
+  author = {Massa, Francisco and Girshick, Ross},
+  year = {2018},
+  url = {https://cocodataset.org/#home},
+}
+@inproceedings{CalibDataGeneration,
+  author = {Hold-Geoffroy, Yannick and Sunkavalli, Kalyan and Eisenmann,
+            Jonathan and Fisher, Matthew and Gambaretto, Emiliano and Hadap,
+            Sunil and Lalonde, Jean-François},
+  title = {A Perceptual Measure for Deep Single Image Camera Calibration},
+  booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern
+               Recognition (CVPR)},
+  year = {2018},
 }
