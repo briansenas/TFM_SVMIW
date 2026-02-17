@@ -1,25 +1,32 @@
 # Scripts
+
 ![High Overview of the scripts architecture](../imgs/architecture_diagram.mx.drawio.png?raw=true)
 ![Command Design Pattern Diagram](../imgs/design_pattern_diagram.mx.drawio.png?raw=true)
+
 ## Table of Contents
-  - [Extract Frames](#-1-extract-frames)
-  - [Calibrate Camera](#-2-calibrate-camera)
-  - [Estimate Human Height](#-3-estimate-human-height)
-  - [Cut Video](#-4-cut-video)
-  - [Extract Realsense Frames](#-5-extracting-frames-from-realsense-bag-files)
-  - [Undistort Image](#-6-undistort-image)
-  - [Filter Frames](#-7-filter-frames)
+
+- [Extract Frames](#-1-extract-frames)
+- [Calibrate Camera](#-2-calibrate-camera)
+- [Estimate Human Height](#-3-estimate-human-height)
+- [Cut Video](#-4-cut-video)
+- [Extract Realsense Frames](#-5-extracting-frames-from-realsense-bag-files)
+- [Undistort Image](#-6-undistort-image)
+- [Filter Frames](#-7-filter-frames)
 
 You can run the scripts as standalone using the following structure:
+
 ```bash
-python -m scripts/undistort_image undistort_image --config config/cam1.yaml
+python -m scripts.undistort_image undistort-image --config config/cam1.yaml
 ```
+
 Or you can use the `main.py` orchestrator (recommended):
+
 ```bash
 python main.py undistort-image --config config/cam1.yaml
 ```
 
 To run multiple inferences at once you can make use of `xargs` (Linux):
+
 ```bash
 ls config | xargs -I{} sh -c 'config={};python main.py estimate-height --config config/${config}
 ```
@@ -106,6 +113,7 @@ python main.py extract-realsense-frames \
   --start 00:00:10 \
   --end 00:00:30
 ```
+
 This command extracts one frame every 0.5 seconds between 5 and 20 seconds of the video.
 
 ### ✅ 6. Undistort Image
@@ -113,7 +121,7 @@ This command extracts one frame every 0.5 seconds between 5 and 20 seconds of th
 Applies the camera calibration parameters to undistort a image.
 
 ```bash
-python main.py undistort_image\
+python main.py undistort-image\
   --distorted-image path/to/image.png \
   --undistorted-image path/to/output.png \
   --rate 1
@@ -126,7 +134,7 @@ python main.py undistort_image\
 Checks if a whole person is detected in a image. The person must be standing on the ground.
 
 ```bash
-python main.py filter_frames\
+python main.py filter-frames\
   --input-dir path/to/input/dir \
   --output-dir path/to/output/dir \
   --margin 10

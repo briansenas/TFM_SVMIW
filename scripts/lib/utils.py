@@ -66,7 +66,6 @@ def load_yaml_defaults(parser: argparse.ArgumentParser, config_file: str):
         # Filter config keys to match known argparse arguments
         valid_keys = {action.dest for action in parser._actions}
         filtered_config = {k: v for k, v in config.items() if k in valid_keys}
-        print(filtered_config)
         parser.set_defaults(**filtered_config)
 
 

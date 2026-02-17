@@ -8,7 +8,9 @@ import pkgutil
 from scripts.lib.utils import load_yaml_defaults
 
 
-def load_subparsers(subparsers, scripts_package: str = "scripts"):
+def load_subparsers(
+    subparsers, scripts_package: str = "scripts"
+) -> dict[str, argparse.ArgumentParser]:
     """
     Dynamically load and register subparsers from modules in the 'scripts' package.
     Each module must define a `register_subparser(subparsers)` function.
@@ -41,8 +43,10 @@ def load_subparsers(subparsers, scripts_package: str = "scripts"):
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--config",
+    )
     subparsers = parser.add_subparsers(dest="command", required=True)
-
     subparsers_map = load_subparsers(subparsers)
     args, _ = parser.parse_known_args()
     # Load defaults into the subparser if config is given

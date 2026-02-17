@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
 from typing import Any
 
 import cv2
 from ultralytics import YOLO
+
+from scripts.lib.utils import get_config_parser
 
 COMMAND_NAME = "filter-frames"
 
@@ -56,16 +59,6 @@ def process_frame_directory(input_dir: str, output_dir: str, margin: int = 10) -
     yolo_model = YOLO("yolov8n-pose.pt")
     # Create the output directory if not exists
     os.makedirs(output_dir, exist_ok=True)
-    # Clean up first
-    image_files = sorted(
-        [
-            f
-            for f in os.listdir(output_dir)
-            if f.lower().endswith((".jpg", ".jpeg", ".png", ".bmp"))
-        ],
-    )
-    for image in image_files:
-        os.remove(os.path.join(output_dir, image))
     image_files = sorted(
         [
             f
@@ -74,7 +67,8 @@ def process_frame_directory(input_dir: str, output_dir: str, margin: int = 10) -
         ],
     )
     # Iterate over all the images
-    saved_count = 0
+    valid_imgs_json = []
+    invalid_imgs_json = []
     for _, fname in enumerate(image_files):
         img_path = os.path.join(input_dir, fname)
         frame = cv2.imread(img_path)
@@ -85,11 +79,23 @@ def process_frame_directory(input_dir: str, output_dir: str, margin: int = 10) -
         # If we use this with images in the wild we should add a is_upright_check
         # We should use attempt to use information regarding the ground plane (avoid climbing stuff)
         if is_whole_person_in_frame(results, image_height, margin):
-            save_path = os.path.join(output_dir, fname)
-            cv2.imwrite(save_path, frame)
-            saved_count += 1
+            valid_imgs_json.append(img_path)
+        else:
+            invalid_imgs_json.append(img_path)
+    with open(
+        os.path.join(output_dir, "valid_filtered_imgs.json"),
+        "w",
+        encoding="utf-8",
+    ) as file:
+        file.write(json.dumps(valid_imgs_json))
+    with open(
+        os.path.join(output_dir, "invalid_filtered_imgs.json"),
+        "w",
+        encoding="utf-8",
+    ) as file:
+        file.write(json.dumps(invalid_imgs_json))
     print(
-        f"Processed {len(image_files)} frames. Saved {saved_count} valid frames to '{output_dir}'",
+        f"Processed {len(image_files)} frames. Saved {len(valid_imgs_json)} valid frames to '{output_dir}'",
     )
 
 
@@ -134,7 +140,7 @@ def main(args: argparse.Namespace) -> None:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(parents=[get_config_parser()])
     subparsers = parser.add_subparsers(dest="command", required=True)
     register_subparser(subparsers)
     args = parser.parse_args()
