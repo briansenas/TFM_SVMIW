@@ -1,18 +1,18 @@
 \chapter{Introducción}
-\section{Definición del problema}   
-La metrología monocular, es decir, a partir de una única imagen, conocida como \emph{Single View Metrology} (SVM) en inglés, se 
-refiere a la estimación de propiedades métricas del mundo tridimensional a partir de una sola vista bidimensional~\cite{VisionBookMIT,Hartley2004}. 
-Este enfoque es especialmente útil en situaciones donde no es posible o práctico capturar múltiples imágenes desde diferentes ángulos, ya 
-sea por limitaciones físicas, temporales o logísticas. El interés en este campo ha crecido en paralelo con los avances en visión 
-por computador, aprendizaje profundo y la disponibilidad de grandes conjuntos de datos. Desde sus orígenes, técnicas 
-como las presentadas por~\cite{CriminisiApplications, CriminisiReconstruction, CriminisiPaintings} han demostrado que es posible 
+\section{Definición del problema}
+La metrología monocular, es decir, a partir de una única imagen, conocida como \emph{Single View Metrology} (SVM) en inglés, se
+refiere a la estimación de propiedades métricas del mundo tridimensional a partir de una sola vista bidimensional~\cite{VisionBookMIT,Hartley2004}.
+Este enfoque es especialmente útil en situaciones donde no es posible o práctico capturar múltiples imágenes desde diferentes ángulos, ya
+sea por limitaciones físicas, temporales o logísticas. El interés en este campo ha crecido en paralelo con los avances en visión
+por computador, aprendizaje profundo y la disponibilidad de grandes conjuntos de datos. Desde sus orígenes, técnicas
+como las presentadas por~\cite{CriminisiApplications, CriminisiReconstruction, CriminisiPaintings} han demostrado que es posible
 inferir medidas reales si se cuenta con ciertos supuestos geométricos, como líneas paralelas, puntos de fuga o planos rectangulares.
 \par
-Sin embargo, la aplicación de SVM en entornos naturales o no controlados, conocida como \emph{Single View Metrology in the Wild}~\cite{SVMIW}, 
-plantea una serie de dificultades. En primer lugar, los métodos clásicos dependen fuertemente de la existencia de 
-estructuras geométricas visibles y bien definidas~\cite{VisionBookMIT}, lo que limita su aplicabilidad a imágenes reales 
-donde estas condiciones raramente se cumplen. Además, factores como la iluminación variable, la distorsión por lente, la oclusión, 
-la falta de información de calibración de cámara, y la diversidad de escalas y perspectivas complican aún más la estimación precisa 
+Sin embargo, la aplicación de SVM en entornos naturales o no controlados, conocida como \emph{Single View Metrology in the Wild}~\cite{SVMIW},
+plantea una serie de dificultades. En primer lugar, los métodos clásicos dependen fuertemente de la existencia de
+estructuras geométricas visibles y bien definidas~\cite{VisionBookMIT}, lo que limita su aplicabilidad a imágenes reales
+donde estas condiciones raramente se cumplen. Además, factores como la iluminación variable, la distorsión por lente, la oclusión,
+la falta de información de calibración de cámara, y la diversidad de escalas y perspectivas complican aún más la estimación precisa
 de medidas métricas~\cite{VisionBookMIT}, véase la Figura~\ref{fig:PerspectiveIlusion}.
 
 \begin{figure}[!ht]
@@ -27,30 +27,30 @@ Ilustraciones sacadas de~\cite{VisionBookMIT}.
 }\label{fig:PerspectiveIlusion}
 \end{figure}
 
-El auge del aprendizaje profundo ha abierto nuevas oportunidades para abordar estas limitaciones, permitiendo inferir información a 
+El auge del aprendizaje profundo ha abierto nuevas oportunidades para abordar estas limitaciones, permitiendo inferir información a
 partir de patrones visuales aprendidos en grandes conjuntos de datos~\cite{PascalVisualObjectChallenge, ImageNet, EffectivenessOfData}. Sin embargo, estas aproximaciones
 aún enfrentan desafíos importantes. Uno de ellos es la ambigüedad inherente a la escala absoluta en imágenes monoculares.
-Aunque es posible inferir relaciones métricas relativas o proporcionales, sin una referencia explícita o contexto adicional, 
-la escala real sigue siendo indeterminada~\cite{DepthFromSingleImage}. Asimismo, la falta de conjuntos de datos etiquetados específicamente para 
+Aunque es posible inferir relaciones métricas relativas o proporcionales, sin una referencia explícita o contexto adicional,
+la escala real sigue siendo indeterminada~\cite{DepthFromSingleImage}. Asimismo, la falta de conjuntos de datos etiquetados específicamente para
 tareas de metrología en imágenes reales dificulta la evaluación objetiva del desempeño de estos sistemas~\cite{SVMIW,Metric3Dv2,}.
 
-Dado este panorama, el presente trabajo busca investigar cómo se puede avanzar hacia sistemas robustos de metrología monocular en el mundo real, 
-combinando principios geométricos clásicos con técnicas modernas de aprendizaje automático. Progresar en esta línea de investigación 
-permitiría construir herramientas prácticas para usuarios sin conocimientos técnicas, como aplicaciones móviles para 
-estimación de dimensiones, reconstrucción histórica o inspección visual, democratizando el acceso a capacidades avanzadas 
+Dado este panorama, el presente trabajo busca investigar cómo se puede avanzar hacia sistemas robustos de metrología monocular en el mundo real,
+combinando principios geométricos clásicos con técnicas modernas de aprendizaje automático. Progresar en esta línea de investigación
+permitiría construir herramientas prácticas para usuarios sin conocimientos técnicas, como aplicaciones móviles para
+estimación de dimensiones, reconstrucción histórica o inspección visual, democratizando el acceso a capacidades avanzadas
 de visión por computador, con impacto directo a sectores industriales y sociales.
 El proyecto esta disponible en \url{https://github.com/briansenas/TFM_SVMIW}.
 
 \section{Motivación}
-La metrología es una disciplina fundamental en múltiples ámbitos industriales y científicos, ya que permite realizar mediciones precisas del entorno físico. 
+La metrología es una disciplina fundamental en múltiples ámbitos industriales y científicos, ya que permite realizar mediciones precisas del entorno físico.
 Sin embargo, muchas de las técnicas actuales requieren equipamiento especializado, múltiples vistas o configuraciones controladas del entorno (saber la posición y rotación de la cámara, las características de la misma, la distancia al objeto o más).
 En este contexto, la \emph{metrología monocular en entornos no controlados}, se presenta como una alternativa asequible de obtener medidas físicas a partir de una única imagen
 sin tener información a priori.
 \par
-Este campo emergente busca desarrollar métodos robustos y generalizables que funcionen en imágenes capturas en condiciones reales, como pueden ser 
+Este campo emergente busca desarrollar métodos robustos y generalizables que funcionen en imágenes capturas en condiciones reales, como pueden ser
 fotografías de redes sociales, grabaciones de seguridad o vídeos deportivos. Esto plantea retos técnicos significativos.
-No obstante, la posibilidad de extraer información métrica a partir de imágenes tomadas con cámaras convencionales, sin necesidad de calibración previa o escenas controladas, 
-abre la puerta a una amplia gama de aplicaciones reales~\cite{HoiemPopUp,HoiemObjectsInPerspective,CriminisiApplications, CriminisiReconstruction, CriminisiPaintings, SingleViewExerciseQuantification, ObjectsIntoPhotos}. 
+No obstante, la posibilidad de extraer información métrica a partir de imágenes tomadas con cámaras convencionales, sin necesidad de calibración previa o escenas controladas,
+abre la puerta a una amplia gama de aplicaciones reales~\cite{HoiemPopUp,HoiemObjectsInPerspective,CriminisiApplications, CriminisiReconstruction, CriminisiPaintings, SingleViewExerciseQuantification, ObjectsIntoPhotos}.
 \begin{enumerate}
     \item \textbf{Entornos forenses:} Estimación de la estatura de sospechosos o víctimas a partir de grabaciones de cámaras de vigilancia, sin necesidad de intervención pericial directa.
     \item \textbf{Seguridad en espacios públicos:} Sistemas inteligentes capaces de realizar estimaciones biométricas sin infraestructura adicional.
@@ -59,13 +59,13 @@ abre la puerta a una amplia gama de aplicaciones reales~\cite{HoiemPopUp,HoiemOb
 	\item \textbf{Geometría en pinturas:}: Comparación de alturas entre individuos en pinturas o análisis de formas geométricas y patrones.
 \end{enumerate}
 
-En el ámbito de la visión por computador se requieren herramientas de metrología más accesibles y confiables. 
+En el ámbito de la visión por computador se requieren herramientas de metrología más accesibles y confiables.
 En este sentido, contribuir al desarrollo de soluciones que permitan extraer medidas fiables a partir de una sola imagen puede tener un impacto significativo en la democratización de tecnologías de medición, con efectos positivos en ámbitos como la justicia, la salud o la ingeniería.
 Por todo ello, se considera que el presente Trabajo Fin de Máster puede suponer una aportación relevante, tanto a nivel teórico como práctico, en el avance de técnicas robustas de metrología monocular aplicadas a contextos reales y no controlados.
 
 \section{Objetivos}
-El objetivo principal de este Trabajo Fin de Máster (TFM) es desarrollar 
-un \textbf{sistema de estimación automática de la estatura de individuos a partir de una sola imagen}, 
+El objetivo principal de este Trabajo Fin de Máster (TFM) es desarrollar
+un \textbf{sistema de estimación automática de la estatura de individuos a partir de una sola imagen},
 utilizando técnicas de metrología monocular. Los objetivos específicos incluyen:
 \begin{enumerate}
     \item Revisar el estado del arte en técnicas de estimación de medidas antropométricas a partir de imágenes.
@@ -73,32 +73,32 @@ utilizando técnicas de metrología monocular. Los objetivos específicos incluy
     \item Probar el sistema en diferentes contextos y con variabilidad en las condiciones de iluminación, perspectiva y posición de las personas.
 \end{enumerate}
 \section{Planificación del proyecto}
-Al planificar el proyecto, es fundamental tener en cuenta que el TFM 
-tiene una carga de 12 créditos ECTS, donde cada 
-crédito representa aproximadamente 25 horas de trabajo. 
-En total, se estima que se necesitarán alrededor de 300 horas para llevar a cabo 
-el proyecto.  Considerando que el segundo cuatrimestre tiene aproximadamente 20 semanas, 
-se requerirá dedicar al TFM unas 15 horas por semana, lo cual equivaldría a unas 3 horas 
+Al planificar el proyecto, es fundamental tener en cuenta que el TFM
+tiene una carga de 12 créditos ECTS, donde cada
+crédito representa aproximadamente 25 horas de trabajo.
+En total, se estima que se necesitarán alrededor de 300 horas para llevar a cabo
+el proyecto.  Considerando que el segundo cuatrimestre tiene aproximadamente 20 semanas,
+se requerirá dedicar al TFM unas 15 horas por semana, lo cual equivaldría a unas 3 horas
 diarias durante 5 días a la semana.
 
-Dada la naturaleza del proyecto, cuya complejidad en términos de requisitos y tamaño 
+Dada la naturaleza del proyecto, cuya complejidad en términos de requisitos y tamaño
 del equipo de trabajo no es elevada, se utilizará un ciclo de vida en cascada~\cite{ModeloEnCascada} con realimentación.
-Dicho ciclo de vida se basa en un desarrollo lineal divido en fases, en el cuál antes 
-de empezar la siguiente fase se evalúa los resultados obtenidos en la fase anterior. 
-De esta forma, se pueden adaptar las fases siguientes a los posibles 
+Dicho ciclo de vida se basa en un desarrollo lineal divido en fases, en el cual antes
+de empezar la siguiente fase se evalúa los resultados obtenidos en la fase anterior.
+De esta forma, se pueden adaptar las fases siguientes a los posibles
 nuevos hallazgos de las fases anteriores.
-Las fases del ciclo de vida son: 
+Las fases del ciclo de vida son:
 \begin{itemize}
-  \item Análisis de requisitos: Consiste en reuniones iniciales con los clientes, 
-    en este caso los directores del TFM. Se organiza el análisis bibliográfico 
+  \item Análisis de requisitos: Consiste en reuniones iniciales con los clientes,
+    en este caso los directores del TFM. Se organiza el análisis bibliográfico
     del problema de metrología monocular, se plantean los objetivos y criterios de aceptación.
-  \item Diseño: Consiste en la investigación y selección de métodos conforme 
-    al análisis anterior, tanto para la resolución como la validación de la solución. 
-    Así como pruebas preliminares y diseño del software de experimentación. 
-  \item Implementación: Consiste en la adaptación de las técnicas encontradas, 
-      búsqueda de puntos de mejoría y desarrollo del producto mínimo viable. 
-  \item Pruebas: Realización de diversos experimentos de validación, 
-      comparando desde la metrología con parámetros estimados con una técnica de calibración manual estándar, 
+  \item Diseño: Consiste en la investigación y selección de métodos conforme
+    al análisis anterior, tanto para la resolución como la validación de la solución.
+    Así como pruebas preliminares y diseño del software de experimentación.
+  \item Implementación: Consiste en la adaptación de las técnicas encontradas,
+      búsqueda de puntos de mejoría y desarrollo del producto mínimo viable.
+  \item Pruebas: Realización de diversos experimentos de validación,
+      comparando desde la metrología con parámetros estimados con una técnica de calibración manual estándar,
       calibración basada en características de las cámaras y las estimadas por el algoritmo final.
 \end{itemize}
 \begin{table}[htp]
@@ -106,9 +106,9 @@ Las fases del ciclo de vida son:
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|c|c|llll|llll|lllll|llll|llll|}
 \hline
-\rowcolor[HTML]{FFC702} 
-\cellcolor[HTML]{FFC702} & \cellcolor[HTML]{FFC702} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Mayo}} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Junio}} & \multicolumn{5}{c|}{\cellcolor[HTML]{FFC702}\textbf{Julio}} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Agosto}} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Septiembre}} \\ \cline{3-23} 
-\rowcolor[HTML]{FFC702} 
+\rowcolor[HTML]{FFC702}
+\cellcolor[HTML]{FFC702} & \cellcolor[HTML]{FFC702} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Mayo}} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Junio}} & \multicolumn{5}{c|}{\cellcolor[HTML]{FFC702}\textbf{Julio}} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Agosto}} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Septiembre}} \\ \cline{3-23}
+\rowcolor[HTML]{FFC702}
 \multirow{-2}{*}{\cellcolor[HTML]{FFC702}\textbf{Tarea}} & \multirow{-2}{*}{\cellcolor[HTML]{FFC702}\begin{tabular}[c]{@{}c@{}}\textbf{Semanas -}\\ \textbf{Horas}\end{tabular}} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}07} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}14} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}21} & \multicolumn{1}{c|}{\cellcolor[HTML]{FFC702}28} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}04} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}11} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}18} & \multicolumn{1}{c|}{\cellcolor[HTML]{FFC702}25} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}02} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}09} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}16} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}23} & \multicolumn{1}{c|}{\cellcolor[HTML]{FFC702}30} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}06} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}13} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}20} & \multicolumn{1}{c|}{\cellcolor[HTML]{FFC702}27} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}04} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}11} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}18} & \multicolumn{1}{c|}{\cellcolor[HTML]{FFC702}25} \\ \hline
 Análisis de Requisitos & 4 - 80 & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} &  &  &  &   &  &  &  &  &  &  &  &  &  &  &  & &  \\ \cline{1-1}
 Diseño & 5 - 100  &  &  &  & & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B}  & \cellcolor[HTML]{9B9B9B} &  &  & &  &   &  &  & &  &  &  &  \\ \cline{1-1}
@@ -121,11 +121,11 @@ Documentar & 3 - 60 &  &  &  &  &  &  &  &  &  &  &  &   & & & & & & &\cellcolor
 \label{tab:PlanificacionTemporal}
 \end{table}
 
-La planificación del proyecto se puede visualizar en la Tabla~\ref{tab:PlanificacionTemporal}, 
-donde se observa las distintas fases del ciclo de vida. El desarrollo del proyecto empieza 
+La planificación del proyecto se puede visualizar en la Tabla~\ref{tab:PlanificacionTemporal},
+donde se observa las distintas fases del ciclo de vida. El desarrollo del proyecto empieza
 tras finalizar las clases lectivas debido a que el alumno estaba compaginando el trabajo con
-los estudios. No obstante, dicha planificación sufrió retrasos y modificaciones significativas. Tanto por 
-razones técnicas, como el estado del proyecto inicial o inexistencia de parte de los conjuntos de datos del autor, como 
+los estudios. No obstante, dicha planificación sufrió retrasos y modificaciones significativas. Tanto por
+razones técnicas, como el estado del proyecto inicial o inexistencia de parte de los conjuntos de datos del autor, como
 personales. La planificación final se puede observar en la Tabla~\ref{tab:PlanificacionFinal}.
 
 \begin{table}[htp]
@@ -133,9 +133,9 @@ personales. La planificación final se puede observar en la Tabla~\ref{tab:Plani
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|c|c|llll|llll|llll|lllll|llll|}
 \hline
-\rowcolor[HTML]{FFC702} 
-\cellcolor[HTML]{FFC702} & \cellcolor[HTML]{FFC702} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Mayo}} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Octubre}} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Noviembre}} & \multicolumn{5}{c|}{\cellcolor[HTML]{FFC702}\textbf{Diciembre}} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Enero}} \\ \cline{3-23} 
-\rowcolor[HTML]{FFC702} 
+\rowcolor[HTML]{FFC702}
+\cellcolor[HTML]{FFC702} & \cellcolor[HTML]{FFC702} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Mayo}} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Octubre}} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Noviembre}} & \multicolumn{5}{c|}{\cellcolor[HTML]{FFC702}\textbf{Diciembre}} & \multicolumn{4}{c|}{\cellcolor[HTML]{FFC702}\textbf{Enero}} \\ \cline{3-23}
+\rowcolor[HTML]{FFC702}
 \multirow{-2}{*}{\cellcolor[HTML]{FFC702}\textbf{Tarea}} & \multirow{-2}{*}{\cellcolor[HTML]{FFC702}\begin{tabular}[c]{@{}c@{}}\textbf{Semanas -}\\ \textbf{Horas}\end{tabular}} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}07} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}14} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}21} & \multicolumn{1}{c|}{\cellcolor[HTML]{FFC702}28} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}07} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}14} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}21} & \multicolumn{1}{c|}{\cellcolor[HTML]{FFC702}28} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}04} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}11} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}18} & \multicolumn{1}{c|}{\cellcolor[HTML]{FFC702}25} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}02} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}09} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}16} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}23} & \multicolumn{1}{c|}{\cellcolor[HTML]{FFC702}30} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}06} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}13} & \multicolumn{1}{c}{\cellcolor[HTML]{FFC702}20} & \multicolumn{1}{c|}{\cellcolor[HTML]{FFC702}27} \\ \hline
 Análisis de Requisitos & 3 - 60 & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & &  &  &  &   &  &  &  &  &  &  &  &  &  &  &  & &  \\ \cline{1-1}
 Diseño & 3 - 60  &  &  &  & & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & & & \cellcolor[HTML]{9B9B9B} &  &  & &  &   &  &  & &  &  &  &  \\ \cline{1-1}
@@ -150,25 +150,25 @@ Documentar & 5 - 100 &  &  & & \cellcolor[HTML]{9B9B9B}  &  &  &  &  &  &  &  & 
 
 Con respecto a los gastos y materiales necesarios para el desarrollo del proyecto, se necesitó una
 suscripción a \emph{Google Colab Pro}, un portátil personal de gama media, \emph{Google Drive 100GB} y
-otros gastos varios,. Además, se asume un salario de 12.56\officialeuro/hora, como para un investigador \emph{senior} o 
+otros gastos varios. Además, se asume un salario de 12.56\officialeuro/hora, como para un investigador \emph{senior} o
 responsable de investigación y desarrollo de una empresa tecnológica en España.
 
-Respecto al servidor GPU, con las especificaciones actuales de \emph{Google}, 
-se estima un coste aproximado de 10.000\officialeuro. Se asume una amortización de 2 años, 
-lo que implica un pago diario de 13.70\officialeuro. 
-Por último, se ha hecho uso del servidor NGPU de la Universidad de Granada. En concreto, de la cola ``Dios'', nodo Atenea. 
+Respecto al servidor GPU, con las especificaciones actuales de \emph{Google},
+se estima un coste aproximado de 10.000\officialeuro. Se asume una amortización de 2 años,
+lo que implica un pago diario de 13.70\officialeuro.
+Por último, se ha hecho uso del servidor NGPU de la Universidad de Granada. En concreto, de la cola ``Dios'', nodo Atenea.
 En ese caso, se estima un coste aproximado de 2.000\officialeuro\; y, por lo tanto, un coste diario de 2.73\officialeuro.
-El desglose total de los costes 
+El desglose total de los costes
 se puede ver en la siguiente Tabla \ref{tab:TotalGastos}.
 Para los cálculos, se estima un total de 147 días, 105 laborables y 440 horas, de duración.
 
 % NOTE: revisar tras terminar el proyecto.
-\begin{table}[H] 
+\begin{table}[H]
   \centering
   \scriptsize
   \begin{tabular}{ll}
 \hline
-\rowcolor[HTML]{FFCB2F} 
+\rowcolor[HTML]{FFCB2F}
 \multicolumn{1}{|c|}{\cellcolor[HTML]{FFCB2F}{\textbf{Item}}} & \multicolumn{1}{c|}{\cellcolor[HTML]{FFCB2F}{\textbf{Costo}}} \\ \hline
 \multicolumn{1}{|l|}{Salario} & \multicolumn{1}{l|}{5.526,40\officialeuro} \\ \hline
 \multicolumn{1}{|l|}{Portátil de Gama Media} & \multicolumn{1}{l|}{700,00\officialeuro} \\ \hline
@@ -178,7 +178,7 @@ Para los cálculos, se estima un total de 147 días, 105 laborables y 440 horas,
 \multicolumn{1}{|l|}{Google Drive 100GB} & \multicolumn{1}{l|}{10,00\officialeuro} \\ \hline
 \multicolumn{1}{|l|}{Otros} & \multicolumn{1}{l|}{300,00\officialeuro} \\ \hline
 \multicolumn{1}{|r|}{\cellcolor[HTML]{FFCB2F}{\textbf{Total}}} & \multicolumn{1}{l|}{ 9.007,56 \officialeuro} \\ \hline
-\textbf{} & 
+\textbf{} &
 \end{tabular}
 \caption{Estimación final de coste del proyecto.}
 \label{tab:TotalGastos}

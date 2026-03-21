@@ -17,9 +17,9 @@ tras aplicar la semejanza entre triángulos~\cite{Hartley2004,VisionBookMIT}.
     \includegraphics[width=0.7\textwidth]{imagenes/chapter2/pinhole-model}
 \end{center}
 \caption{
-    Se observa la geometría subyaciente del modelo de cámara estenopeico sacada de~\cite{Hartley2004}.
+    Se observa la geometría subyacente del modelo de cámara estenopeico sacada de~\cite{Hartley2004}.
     La distancia entre el punto principal, P, y el centro de la cámara se denomina distancia focal, f, y
-    nos permite obtener la relación entre la coordenadas del plano de imagen y del punto en las coordenadas
+    nos permite obtener la relación entre las coordenadas del plano de imagen y del punto en las coordenadas
     del mundo utilizando trigonometría.
 }
 \label{fig:PinHole}
@@ -37,7 +37,7 @@ la proyección se puede expresar acorde a la Ecuación~\ref{eq:ProyectionFormula
 Donde $K$ es la matriz intrínseca de la cámara, que contiene los parámetros internos como la distancia focal y el
 punto principal, véase la Ecuación~\ref{eq:KMatrix}. $[R|t]$ es la concatenación de la matriz de rotación R y
 el vector de traslación t, que definen la posición y orientación de la cámara respecto al eje del mundo (parámetros extrínsecos).
-Por último, $s$ sería un factor de escala. Este modelo permite modelar coordenadas 3D del mundo a píxeles de la imagen, véase la
+Por último, $s$ sería un factor de escala (la unidad de distancia en el espacio de píxeles puede ser distinto al de las coordenadas del mundo). Este modelo permite modelar coordenadas 3D del mundo a píxeles de la imagen, véase la
 Figura~\ref{fig:WorldToImageCoordinates}.
 
 \begin{figure}[htp]
@@ -57,9 +57,9 @@ Figura~\ref{fig:WorldToImageCoordinates}.
 \end{equation}
 En la Ecuación~\ref{eq:KMatrix}, $f$ es la distancia focal, $(q_x, q_y)$ son distorsiones de inclinación y $(c_x, c_y)$ es la correspondencia al punto principal (central) del sensor de la imagen.
 Los parámetros $f$ y $c$ se pueden estimar a partir las características de las cámaras, si se conoce dicha información, o mediante
-métodos de calibración. Con la Figura~\ref{fig:ImageSensor} se observa que la posición de los píxeles escala
-con la distancia focal, $f$, de forma que se utiliza una constante $a$ en su lugar con la relación física con
-la cámara dada por la Ecuación~\ref{eq:EstimateAlpha}.
+métodos de calibración. Con la Figura~\ref{fig:ImageSensor} se observa que la posición de los píxeles
+depende de la distancia focal, $f$, de forma que se utiliza una constante $a$ para definir esa relación física de
+la cámara (véase la Ecuación~\ref{eq:EstimateAlpha}).
 \begin{equation}\label{eq:EstimateAlpha}
     a = f\frac{N}{w}
 \end{equation}
@@ -81,7 +81,7 @@ La metrología de vista única (SVM) se refiere al conjunto de técnicas y princ
 de información geométrica del espacio 3D a partir de una única imagen 2D, habitualmente captura por una
 cámara de perspectiva. En contra de los métodos tradicionales de fotometría o métodos multivista que
 dependen de vistas calibradas para triangular la profundidad, SVM tiene la restricción de utilizar solamente
-una imagen y, aún así, obtener la escala absoluta de los objetos detectados~\cite{SVMIW}.
+una imagen y, aun así, obtener la escala absoluta de los objetos detectados~\cite{SVMIW}.
 \par
 Es un problema realmente desafiante dada la pérdida de información de profundidad en proceso de obtención
 de la imagen. Al proyectar una escena 3D sobre el plano de imagen 2D, se colapsan los distintos puntos de
@@ -93,7 +93,7 @@ Es por ello, que los métodos de SVM se basan en principios de geometría proyec
 sobre los puntos de fuga, ortogonalidad, paralelismo y otras informaciones de la escena con fin de obtener
 los parámetros intrínsecos y extrínsecos de la cámara. Los primeros refieren a la distancia focal, tamaño
 del sensor y otros factores de la cámara, mientras que los segundos se refieren a su posición en el mundo,
-como la altura y la distancia al objeto de referencia. La premisa subyaciente de los métodos SVM es que,
+como la altura y la distancia al objeto de referencia. La premisa subyacente de los métodos SVM es que,
 aunque generalmente se pierden información de profundidad, existen invariantes geométricas que se preservan y
 nos permiten razonar sobre la estructura y la escala~\cite{VisionBookMIT,Hartley2004}(véase las Figuras~\ref{fig:PalmaHorizon} y~\ref{fig:OfficeMeasurements}).
 \par
@@ -115,9 +115,9 @@ Otro desafío inherente son los efectos de los errores en el modelo de cámara, 
 Estos factores pueden introducir desviaciones significativas en las estimaciones.
 \par
 En los últimos años, se ha observado una integración creciente de métodos de aprendizaje profundo en la metrología de vista única.
-Las redes neuronales, entrenadas con grandes volúmenes de datos, han aprendido a capturar ``priors'' geométricos que permiten
+Las redes neuronales, entrenadas con grandes volúmenes de datos, han aprendido a capturar a priori geométricos que permiten
 estimar automáticamente la escala y profundidad de los objetos a partir de una sola imagen. La combinación del enfoque
-impulsado por datos con fundamentos geométricas de metrología de vista única nos permite obtener mediciones fundamentadas y explicables.
+impulsado por datos con fundamentos geométricos de metrología de vista única nos permite obtener mediciones fundamentadas y explicables.
 
 \begin{figure}[htp]
 \begin{center}
@@ -131,7 +131,7 @@ impulsado por datos con fundamentos geométricas de metrología de vista única 
 \section{Aprendizaje automático y profundo}
 El aprendizaje automático~\cite{IAModernApproach} es una rama del campo de la inteligencia artificial,
 cuyo objetivo principal es dotar a las máquinas de la capacidad de aprender a partir de los datos sin ser explícitamente
-programadas para ello. El aprendizaje automático permite extraer patrones y realizar predicciones en base a los datos por
+programadas para ello. El aprendizaje automático permite extraer patrones y realizar predicciones basándose en los datos por
 medio de algoritmos y modelos estadísticos~\cite{LearningFromData}. Esta capacidad resulta especialmente valiosa para
 problemas complejos, difíciles de definir, que no tengan una solución analítica directa o en los que obtenerla resulte computacionalmente costoso.
 \par
@@ -149,7 +149,7 @@ desempeñar mejores resultados frente a las características extraídas manualme
   \caption[Ejemplo gráfico de una red neuronal.]
   {Ejemplo gráfico de una red neuronal~\cite{NeuronImages, NeuronSimilarity,ShallowAndDeepNN}.
     (a) y (b) muestran una neurona biológica y una artificial, respectivamente.
-    (c) describe el proceso mediante el cual las neurones se comunican entre sí para transmitir información (sinapsis).
+    (c) describe el proceso mediante el cual las neuronas se comunican entre sí para transmitir información (sinapsis).
     (d) muestra dos redes neuronales artificiales:
     a la izquierda, una red neuronal superficial (\emph{shallow}), con una única
     capa oculta; a la derecha, una red neuronal profunda (\emph{deep}), con múltiples capas ocultas.
@@ -178,7 +178,7 @@ instancias de objetos de interés dentro de una imagen o secuencia de vídeo. A 
 asigna una etiqueta global a la imagen (por ejemplo, un 1 si la imagen posee un gato), la detección implica, además, la estimación de la posición
 espacial de los objetos (indicar dónde en la imagen está el gato)~\cite{ObjectDetectionSurvey}.
 \par
-En las primeras etapas, los detectores tradicionales combinaban la extracción de características manuales como Viola-Jones o HOG con
+En las primeras etapas, los detectores tradicionales combinaban la extracción de características manuales como Viola-Jones u HOG con
 clasificadores estadísticos~\cite{ObjectDetectionSurvey}. Se utilizaba ventanas deslizantes, que extraían trozos de la imagen, para calcular
 características locales. A continuación, se utilizaban dichas características para clasificar la presencia de objetos por medio de un
 clasificador estadístico, que aprendía con ejemplos de imágenes etiquetadas durante su entrenamiento (véase la Figura~\ref{fig:SelectiveSearch}).
@@ -194,7 +194,7 @@ los mismos: la combinación de representación visual, inferencia estadística y
 \end{center}
 \caption{
 Visualización del proceso de ventana deslizante en busca de objetos~\cite{VisionBookMIT}, en este caso se busca un coche.
-Se extraen características a múltiples escalas, se obtienen propuestas que se filtran en base al nivel de confianza del modelo. Finalmente,
+Se extraen características a múltiples escalas, se obtienen propuestas que se filtran basándose en el nivel de confianza del modelo. Finalmente,
 se ajusta la detección con métodos de refinamiento, como la eliminación de detecciones solapadas.
 }
 \label{fig:SelectiveSearch}
