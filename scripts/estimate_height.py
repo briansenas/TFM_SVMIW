@@ -41,7 +41,7 @@ def build_rotation_matrix(angle_x_deg, angle_y_deg):
     return R
 
 
-def backproject_to_3d(image_point, K, R, T, DC):
+def backproject_to_3d(image_point, K, R, T, s):
     """Back-projects a 2D point to 3D assumes Z=0"""
     # Converts the 2D pixel coordinate (image_point) into a 3D ray in the camera's local coordinate system
     inv_K = np.linalg.inv(K)
@@ -51,10 +51,11 @@ def backproject_to_3d(image_point, K, R, T, DC):
     # Calculates the camera's physical position (center) in the world.
     cam_center = -R.T @ T.reshape(3, 1)
     # Scaling factor
-    s = -cam_center[2, 0] / ray_world[2]
+    if s is None:
+        s = -cam_center[2, 0] / ray_world[2]
     # Travel from center to the object
     point_3d = cam_center.flatten() + s * ray_world
-    return point_3d
+    return point_3d, s
 
 
 def estimate_height_from_bbox(bbox, K, R, T, DC):
@@ -63,8 +64,8 @@ def estimate_height_from_bbox(bbox, K, R, T, DC):
     x_center = (x_min + x_max) / 2
     foot_2d = [x_center, y_max]
     head_2d = [x_center, y_min]
-    foot_3d = backproject_to_3d(foot_2d, K, R, T, DC)
-    head_3d = backproject_to_3d(head_2d, K, R, T, DC)
+    foot_3d, s = backproject_to_3d(foot_2d, K, R, T, None)
+    head_3d, s = backproject_to_3d(head_2d, K, R, T, s)
     return np.linalg.norm(foot_3d - head_3d)
 
 
