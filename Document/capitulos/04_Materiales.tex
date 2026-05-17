@@ -10,7 +10,7 @@ por aprendizaje automático descrito, así como entrenar un modelo propio para l
 Estos son COCO-Scale, una variante del conjunto de datos COCO~\cite{COCO} con ejemplos filtrados (más detalles en la Sección~\ref{sec:COCO-Scale}),
 un subconjunto de SUN360~\cite{SUN360} para validar el modelo de calibración y, por último, Pano360~\cite{SPEC} para entrenar el modelo de calibración.
 
-\subsection{Sistema de captura}
+\subsection{Sistema de captura}\label{sec:EvaluationData}
 \begin{table}[htp]
 \scriptsize
 \centering
@@ -90,7 +90,7 @@ observa un ejemplo de imagen panorámica y los trozos obtenidos con parámetros 
   \caption{Ejemplo de imagen panorámica, de la cual se extraen 3 trozos,con parámetros de cámara diferentes, utilizando el algoritmo de~\cite{CalibDataGeneration}.}\label{fig:CalibSample}
 \end{figure}
 
-\subsubsection{SUN360}
+\subsubsection{SUN360}~\label{sec:SUN360}
 El dataset SUN360~\cite{SUN360} consiste en un conjunto de imágenes panorámicas esféricas
 de 360\textdegree$\times$180\textdegree que cubren una amplia variedad de escenas interiores y exteriores con alta resolución.
 Originalmente, contenía 67.583 panoramas categorizados por tipo de lugar (80 categorías), y ha sido utilizado extensamente para tareas de reconocimiento de escena, estimación de orientación y percepción global de entornos (véase la Figura~\ref{fig:SUN360Samples}).
@@ -124,7 +124,117 @@ de que hayan sido eliminadas por los propietarios de las mismas. Este dataset, a
 mitad del tamaño del dataset original SUN360~\cite{SUN360}, nos permite generar una vasta cantidad
 de imágenes de entrenamiento para la calibración de nuestro modelo de estimación de parámetros de cámara.
 \section{Métodos}
-\subsection{Calibración y estimación manual}
+\subsection{Calibración y estimación manual}\label{sec:ManualCalibration}
 % Explicar brevemente como funciona
+Se utiliza como método de referencia el procedimiento habitual de calibración de cámara de forma manual,
+así como la obtención de la información necesaria de la escena para realizar la estimación de metrología.
+Para ello, necesitamos obtener los parámetros intrínsecos de la cámara, que nos permita modelar la escena
+y su relación con la cámara (véase Sección \ref{sec:CameraModel}), así como
+alguna información extrínseca adicional como podría ser el tamaño de algún objeto de referencia o la
+profundidad del mismo en la escena (véase Sección \ref{sec:SVM}).
+\par
+Para estimar la correspondencia geométrica entre el mundo real y el plano de imagen se utiliza la metodología
+de \cite{ManualCameraCalib}, utilizando un patrón planar desde múltiples orientaciones (véase Figura~\ref{fig:CameraPattern}), lo que permite modelar
+la distancia focal, el punto principal y los coeficientes de distorsión. Este enfoque es crítico, pues
+como señalan~\cite{heikkila1997four}, la corrección de la distorsión radial y tangencial es un requisito previo
+indispensable para garantizar que las mediciones posteriores no hereden errores sistemáticos.
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=0.25\textwidth]{imagenes/chapter4/calib_pattern.jpg}
+  \end{center}
+  \caption{Patrón utilizado para la calibración manual de cámara~\cite{opencv_library}.
+  Se detectan esquinas y líneas paralelas que deben preservarse, lo que nos permite estimar homografías y refinar mediante el error de reproyección.}\label{fig:CameraPattern}
+\end{figure}
+Una vez calibrada la cámara, dado que para los datos de evaluación de nuestro sistema disponemos
+tanto de la información de profundidad del individuo con respecto a la cámara como la rotación de la mismas (véase Sección~\ref{sec:EvaluationData}),
+podemos hacer una re-proyección de su altura 2D a 3D y estimar la altura del individuo.
+\subsubsection*{1. Retroproyección a 3D}
+Dado un punto en la imagen $\mathbf{p} = [u, v, 1]^T$, la matriz de parámetros intrínsecos $K$, los parámetros extrínsecos de la cámara $R$ (rotación) y $\mathbf{t}$ (traslación), el punto 3D $\mathbf{P}_w$ se calcula de la siguiente manera:
+\begin{enumerate}
+    \item \textbf{Rayo en coordenadas de la cámara:} Se convierte el píxel en un vector direccional dentro del sistema local de la cámara mediante la inversa de la matriz intrínseca:
+    \[ \mathbf{r}_{cam} = K^{-1} \begin{bmatrix} u \\ v \\ 1 \end{bmatrix} \]
+    \item \textbf{Alineación con el mundo:} Se rota el rayo para alinearlo con el sistema de coordenadas universal y se calcula el centro óptico de la cámara $\mathbf{C}$:
+    \[ \mathbf{r}_{world} = R \mathbf{r}_{cam} \]
+    \[ \mathbf{C} = -R \mathbf{t} \]
+    \item \textbf{Intersección con el plano de tierra:} Se resuelve el factor de escala $s$ para determinar el punto donde el rayo interseca el plano $Z=0$:
+    \[ s = -\frac{C_z}{r_{world, z}} \]
+    \[ \mathbf{P}_w = \mathbf{C} + s \mathbf{r}_{world} \]
+\end{enumerate}
+\subsubsection*{2. Estimación de la Altura}
+Para calcular la altura $H$, se identifican los puntos medios de la base (pies) y de la parte superior (cabeza) de la caja delimitadora (\textit{bounding box}):
+\begin{itemize}
+    \item $\mathbf{p}_{pies} = \left[ \frac{x_{min} + x_{max}}{2}, y_{max} \right]^T$
+    \item $\mathbf{p}_{cabeza} = \left[ \frac{x_{min} + x_{max}}{2}, y_{min} \right]^T$
+\end{itemize}
+La altura estimada es la norma euclidiana de la diferencia entre ambos puntos tras ser proyectados al espacio 3D:
+\[ H = \|\mathbf{P}_{pies} - \mathbf{P}_{cabeza}\|_2 \]
+
+
 \subsection{Calibración y estimación automática}
 % Explicar brevemente como funciona, incluir diagrama DDP
+El procedimiento utilizado para la estimación automática es el descrito por Rui Zhu \emph{et al}~\cite{SVMIW},
+que emplea un marco de aprendizaje profundo, denominado \emph{ScaleNet}. La arquitectura propuesta, véase
+la Figura~\ref{fig:SVMIWPipe}, interpreta
+la interacción entre parámetros de cámara, los objetos de la escena 2D y suposiciones sobre su tamaño en 3D.
+\par
+Un objeto detectado en la escena 2D, siguiendo el modelo de cámara definido en la Sección~\ref{sec:CameraModel},
+tiene sus delimitaciones superiores ($v_t$) e inferiores ($v_b$) determinados por las Ecuaciones~\ref{eq:vt} y~\ref{eq:vb}.
+\begin{equation}\label{eq:vt}
+    v_t = \frac{(f\, cos\theta + v_c\, sin\theta)\,h_{obj} + (-f\, sin\theta + v_c\, cos\theta)z - f\,h_{cam}}{h_{obj}tan\theta + z\,cos\theta}
+\end{equation}
+\begin{equation}\label{eq:vb}
+  v_b = \frac{-f\,sin\theta z + v_c cos\theta z - f\,h_{cam}}{z\, cos\theta}
+\end{equation}
+Donde $v_c$ y $u_c$ es el centro óptico de la cámara que se asume conocer. Tras despejar
+$z$ de la Ecuación~\ref{eq:vb}, se deriva el límite superior del
+cuadro delimitador de la persona $v_t$. De esta forma, dado que se conoce el valor de $v_t$
+por parte del modelo de detección de objetos, se puede estimar de forma semi-supervisada
+la altura de los objetos ($h_{obj}$) y de la cámara ($h_{cam}$) utilizando un error de
+re-proyección dado por la Ecuación~\ref{eq:vt_loss}.
+\begin{equation}\label{eq:vt_loss}
+  \mathcal{L}_{vt} ({v_t^i}_{i=1}^N) = \frac{1}{N}\sum_{i=1}^N ||v_{t_{det}}^i - v_t^i||
+\end{equation}
+Para restringir que la estimación de la altura de los objetos se utiliza la Ecuación~\ref{eq:height_priori},
+utilizando conocimiento previo sobre la altura media de los objetos (humanos) en escena.
+\begin{equation}\label{eq:height_priori}
+  \mathcal{L}_{h_{obj}} ({h_{obj}^i}_{i=1}^N) = \frac{1}{N}\sum_{i=1}^N \mathcal{P}(h_{obj}^i;\mu,\sigma)
+\end{equation}
+Para la estimación de altura de la cámara se utiliza una módulo de estimación capaz de
+aprender relaciones geométricas entre la altura de cámara (a predecir), las cajas delimitadoras
+de los objetos en escena y el horizonte estimado. Se utiliza una variante de \emph{PointNet}~\cite{PointNet}.
+Además, utilizando una combinación en cascada de adaptaciones de \emph{PointNet} se logra
+refinar las predicciones utilizando la información de la escena completa junto al error de reproyección obtenido
+en el paso anterior.
+\begin{figure}[!ht]
+  \begin{center}
+    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter4/scene_model.pdf}}\\
+    \subfloat{\includegraphics[width=0.75\textwidth]{imagenes/chapter4/pipeline.pdf}}
+  \end{center}
+  \caption{
+    Pipeline propuesta por Rui Zhu \emph{et al}~\cite{SVMIW}.
+    Dado el modelo de escena definido por la imagen superior, podemos estimar la información necesaria
+    para la estimación de metrología utilizando la secuencia de acciones definidas por la imagen inferior.
+  }\label{fig:SVMIWPipe}
+\end{figure}
+
+El entrenamiento se realiza en dos grandes fases, utilizando una combinación línea de las pérdidas de detección,
+de estimación de los parámetros de la cámara, de la altura de los objetos y de su pose (para la variante enfocada
+solamente para la clase persona), y del error de re-proyección de la suposición sobre la escena 3D al plano de imagen.
+Dichas pérdidas se pueden observar en la Figura~\ref{fig:SVMIWPipe} en rojo.
+La primera fase consiste en alinear el modelo de detección de objetos con el módulo de estimación de parámetros de la
+escena, utilizando la Ecuación~\ref{eq:LossPhaseOne} que combina la pérdida de detección $\mathcal{L}_{det}$, de estimación de
+pose $\mathcal{L}_{kps}$, con la de calibración $\mathcal{L}_{calib}$. Las dos primeras tienen un mayor peso, con
+$\alpha_1 = \alpha_2 = 10$, frente a la de calibración, $\alpha_3 = 1$.
+
+\begin{equation}\label{eq:LossPhaseOne}
+  \mathcal{L} = \alpha_1\mathcal{L}_{det} + \alpha_2\mathcal{L}_{kps} + \alpha_3\mathcal{L}_{calib}
+\end{equation}
+
+En la fase dos del entrenamiento se añaden las pérdidas finales de re-proyección y el a-priori sobre las estimaciones del
+tamaño de los objetos en escena para obtener la Ecuación~\ref{eq:LossPhaseTwo}. En este caso, la pérdida de re-proyección tiene
+un peso equivalente al error de detección, $\alpha_4 = 1$, mientras que el a-priori influye muy poco para evitar que el
+modelo se reduzca a simplemente predecir el valor promedio de altura de los objetos, $\alpha_5 = 0.05$
+
+\begin{equation}\label{eq:LossPhaseTwo}
+  \mathcal{L} = \alpha_1\mathcal{L}_{det} + \alpha_2\mathcal{L}_{kps} + \alpha_3\mathcal{L}_{calib} + \alpha_4\mathcal{L}_{vt} + \alpha_5\mathcal{L}_{h_obj}
+\end{equation}

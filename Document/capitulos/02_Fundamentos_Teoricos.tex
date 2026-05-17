@@ -1,5 +1,5 @@
 \chapter{Fundamentos Teóricos}
-\section{Modelado de cámara}
+\section{Modelado de cámara}\label{sec:CameraModel}
 La formación de imágenes en sistemas de visión por computadora se basa en la proyección perspectiva,
 un modelo geométrico que describe cómo los puntos del espacio tridimensional (3D), habitualmente denominado
 las coordenadas del mundo, se proyectan sobre un plano bidimensional (2D), el plano de la imagen.
@@ -64,8 +64,7 @@ la cámara (véase la Ecuación~\ref{eq:EstimateAlpha}).
     a = f\frac{N}{w}
 \end{equation}
 Donde $N$ es la longitud de la imagen en píxeles y $w$ es la longitud del sensor de la cámara.
-No obstante, en caso de no poseer información al respecto del sensor se puede utilizar patrones de imágenes conocidas,
-como un tablero de ajedrez, para estimar-los.
+No obstante, en caso de no poseer información al respecto del sensor se puede utilizar diversas técnicas~\cite{ManualCameraCalib}, como patrones de tablero de ajedrez.
 Finalmente, hasta el momento no se ha introducido ningún parámetro de distorsión al modelo de cámara. Sin embargo,
 existen diferentes distorsiones que pueden ocurrir como inclinación o distorsiones radiales. Estos son parámetros
 adicionales que deben estimarse para obtener una re-proyección precisa.
@@ -76,7 +75,7 @@ adicionales que deben estimarse para obtener una re-proyección precisa.
 \caption{Proyección de una imagen sobre el sensor de una cámara~\cite{VisionBookMIT}.}
 \label{fig:ImageSensor}
 \end{figure}
-\section{Metrología de vista única}
+\section{Metrología de vista única}\label{sec:SVM}
 La metrología de vista única (SVM) se refiere al conjunto de técnicas y principios que permite la extracción
 de información geométrica del espacio 3D a partir de una única imagen 2D, habitualmente captura por una
 cámara de perspectiva. En contra de los métodos tradicionales de fotometría o métodos multivista que
