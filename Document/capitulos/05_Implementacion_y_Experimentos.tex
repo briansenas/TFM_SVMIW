@@ -1,5 +1,54 @@
 \chapter{Implementación y Experimentos}
 \section{Diseño experimental}
+La implementación del método de calibración manual es trivial, utilizando el procedimiento
+descrito en la Sección ~\ref{sec:ManualCalibration} obtenemos
+los parámetros de las cámaras utilizadas en nuestro dataset de evaluación y, utilizando las ecuaciones
+descritas de proyecciones, obtenemos la estimación de la altura de los individuos en escena.
+\par
+No obstante, para el caso del método automático, nos encontramos con varios problemas:
+\begin{enumerate}
+  \item El modelo
+pre-entrenado por Rui Zhu \emph{et al}~\cite{SVMIW} no está disponible en ningún lado para ser utilizado
+directamente.
+\item El código de entrenamiento tampoco está disponible. Solo está disponible trozos parciales
+  de algunos métodos y funciones necesarias para ilustrar en un cuaderno de ``jupyter'' el
+  procedimiento de evaluación del modelo con una imagen de ejemplo.
+\item No disponemos de los mismos datos debido a la eliminación de SUN360~\cite{SUN360}, descrita en la Sección~\ref{sec:SUN360}
+\end{enumerate}
+Con la labor de investigación, se encontraron solución para los problemas descritos anteriormente.
+Como alternativa a SUN360~\cite{SUN360}, se encontró el conjunto de datos de SPEC~\cite{SPEC}. El
+procedimiento de generación de imágenes descritos en el artículo de referencia~\cite{SVMIW},
+está disponible en el repositorio de SPEC~\cite{SPEC}. Una vez solucionado el problema
+de los datos, utilizando información del artículo y los trozos de código disponible
+se obtuvo un procedimiento de entrenamiento con la librería ``maskrcnn-benchmark''~\cite{MaskRCNN}, con
+entrenamiento en múltiples tarjetas gráficas y servidores (por necesidades de escalabilidad y agilidad,
+permitiendo distribuir la carga y solventar problemas como la necesidad de memoria para entrenar con varias
+imágenes a la vez).
+\par
+No obstante, el código era inestable (problemas de sincronización de entrenamiento con múltiples tarjetas),
+de difícil mantenimiento, adaptación y extensibilidad (debido al desconocimiento de los
+intenciones de integración y formas de implementación). Además, las curvas de entrenamiento parecían estancarse en mínimos
+locales como se ve en la Figura~\ref{fig:PreviosImplLoss}. Por estos motivos, se decidió realizar
+la implementación en la librería sucesora de ``maskrcnn-benchmark''~\cite{MaskRCNN}, en ``detectron2''~\cite{detectron2}.
+\par
+capacidad de cómputo y mejor legibilidad del código. Entre las razones tenemos:
+De esta forma, se obtuvieron diversos beneficios como la estabilidad en entrenamiento distribuido, mejor uso de la
+el agrupamiento de imágenes por escala (al evitar agrupar imágenes verticales con imágenes horizontales,
+evitamos la necesidad de añadir muchos valores de relleno al grupo de imágenes para obtener tensores rectangulares),
+menos operaciones de copia de datos a la tarjeta gráfica, entrenamiento en precisión mixta (disminuye el uso de memoria,
+permitiendo así entrenar con más imágenes o modelos más complejos),
+ratio de aprendizaje dinámico con calentamiento y recocido,
+mejor gestión de datos de visualización del entreno con almacenado de imágenes de ejemplo,
+vectorización del proceso de estimación de la altura y más.
+\par
+Aparte de beneficios en implementación, al utilizar ``detectron2''~\cite{detectron2}, se dispone
+de modelos y arquitecturas nuevas con mejores rendimientos en detección. Siguiendo sus
+directrices de implementación se desarrolló un modelo más complejo con intención de
+obtener resultados similares a los de Rui Zhu \emph{et al}~\cite{SVMIW}.
 \subsection{Resultados calibración manual}
 \subsection{Resultados calibración automática}
+Para el entrenamiento del modelo se utilizó una tasa de aprendizaje sacada de~\cite{goyal2018accuratelargeminibatchsgd},
+con un planificador para reducir su valor conforme se acerca al número total de iteraciones planificadas,
+con un recorte del gradiente según la norma L2 (para evitar divergencia durante el entrenamiento por conjuntos de ejemplos
+ruidosos) y se opta por utilizar el mayor número de imágenes por iteraciones que nos permitan los servidores disponibles.
 \section{Discusión de resultados}
