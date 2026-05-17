@@ -1,3 +1,4 @@
+*.ipynb
 yolov8n.pt
 *.pt
 data/

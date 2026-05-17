@@ -9,7 +9,8 @@ from scripts.lib.utils import load_yaml_defaults
 
 
 def load_subparsers(
-    subparsers, scripts_package: str = "scripts"
+    subparsers,
+    scripts_package: str = "scripts",
 ) -> dict[str, argparse.ArgumentParser]:
     """
     Dynamically load and register subparsers from modules in the 'scripts' package.

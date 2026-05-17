@@ -68,22 +68,25 @@ Estimate the height of a visible person in an image using YOLO and calibration d
 
 ```bash
 python main.py estimate-height \
-  --image frames/img001.png \
-  --intrinsics calibration/intrinsics.yaml \
-  --extrinsics calibration/extrinsics_config.yaml \
+  --input-json frames/img001.png \
+  --batch-size 32 \
+  --output-file data/mydataset-estimation.yaml \
   --model yolov8n.pt
 ```
 
-Make sure the person is fully visible and matching the extrinsics details (distance from the camera).
-
-**Extrinsics config:**
-
-```yaml
-camera_height: 1.6              # meters
-camera_pitch: 30.0              # meters
-distance_to_object: 3.0         # meters
+Make sure the person is fully visible and matching the extrinsics details (distance from the camera). The input json file should have the following format:
+```json
+[
+    {
+        "image_name": "idai010_sample2_cam3_359.jpg",
+        "image_path": "data/Dataset/images/idai010_sample2_cam3_359.jpg",
+        "camera_height": 2.05,
+        "camera_pitch": -20.23214285714285,
+        "camera_yaw": 9.661184210526317,
+        "distance": 14.553214574330392
+    }
+]
 ```
-
 ---
 
 ### ✅ 4. Cut Video

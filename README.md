@@ -29,7 +29,6 @@ Each feature is implemented as a standalone script with a `register_subparser()`
 │   ├── cam1-cut_frames         # Extracted frames using extract-frames
 │   ├── cam1-cut.mkv            # Original footageg
 │   ├── cam1.mkv                # Cut footage using cut-video.py
-│   ├── extrinsics              # Explicit extrinsics from the camera
 │   └── intrinsics              # Automatically generated intrinsics using calibrate-camera
 ├── Document/                   # Documentation regarding the project outcome and details
 ├── LICENSE
@@ -41,6 +40,7 @@ Each feature is implemented as a standalone script with a `register_subparser()`
 │   ├── estimate_height.py           # Estimate person height using YOLO + calibration
 │   ├── cut_video.py                 # Cut video segments using ffmpeg
 |   └── extract_realsense_frames.py  # Extract frames from a video from a .bag file
+|   └── ...
 ├── main.py                      # Entry point if you wish to unify all commands
 ├── uv.lock
 └── yolov8n.pt
