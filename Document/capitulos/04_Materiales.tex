@@ -47,7 +47,7 @@ una rampa de entrada, un aparcamiento y una acera (véase la Figura~\ref{fig:Dat
 % Nice end phrase perhaps?
 Este conjunto de datos, capturado bajo condiciones reales y desde múltiples puntos de vista, ha permitido una evaluación robusta de
 los métodos propuestos, facilitando el análisis de su rendimiento frente a diferentes configuraciones geométricas y
-tipos de cámaras de vigilancia.
+tipos de cámaras de vigilancia. Tras filtrar los ejemplos válidos tenemos un total de 697 imágenes.
 \label{sec:COCO-Scale}
 \subsection{Estimación metrológica}
 \subsubsection{COCO-Scale}
@@ -154,21 +154,22 @@ Dado un punto en la imagen $\mathbf{p} = [u, v, 1]^T$, la matriz de parámetros 
     \item \textbf{Rayo en coordenadas de la cámara:} Se convierte el píxel en un vector direccional dentro del sistema local de la cámara mediante la inversa de la matriz intrínseca:
     \[ \mathbf{r}_{cam} = K^{-1} \begin{bmatrix} u \\ v \\ 1 \end{bmatrix} \]
     \item \textbf{Alineación con el mundo:} Se rota el rayo para alinearlo con el sistema de coordenadas universal y se calcula el centro óptico de la cámara $\mathbf{C}$:
-    \[ \mathbf{r}_{world} = R \mathbf{r}_{cam} \]
-    \[ \mathbf{C} = -R \mathbf{t} \]
-    \item \textbf{Intersección con el plano de tierra:} Se resuelve el factor de escala $s$ para determinar el punto donde el rayo interseca el plano $Z=0$:
-    \[ s = -\frac{C_z}{r_{world, z}} \]
-    \[ \mathbf{P}_w = \mathbf{C} + s \mathbf{r}_{world} \]
+    \[ \mathbf{r}_{world} = R^T \; \mathbf{r}_{cam} \]
+    \[ \mathbf{C} = -R^T\;\mathbf{t} \]
+    \item \textbf{Intersección con el plano de tierra:} Dado que se conoce al menos una distance real, como la altura de la cámara o la distancia del individuo respecto a la cámara, se puede resolver el factor de escala $\lambda$ para determinar el punto 3D ($P_w$) donde el rayo interseca el plano $Z=0$:
+    \[ \lambda = -\frac{C_z}{r_{world, z}} \]
+    \[ \mathbf{P}_w = \mathbf{C} + \lambda \mathbf{r}_{world} \]
 \end{enumerate}
 \subsubsection*{2. Estimación de la Altura}
-Para calcular la altura $H$, se identifican los puntos medios de la base (pies) y de la parte superior (cabeza) de la caja delimitadora (\textit{bounding box}):
+Para calcular la altura $H$, se identifican los puntos medios de la base (pies) y de la parte superior (cabeza) de la caja delimitadora:
 \begin{itemize}
     \item $\mathbf{p}_{pies} = \left[ \frac{x_{min} + x_{max}}{2}, y_{max} \right]^T$
     \item $\mathbf{p}_{cabeza} = \left[ \frac{x_{min} + x_{max}}{2}, y_{min} \right]^T$
 \end{itemize}
 La altura estimada es la norma euclidiana de la diferencia entre ambos puntos tras ser proyectados al espacio 3D:
 \[ H = \|\mathbf{P}_{pies} - \mathbf{P}_{cabeza}\|_2 \]
-
+Si la premisa utilizada es la altura de la cámara, suponiendo que el objeto está sobre el suelo como plano
+de referencia, la altura se simplifica a la coordenada equivalente en 3D de la cabeza, por ejemplo $P_{cabeza_y}$.
 
 \subsection{Calibración y estimación automática}
 % Explicar brevemente como funciona, incluir diagrama DDP
@@ -236,5 +237,5 @@ un peso equivalente al error de detección, $\alpha_4 = 1$, mientras que el a-pr
 modelo se reduzca a simplemente predecir el valor promedio de altura de los objetos, $\alpha_5 = 0.05$
 
 \begin{equation}\label{eq:LossPhaseTwo}
-  \mathcal{L} = \alpha_1\mathcal{L}_{det} + \alpha_2\mathcal{L}_{kps} + \alpha_3\mathcal{L}_{calib} + \alpha_4\mathcal{L}_{vt} + \alpha_5\mathcal{L}_{h_obj}
+  \mathcal{L} = \alpha_1\mathcal{L}_{det} + \alpha_2\mathcal{L}_{kps} + \alpha_3\mathcal{L}_{calib} + \alpha_4\mathcal{L}_{vt} + \alpha_5\mathcal{L}_{h_{obj}}
 \end{equation}

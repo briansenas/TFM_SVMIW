@@ -31,6 +31,7 @@ intenciones de integración y formas de implementación). Además, las curvas de
 locales como se ve en la Figura~\ref{fig:PreviosImplLoss}. Por estos motivos, se decidió realizar
 la implementación en la librería sucesora de ``maskrcnn-benchmark''~\cite{MaskRCNN}, en ``detectron2''~\cite{detectron2}.
 \par
+De esta forma, se obtuvieron diversos beneficios como la estabilidad en entrenamiento distribuido, mejor uso de la
 capacidad de cómputo y mejor legibilidad del código. Entre las razones tenemos:
 De esta forma, se obtuvieron diversos beneficios como la estabilidad en entrenamiento distribuido, mejor uso de la
 el agrupamiento de imágenes por escala (al evitar agrupar imágenes verticales con imágenes horizontales,
@@ -41,14 +42,61 @@ ratio de aprendizaje dinámico con calentamiento y recocido,
 mejor gestión de datos de visualización del entreno con almacenado de imágenes de ejemplo,
 vectorización del proceso de estimación de la altura y más.
 \par
-Aparte de beneficios en implementación, al utilizar ``detectron2''~\cite{detectron2}, se dispone
+Además de beneficios en implementación, al utilizar ``detectron2''~\cite{detectron2}, se dispone
 de modelos y arquitecturas nuevas con mejores rendimientos en detección. Siguiendo sus
 directrices de implementación se desarrolló un modelo más complejo con intención de
 obtener resultados similares a los de Rui Zhu \emph{et al}~\cite{SVMIW}.
 \subsection{Resultados calibración manual}
+En la Tabla~\ref{tab:ManualResults} se observan los resultados de
+aplicar el método descrito en la Sección~\ref{sec:ManualCalibration}. El error promedio
+es de 35 centímetros para todas las cámaras. Destaca la cámara 2 con el mayor error medio, 52 centímetros,
+y la mayor varianza, de 30 centímetros. En las Figuras~\ref{fig:ManualWorst}, se observan los ejemplos
+con mayor error de medición. El método clásico es susceptible a acumulación de errores por imprecisión en
+diferentes pasos del proceso, ya sea por imprecisión de los parámetros estimados de la matriz de proyección
+de la cámara, de su posición con relación al sujeto en escena o sus ángulos de rotación. Las imágenes
+retificadas no presentan anomalías evidentes, por lo cual el peso del error recae sobre la calidad
+de la estimación del recuadro delimitador (debe ser lo más acertado posible respecto a los pies y cabeza de los individuos),
+y la precisión de la posición de la cámara (altura respecto al suelo, distancia al individuo y rotación).
+Por otro lado, en las Figuras~\ref{fig:ManualBest} se observan los ejemplos
+con una estimación perfecta.
+Los resultados indican que este método depende de mediciones manuales exactas de la escena, así como el uso
+de un proceso de calibración de cámara extenso, para lograr errores de estimación aceptables.
+\begin{table}[ht]
+  \small
+\begin{tabular}{lcccccccc}
+\hline
+Cámara & Soporte & Error medio & Varianza & Mediana & Tercer cuartil & Máximo\\
+\hline
+Cam1 & 222.00 & 0.27 & 0.16 & 0.28 & 0.39 & 0.64 \\
+Cam2 & 293.00 & 0.52 & 0.30 & 0.48 & 0.74 & 1.43 \\
+Cam3 & 182.00 & 0.27 & 0.16 & 0.27 & 0.37 & 0.70 \\
+\hline
+\end{tabular}
+\caption{Se observa que, incluso con la cámara calibrada manualmente,  el error promedio, de estimación de la altura de los individuos en escena, es significativamente alto.
+Destacando un ejemplo con la cámara 2, con un error de 1.43 metros.}
+\label{tab:ManualResults}
+\end{table}
+
+\begin{figure}[!ht]
+  \centering
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam1.png}}
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam2.png}}\\
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam3.png}}
+\caption{Se observan ejemplos con las peores mediciones para cada cámara, donde el número en verde (arriba) es el valor esperado.}\label{fig:ManualWorst}
+\end{figure}
+
+\begin{figure}[!ht]
+  \centering
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam1.png}}
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam2.png}}\\
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam3.png}}
+\caption{Se observan ejemplos de mediciones exactas con cada cámara, donde el número verde (arriba) es el esperado.}\label{fig:ManualBest}
+\end{figure}
+
 \subsection{Resultados calibración automática}
 Para el entrenamiento del modelo se utilizó una tasa de aprendizaje sacada de~\cite{goyal2018accuratelargeminibatchsgd},
 con un planificador para reducir su valor conforme se acerca al número total de iteraciones planificadas,
 con un recorte del gradiente según la norma L2 (para evitar divergencia durante el entrenamiento por conjuntos de ejemplos
-ruidosos) y se opta por utilizar el mayor número de imágenes por iteraciones que nos permitan los servidores disponibles.
+ruidosos) y se opta por utilizar el mayor número de imágenes por iteraciones que nos permitan los servidores disponibles y sus capacidades.
+
 \section{Discusión de resultados}
