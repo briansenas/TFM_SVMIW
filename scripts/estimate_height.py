@@ -37,35 +37,127 @@ def build_rotation_matrix(angle_x_deg, angle_y_deg):
         [[np.cos(ay), 0, np.sin(ay)], [0, 1, 0], [-np.sin(ay), 0, np.cos(ay)]],
     )
     # Order matters
-    R = Ry @ Rx
+    R = Rx @ Ry
     return R
 
 
-def backproject_to_3d(image_point, K, R, T, s):
-    """Back-projects a 2D point to 3D assumes Z=0"""
-    # Converts the 2D pixel coordinate (image_point) into a 3D ray in the camera's local coordinate system
+def estimate_person_height_simple(
+    bbox,
+    K,
+    R,
+    distance_m,
+    distortion_coeffs=None,
+):
+    r"""
+    Approximate person height using known distance and bbox height.
+    \lambda = Z / f * p
+    Args:
+        bbox: (x_min, y_min, x_max, y_max)
+        K: camera intrinsic matrix
+        distance_m: distance from camera to person in meters
+        distortion_coeffs: optional OpenCV distortion coefficients
+
+    Returns:
+        height_m: estimated height in meters
+    """
+
+    x_min, y_min, x_max, y_max = bbox
+
+    # bbox pixel height
+    pixel_height = y_max - y_min
+    x_center = (x_min + x_max) / 2
+
+    pts = np.array(
+        [
+            [[x_center, y_min]],
+            [[x_center, y_max]],
+        ],
+        dtype=np.float32,
+    )
+
+    undistorted = cv2.undistortPoints(
+        pts,
+        K,
+        distortion_coeffs,
+        P=K,
+    )
+
+    y_top = undistorted[0, 0, 1]
+    y_bottom = undistorted[1, 0, 1]
+
+    pixel_height = abs(y_bottom - y_top)
+
+    # focal length in pixels
+    fy = K[1, 1]
+    # pinhole model
+    height_m = (pixel_height * distance_m) / fy * R[1, 1]
+    return float(height_m)
+
+
+def get_camera_ray(pts, inv_K):
+    ray_cam = inv_K @ pts
+    ray_cam[1] *= -1
+    return ray_cam
+
+
+def get_world_ray(ray_cam, R):
+    ray_world = R.T @ ray_cam
+    return ray_world
+
+
+def estimate_height_from_bbox_v2(bbox, K, R, T, C, DC, simple: bool = True):
+    """Estimates height of a person from a single bounding box."""
+    # Explodes sometimes although the 3D points make sense (foot_3d at Y=0).
+    # Should attempt to add the constraint that the Z scale is at C[2]?
+    if simple:
+        return estimate_person_height_simple(bbox, K, R, -C[2], DC)
+    x_min, y_min, x_max, y_max = bbox
+    x_center = (x_min + x_max) / 2
+    foot_2d = np.asarray([[x_center, y_max]])[:, np.newaxis, :]
+    head_2d = np.asarray([[x_center, y_min]])[:, np.newaxis, :]
+    foot_2d = cv2.undistortPoints(foot_2d, K, DC, P=K).flatten()
+    head_2d = cv2.undistortPoints(head_2d, K, DC, P=K).flatten()
+    foot_2d = np.append(foot_2d, 1.0)
+    head_2d = np.append(head_2d, 1.0)
     inv_K = np.linalg.inv(K)
+    foot_ray = get_world_ray(get_camera_ray(foot_2d, inv_K), R)
+    head_ray = get_world_ray(get_camera_ray(head_2d, inv_K), R)
+    cam_center = C.flatten()
+    foot_scale = -cam_center[1] / foot_ray[1]
+    foot_3d = cam_center + foot_scale * foot_ray
+    head_scale = (foot_3d[0] - cam_center[0]) / head_ray[0]
+    head_3d = cam_center + head_scale * head_ray
+    return head_3d[1]
+
+
+def backproject_to_3d(image_point, K, R, C, T, s):
+    """Back-projects a 2D point to 3D assumes Z=0"""
+    inv_K = np.linalg.inv(K)
+    # Converts the 2D pixel coordinate (image_point) into a 3D ray in the camera's local coordinate system
     ray_cam = inv_K @ np.array([image_point[0], image_point[1], 1.0])
     # Rotates the camera ray using the rotation matrix to align it with the world coordinate system.
-    ray_world = R @ ray_cam
+    ray_world = R.T @ ray_cam
     # Calculates the camera's physical position (center) in the world.
-    cam_center = -R.T @ T.reshape(3, 1)
+    # cam_center = (-R.T @ T.reshape(3, 1)).flatten()
+    cam_center = C.flatten()
     # Scaling factor
     if s is None:
-        s = -cam_center[2, 0] / ray_world[2]
+        s = -cam_center[2] / ray_world[2]
     # Travel from center to the object
-    point_3d = cam_center.flatten() + s * ray_world
+    point_3d = cam_center + s * ray_world
     return point_3d, s
 
 
-def estimate_height_from_bbox(bbox, K, R, T, DC):
+def estimate_height_from_bbox(bbox, K, R, T, C, DC, simple: bool = True):
     """Estimates height of a person from a single bounding box."""
+    if simple:
+        return estimate_person_height_simple(bbox, K, R, -C[2], DC)
     x_min, y_min, x_max, y_max = bbox
     x_center = (x_min + x_max) / 2
     foot_2d = [x_center, y_max]
     head_2d = [x_center, y_min]
-    foot_3d, s = backproject_to_3d(foot_2d, K, R, T, None)
-    head_3d, s = backproject_to_3d(head_2d, K, R, T, s)
+    foot_3d, s = backproject_to_3d(foot_2d, K, R, C, T, None)
+    head_3d, s = backproject_to_3d(head_2d, K, R, C, T, s)
     return np.linalg.norm(foot_3d - head_3d)
 
 
@@ -85,13 +177,15 @@ def read_camera_parameters(data: dict):
     R = build_rotation_matrix(theta_deg, yaw_deg)
     # Camera translation (camera looking toward +Z, from above the ground and behind the subject)
     # Basically translating the camera down (to the ground), and towards the object
-    T = np.array([0, h, -d], dtype=np.float32)
-    return K, R, T, DC
+    C = np.array([0, h, -d], dtype=np.float32)
+    T = -R @ C
+    return K, R, T, C, DC
 
 
 def batch_detect_and_estimate(
     data: list[cv2.typing.MatLike],
     model: YOLO | None = None,
+    simple: bool = True,
 ):
     images = list(map(lambda x: cv2.imread(x["image_path"]), data))
     extrinsics = list(map(read_camera_parameters, data))
@@ -109,12 +203,12 @@ def batch_detect_and_estimate(
             ]
         # Choose tallest person (bounding box with largest height in pixels)
         bbox = max(person_bboxes, key=lambda b: b[3] - b[1])
-        height = estimate_height_from_bbox(bbox, *extrinsics[i])
+        height = estimate_height_from_bbox(bbox, *extrinsics[i], simple=simple)
         data[i]["pred_height"] = height
     else:
         for i, sample in enumerate(data):
             bbox = sample["gt_bbox"]
-            height = estimate_height_from_bbox(bbox, *extrinsics[i])
+            height = estimate_height_from_bbox(bbox, *extrinsics[i], simple=simple)
             data[i]["pred_height"] = height
     return data
 
@@ -138,6 +232,7 @@ def detect(
     output_file: str | None = None,
     model_name: str = "yolov8n.pt",
     batch_size: int = 32,
+    simple: bool = True,
 ):
     """
     Detects and estimates the height of images given extrinsics and intrinsics
@@ -164,6 +259,7 @@ def detect(
             batch_detect_and_estimate(
                 data=batch.tolist(),
                 model=model,
+                simple=simple,
             ),
         )
     if output_file:

@@ -16,8 +16,8 @@ COMMAND_NAME = "undistort-image"
 def undistort_image(
     image_path: str,
     intrinsics_path: str,
-    output_path: str,
-    fisheye: bool,
+    output_path: str | None = None,
+    fisheye: bool = False,
 ) -> None:
     """
     Undistorts an image using camera intrinsics.
@@ -74,10 +74,11 @@ def undistort_image(
             dist_coeffs,
             Knew=new_camera_matrix,
         )
-
-    os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    cv2.imwrite(output_path, undistorted)
-    print(f"Undistorted image saved to: {output_path}")
+    if output_path:
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        cv2.imwrite(output_path, undistorted)
+        print(f"Undistorted image saved to: {output_path}")
+    return undistorted
 
 
 def register_subparser(
