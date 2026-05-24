@@ -1,51 +1,18 @@
 \chapter{Implementación y Experimentos}
 \section{Diseño experimental}
-La implementación del método de calibración manual es trivial, utilizando el procedimiento
-descrito en la Sección ~\ref{sec:ManualCalibration} obtenemos
-los parámetros de las cámaras utilizadas en nuestro dataset de evaluación y, utilizando las ecuaciones
-descritas de proyecciones, obtenemos la estimación de la altura de los individuos en escena.
-\par
-No obstante, para el caso del método automático, nos encontramos con varios problemas:
-\begin{enumerate}
-  \item El modelo
-pre-entrenado por Rui Zhu \emph{et al}~\cite{SVMIW} no está disponible en ningún lado para ser utilizado
-directamente.
-\item El código de entrenamiento tampoco está disponible. Solo está disponible trozos parciales
-  de algunos métodos y funciones necesarias para ilustrar en un cuaderno de ``jupyter'' el
-  procedimiento de evaluación del modelo con una imagen de ejemplo.
-\item No disponemos de los mismos datos debido a la eliminación de SUN360~\cite{SUN360}, descrita en la Sección~\ref{sec:SUN360}
-\end{enumerate}
-Con la labor de investigación, se encontraron solución para los problemas descritos anteriormente.
-Como alternativa a SUN360~\cite{SUN360}, se encontró el conjunto de datos de SPEC~\cite{SPEC}. El
-procedimiento de generación de imágenes descritos en el artículo de referencia~\cite{SVMIW},
-está disponible en el repositorio de SPEC~\cite{SPEC}. Una vez solucionado el problema
-de los datos, utilizando información del artículo y los trozos de código disponible
-se obtuvo un procedimiento de entrenamiento con la librería ``maskrcnn-benchmark''~\cite{MaskRCNN}, con
-entrenamiento en múltiples tarjetas gráficas y servidores (por necesidades de escalabilidad y agilidad,
-permitiendo distribuir la carga y solventar problemas como la necesidad de memoria para entrenar con varias
-imágenes a la vez).
-\par
-No obstante, el código era inestable (problemas de sincronización de entrenamiento con múltiples tarjetas),
-de difícil mantenimiento, adaptación y extensibilidad (debido al desconocimiento de los
-intenciones de integración y formas de implementación). Además, las curvas de entrenamiento parecían estancarse en mínimos
-locales como se ve en la Figura~\ref{fig:PreviosImplLoss}. Por estos motivos, se decidió realizar
-la implementación en la librería sucesora de ``maskrcnn-benchmark''~\cite{MaskRCNN}, en ``detectron2''~\cite{detectron2}.
-\par
-De esta forma, se obtuvieron diversos beneficios como la estabilidad en entrenamiento distribuido, mejor uso de la
-capacidad de cómputo y mejor legibilidad del código. Entre las razones tenemos:
-De esta forma, se obtuvieron diversos beneficios como la estabilidad en entrenamiento distribuido, mejor uso de la
-el agrupamiento de imágenes por escala (al evitar agrupar imágenes verticales con imágenes horizontales,
-evitamos la necesidad de añadir muchos valores de relleno al grupo de imágenes para obtener tensores rectangulares),
-menos operaciones de copia de datos a la tarjeta gráfica, entrenamiento en precisión mixta (disminuye el uso de memoria,
-permitiendo así entrenar con más imágenes o modelos más complejos),
-ratio de aprendizaje dinámico con calentamiento y recocido,
-mejor gestión de datos de visualización del entreno con almacenado de imágenes de ejemplo,
-vectorización del proceso de estimación de la altura y más.
-\par
-Además de beneficios en implementación, al utilizar ``detectron2''~\cite{detectron2}, se dispone
-de modelos y arquitecturas nuevas con mejores rendimientos en detección. Siguiendo sus
-directrices de implementación se desarrolló un modelo más complejo con intención de
-obtener resultados similares a los de Rui Zhu \emph{et al}~\cite{SVMIW}.
+Todo el código desarrollado se encuentra en el GitHub \code{https://github.com/briansenas/TFM_SVMIW}.
+Más detalles sobre la implementación del artículo en ``detectron2'', actualizando los métodos y arquitecturas
+base del artículo de referencia~\cite{SVMIW}, el preprocesado de los datos y entornos de ejecución se
+recogen en el Apéndice~\ref{app:TechnicalDetails}.
+El procedimiento experimental planteado se puede visualizar en la Figura~\ref{fig:Mermaid}.
+A continuación se detallan los resultados obtenidos con cada método.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.5\textwidth]{imagenes/chapter5/diagram}
+  \caption{Visualización del procedimiento experimental.}\label{fig:Mermaid}
+\end{figure}
+
 \subsection{Resultados calibración manual}
 En la Tabla~\ref{tab:ManualResults} se observan los resultados de
 aplicar el método descrito en la Sección~\ref{sec:ManualCalibration}. El error promedio
@@ -61,14 +28,18 @@ Por otro lado, en las Figuras~\ref{fig:ManualBest} se observan los ejemplos
 con una estimación perfecta.
 Los resultados indican que este método depende de mediciones manuales exactas de la escena, así como el uso
 de un proceso de calibración de cámara extenso, para lograr errores de estimación aceptables.
-\begin{table}[ht]
+\begin{table}[!ht]
+  \centering
   \small
-\begin{tabular}{lcccccccc}
+\begin{tabular}{|l|c|c|c|c|c|c|c|c}
 \hline
-Cámara & Soporte & Error medio & Varianza & Mediana & Tercer cuartil & Máximo\\
+\rowcolor[HTML]{FFCB2F}
+\textbf{Cámara }& \textbf{Soporte }& $\bm{\mu}$ & $\bm{\sigma}$ & $\bm{Q_2}$ & $\bm{Q_3}$ & \textbf{Máximo}\\
 \hline
 Cam1 & 222.00 & 0.27 & 0.16 & 0.28 & 0.39 & 0.64 \\
+\hline
 Cam2 & 293.00 & 0.52 & 0.30 & 0.48 & 0.74 & 1.43 \\
+\hline
 Cam3 & 182.00 & 0.27 & 0.16 & 0.27 & 0.37 & 0.70 \\
 \hline
 \end{tabular}
@@ -82,7 +53,7 @@ Destacando un ejemplo con la cámara 2, con un error de 1.43 metros.}
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam1.png}}
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam2.png}}\\
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam3.png}}
-\caption{Se observan ejemplos con las peores mediciones para cada cámara, donde el número en verde (arriba) es el valor esperado.}\label{fig:ManualWorst}
+\caption{Se observan ejemplos con las peores mediciones para cada cámara con el método manual, donde el número en verde (arriba) es el valor esperado.}\label{fig:ManualWorst}
 \end{figure}
 
 \begin{figure}[!ht]
@@ -90,7 +61,7 @@ Destacando un ejemplo con la cámara 2, con un error de 1.43 metros.}
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam1.png}}
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam2.png}}\\
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam3.png}}
-\caption{Se observan ejemplos de mediciones exactas con cada cámara, donde el número verde (arriba) es el esperado.}\label{fig:ManualBest}
+\caption{Se observan ejemplos de mediciones exactas con cada cámara con el método manual, donde el número verde (arriba) es el esperado.}\label{fig:ManualBest}
 \end{figure}
 
 \subsection{Resultados calibración automática}
@@ -98,5 +69,87 @@ Para el entrenamiento del modelo se utilizó una tasa de aprendizaje sacada de~\
 con un planificador para reducir su valor conforme se acerca al número total de iteraciones planificadas,
 con un recorte del gradiente según la norma L2 (para evitar divergencia durante el entrenamiento por conjuntos de ejemplos
 ruidosos) y se opta por utilizar el mayor número de imágenes por iteraciones que nos permitan los servidores disponibles y sus capacidades.
+El entrenamiento se realiza en dos fases, como descrito en la Sección~\ref{sec:AutoMethod},
+donde la primera calibra la estimación de los parámetros de la cámara y el detector de personas por 90K iteraciones.
+Finalmente, se realiza un entreno de 5K iteraciones para la estimación de la altura del sujeto y la cámara.
+\par
+En la Tabla~\ref{tab:AutoResults} se observan los resultados de método de estimación automática. El error promedio de
+las cámaras en conjunto es de 11 centímetros, 3.2 veces más pequeño que el método manual. Con valores de mediana y
+tercer cuartil mucho menores, dejando ver lo prometedor que puede llegar a ser este método. Destaca los valores máximos
+que no llegan a sobrepasar los 50 centímetros de error, mientras que el método de calibración manual ha llegado a tener
+un error de 143 centímetros (valor atípico, un error extremo de re-proyección).
+En las Figuras~\ref{fig:AutoWorst} y~\ref{fig:AutoBest}se
+observan los peores y mejores resultados de este método. Dado que se conoce la altura de la cámara en las escenas,
+se pueden ver reflejados en la Tabla~\ref{tab:AutoCamResults} el error promedio
+de estimación del módulo de PointNet~\cite{PointNet} de la altura de la cámara.
+\par
+Durante el proceso de experimentación se observó que el modelo as veces colapsaba al ``a-priori'',
+estimando todos los individuos en la escena la misma altura, cerca del promedio impuesto.
+Esto es posible debido a que el modelo puede ajustar tanto la altura de los sujetos en escena,
+su profundidad, como la altura de la cámara con respecto al suelo para disminuir
+el error de re-proyección. Por ello, un ajuste equilibrado de los pesos de la combinación
+lineal de pérdidas es necesario para evitar este colapso. Además, controlar el ratio de
+aprendizaje de esta capa así como la magnitud del gradiente que le afecta ayuda a
+regularizar este comportamiento. No obstante, la solución exacta sería encontrar
+una restricción adicional sobre la escena para ayudar a resolver esta ambigüedad.
 
-\section{Discusión de resultados}
+\begin{table}[!ht]
+  \centering
+  \small
+\begin{tabular}{|l|c|c|c|c|c|c|c|c}
+\hline
+\rowcolor[HTML]{FFCB2F}
+\textbf{Cámara }& \textbf{Soporte }& $\bm{\mu}$ & $\bm{\sigma}$ & $\bm{Q_2}$ & $\bm{Q_3}$ & \textbf{Máximo}\\
+\hline
+Cam1 & 222.00 & 0.21 & 0.11 & 0.19 & 0.26 & 0.43 \\
+\hline
+Cam2 & 293.00 & 0.12 & 0.07 & 0.11 & 0.16 & 0.38 \\
+\hline
+Cam3 & 182.00 & 0.09 & 0.06 & 0.10 & 0.12 & 0.24 \\
+\hline
+\end{tabular}
+\caption{Se observan resultados prometedores del método de estimación automática, semi-supervisado por el error de re-proyección.
+Destaca el error medio de la cámara 3, que puede ser debido a su mejor calidad de imagen.}
+\label{tab:AutoResults}
+\end{table}
+
+\begin{figure}[!ht]
+  \centering
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam1_svmiw.png}}
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam2_svmiw.png}}\\
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam3_svmiw.png}}
+\caption{Se observan ejemplos con las peores mediciones para cada cámara con el método automático, donde el número en verde (arriba) es el valor esperado.
+Destaca la restricción sobre las estimaciones que evita errores extremos con los observados en el método manual, ya que el modelo difícilmente estimará valores lejanos al ``a-priori'' estadístico impuesto de 1.75 metros.
+Por comparar, en la imagen superior derecha, el método manual estima una altura de 49 centímetros, un error 3.7 veces más grande.}
+\label{fig:AutoWorst}
+\end{figure}
+
+\begin{figure}[!ht]
+  \centering
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam1_svmiw.png}}
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam2_svmiw.png}}\\
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam3_svmiw.png}}
+\caption{Se observan ejemplos de mediciones exactas con cada cámara con el método automático, donde el número verde (arriba) es el esperado.}
+\label{fig:AutoBest}
+\end{figure}
+
+\begin{table}[!ht]
+  \centering
+  \small
+\begin{tabular}{|l|c|c|c|c|c|c|c|c}
+\hline
+\rowcolor[HTML]{FFCB2F}
+\textbf{Cámara }& \textbf{Soporte }& $\bm{\mu}$ & $\bm{\sigma}$ & $\bm{Q_2}$ & $\bm{Q_3}$ & \textbf{Máximo}\\
+\hline
+Cam1 & 222.00 & 0.58 & 0.26 & 0.67 & 0.83 & 0.92 \\
+\hline
+Cam2 & 293.00 & 0.38 & 0.13 & 0.35 & 0.44 & 0.76 \\
+\hline
+Cam3 & 182.00 & 0.95 & 0.11 & 1.00 & 1.00 & 1.20 \\
+\hline
+\end{tabular}
+\caption{Tabla de errores de estimación de la altura de la cámara con el método por aprendizaje profundo.
+  Se observa que este módulo puede beneficiarse de un mayor número de iteraciones, ya que el error medio es relativamente alto.
+}
+\label{tab:AutoCamResults}
+\end{table}

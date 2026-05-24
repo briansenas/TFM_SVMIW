@@ -1,1 +1,78 @@
 \chapter{Conclusiones y Trabajos Futuros}
+La metrología monocular, a partir de una única imagen, es un problema esencial en múltiples ámbitos industriales y
+científicos, ya que permite realizar mediciones del entorno físico. Este TFM aborda un método semi-supervisado
+capaz de estimar la altura de individuos en escena para entornos no controlados a partir de una sola imagen,
+haciendo más accesible el uso de herramientas de metrología para cámaras convencionales. Avances en este
+campo podría extenderse a entornos forenses y de seguridad, la biomecánica o la arquitectura y reconstrucción de escenas~\cite{HoiemPopUp,HoiemObjectsInPerspective,CriminisiApplications, CriminisiReconstruction, CriminisiPaintings, SingleViewExerciseQuantification, ObjectsIntoPhotos}.
+\par
+En primer lugar, se realizó un estudio de la literatura relativa a la metrología monocular, desde la
+estimación del tamaño de objetos en escena como su profundidad en la misma. Investigando requisitos
+previos para el uso de métodos clásicos de extracción de información de la escena con la intervención
+humana, mediante la calibración manual de la cámara y conocimiento de la escena (altura, posición y rotación de la cámara) con
+respecto a los objetos, hasta métodos utilizando aprendizaje profundo para la extracción y estimación automática.
+Durante el análisis del estado del arte, se observa el salto en complejidad teórica el tratar de
+utilizar imágenes únicas, con una sola cámara, en lugar de escenas con múltiples puntos de vista
+o información adicional de la misma. Ante el bajo número de publicaciones relacionadas, se concluye
+que no existe actualmente una implementación disponible que ayude en el avance de la estimación
+monocular en entornos no controlados, permitiendo extender el trabajo de~\cite{SVMIW}.
+\par
+Para la validación y comparación entre los métodos, fue necesaria la recolección de
+datos en diferentes escenas de sujetos con altura e información de la escena conocida.
+Se hizo uso de diferentes cámaras comunes, así como una cámara equipada con un sensor
+de alta calidad para medir la profundidad del sujeto en la escena.
+Todas las cámaras fueron cuidadosamente calibradas utilizando el método descrito
+en la Sección~\ref{sec:ManualCalibration}.
+En total se recolectaron
+697 imágenes con etiquetas reales de la posición de la cámara, del sujeto y su altura.
+\par
+El método clásico, hace uso de toda la información disponible de la escena.
+Principalmente la matriz de calibración de la cámara, su orientación y altura con
+respecto al suelo. Utilizando geometría de escena se proyecta el sujeto detectado
+en la escena al mundo 3D en escala métrica y se obtiene su estatura. En contraste,
+el método empleado de aprendizaje profundo puede estimar sin conocer ninguna
+información de la escena. Es entrenado en 2 fases, utilizando 2 conjuntos de datos a
+la vez. Uno que permite trabajar sobre la calibración de los parámetros de la escena
+(rotación de la cámara) y otro que permite aprender a minimizar el error de re-proyección
+sin saber la altura real de los sujetos o la cámara de la escena.
+\par
+Tras el análisis de los resultados, queda evidente el gran potencial de este método
+frente a los métodos clásicos. El disponer de una regularización sobre el valor promedio
+de la altura de los objetos favorece una disminución significativa del error medio del
+método clásico en casos desfavorables (por problemas de calibración o imprecisiones en
+las mediciones de referencia). El error promedio del método clásico es de 35 centímetros
+frente a 11 centímetros del método semi-supervisado, demostrando el gran potencial de
+este método ya que no necesita de datos etiquetados de las características de la escena.
+Con este proyecto queda disponible una implementación del código de ~\cite{SVMIW}, con el
+caso de estimación de pose para humanos y el caso multi-clase (en este caso, como el artículo de referencia se utiliza la clase coche y humano, pero es fácilmente extensible para cualquier objeto).
+Además, se crea adicionalmente un pequeño sistema de visualización de datos y búsqueda
+de imágenes según características extraídas de la escena,
+para la exploración de datos de entrenamiento y filtrado de imágenes, eliminando aquellas que no aportan.
+\par
+Se concluye que se han completado satisfactoriamente los objetivos planteados, determinando la
+posibilidad de resolución del problema y permitiendo una extensión del mismo para diferentes
+objetos, conjuntos de datos, arquitecturas de redes convolucionales o métodos de entrenamiento más recientes.
+Abriendo así la puerta a futuras investigaciones en el campo. Todo el código disponible está
+centralizado en GitHub~\code{https://github.com/briansenas/TFM_SVMIW}, a excepción del conjunto
+de datos de validación dado que son datos confidenciales.
+\par
+Durante el desarrollo y comprehensión de la literatura, se recogió un conjunto de ampliaciones
+lógicas que se pueden realizar sobre el proyecto. La única limitación fuerte está en la necesidad de los sujetos de estar sobre el suelo.
+Por un lado, como mencionado en~\cite{SVMIW}, una posible ampliación sería la estimación de la
+región delimitadora del objeto de forma amodal~\cite{kar2015amodalcompletionsizeconstancy}.
+Así, se podría extender la aplicación de este sistema a objetos semi-ocultos.
+En~\cite{SAKINA2024765}, se observó que el uso de información adicional como raza y género podría llegar a mejorar resultados de la
+estimación. Además, incluir más restricciones en conjunto al error de re-proyección o
+utilizar más variables conocidas, como quizás la profundidad haciendo uso de los grandes conjuntos
+de datos de estimación de profundidad podría dar lugar un modelo más capaz.
+Incluso, se podría optar por utilizar los avances del campo de estimación de profundidad,
+como~\cite{yang2024depthv2}, capaz de estimar la profundidad en escala métrica,
+para estimar nuestra variable $z$ en vez intentar estimar la altura de la cámara.
+Dicho campo, utiliza la coherencia entre escenas en un video (fotogramas vecinos) para entrenar sus modelos,
+algo que también se podría adaptar a este caso y disponer así de un mayor conjunto de datos, así como
+una regularización más sobre las predicciones.
+\par
+Por otro lado, se pueden explorar otros métodos que permitan obtener un modelo
+más explicable como~\cite{SAKINA2024765}, que utilizan
+modelos como regresores lineales y árbol de decisiones para estimar la estatura de las
+personas, utilizando características extraídas automáticamente de la escena como raza, género
+y pose (distancia entre miembros del cuerpo y características faciales).

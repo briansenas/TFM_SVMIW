@@ -98,7 +98,7 @@ Actualmente, el acceso al dataset completo ha desaparecido, y solo se encuentran
 No obstante, para entrenar el modelo de calibración sería necesario un conjunto de datos mucho más grande, haciendo necesario recorrer a otros conjuntos de imágenes panorámicas que puedan suplantar su lugar, como Pano360~\cite{SPEC}.
 \begin{figure}[htp]
   \begin{center}
-    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter4/SUN360/pano_0.jpg}}\\
+    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter4/SUN360/pano_0.jpg}}
     \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter4/SUN360/pano_1.jpg}}
   \end{center}
   \caption{Ejemplos de escenas panorámicas de SUN360~\cite{SUN360}.}\label{fig:SUN360Samples}
@@ -112,7 +112,7 @@ originalmente, por 35K imágenes panorámicas, cubriendo una amplia variedad de 
 (véase la Figura~\ref{fig:Pano360Sample}).
 \begin{figure}[htp]
   \begin{center}
-    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter4/Pano360/stripped-46549510}}\\
+    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter4/Pano360/stripped-46549510}}
     \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter4/Pano360/stripped-50535259}}
   \end{center}
   \caption{Ejemplos de escenas panorámicas de Pano360~\cite{SPEC}}\label{fig:Pano360Sample}
@@ -171,7 +171,7 @@ La altura estimada es la norma euclidiana de la diferencia entre ambos puntos tr
 Si la premisa utilizada es la altura de la cámara, suponiendo que el objeto está sobre el suelo como plano
 de referencia, la altura se simplifica a la coordenada equivalente en 3D de la cabeza, por ejemplo $P_{cabeza_y}$.
 
-\subsection{Calibración y estimación automática}
+\subsection{Calibración y estimación automática}\label{sec:AutoMethod}
 % Explicar brevemente como funciona, incluir diagrama DDP
 El procedimiento utilizado para la estimación automática es el descrito por Rui Zhu \emph{et al}~\cite{SVMIW},
 que emplea un marco de aprendizaje profundo, denominado \emph{ScaleNet}. La arquitectura propuesta, véase

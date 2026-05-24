@@ -1,0 +1,101 @@
+flowchart TB
+
+%% =====================================================
+%% STYLE DEFINITIONS
+%% =====================================================
+classDef dataset fill:#EAF2FF,stroke:#4A90E2,stroke-width:2,color:#111;
+classDef dl fill:#FFF3E8,stroke:#F5A623,stroke-width:2,color:#111;
+classDef classical fill:#E8F6EE,stroke:#27AE60,stroke-width:2,color:#111;
+classDef eval fill:#F4ECFF,stroke:#8E44AD,stroke-width:2,color:#111;
+
+%% =====================================================
+%% TRAINING STAGE
+%% =====================================================
+
+subgraph T["TRAINING STAGE — DEEP LEARNING APPROACH"]
+
+direction TB
+
+A1["COCO-Scale Dataset"]
+A2["Pano360 Dataset"]
+
+A1 --> B
+A2 --> B
+
+B["New Single View Metrology in the Wild Implementation"]
+
+B --> C["Semi-supervised Learning Pipeline, minimizing reprojection loss based on estimated assumptions."]
+
+C --> D["Trained Deep Learning Model"]
+
+end
+
+D --> D1
+
+%% =====================================================
+%% INFERENCE STAGE
+%% =====================================================
+
+subgraph I["INFERENCE STAGE"]
+
+direction TB
+
+E["Custom Dataset with Ground Truth Heights"]
+
+%% ---------- Classical branch ----------
+
+subgraph C1["Classical Camera Calibration"]
+
+direction TB
+
+F["Chessboard-based Camera Calibration"]
+
+F --> G["Intrinsic and Extrinsic
+Camera Parameters"]
+
+G --> H["3D-2D Geometric Reprojection"]
+
+H --> I1["Estimated Human Heights
+(Classical Method)"]
+
+end
+
+%% ---------- DL branch ----------
+
+subgraph D1["Deep Learning Inference"]
+
+direction TB
+
+J["Inference using
+Trained SVMW Model"]
+
+J --> K["Estimated Human Heights
+(Deep Learning Method)"]
+
+end
+
+E --> C1
+E --> D1
+
+L["Experimental Comparison"]
+end
+
+I1 --> L
+K --> L
+
+
+
+
+%% =====================================================
+%% CLASSES
+%% =====================================================
+
+class A1,A2,E dataset;
+class B,C,D,J,K dl;
+class F,G,H,I1 classical;
+class L,M eval;
+
+style T fill:none,stroke:#666,stroke-width:2px
+style I fill:none,stroke:#666,stroke-width:2px
+style C1 fill:none,stroke:#999,stroke-width:1.5px
+style D1 fill:none,stroke:#999,stroke-width:1.5px

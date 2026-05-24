@@ -72,3 +72,131 @@ Cam3 (Hikvision) & 2.050 & (-1.2130, +0.2400, +0.6120) \\
 \end{tabular}
 \caption{Rampa de Entrada. Hay un posicionamiento distinto para la cámara 3, para 1 sujeto específico (idai10).}\label{tab:EntranceRamp}
 \end{table}
+
+\section{Detalles técnicos de implementación}\label{app:TechnicalDetails}
+Este proyecto ha sido realizado mayoritariamente con el lenguaje de programación Python,
+haciendo uso de procedimientos en otros idiomas por medio de interfaces. Para el desarrollo
+y ejecución de los modelos fue necesario el uso de la libraría de Pytorch junto con las
+librerías CUDA para poder ejecutar los modelos en las tarjetas gráficas de NVIDIA. Para
+la extracción de fotogramas (imágenes) de los vídeos se utilizó FFMPEG. Para algunos cálculos
+números y de manejo de datos Numpy, Pandas y OpenCV~\cite{opencv_library}. Para el control de
+versiones del proyecto se utilizó GitHub en varios repositorios, inyectados como submódulos
+en el repositorio principal: \url{https://github.com/briansenas/TFM_SVMIW}
+\par
+La implementación del método de calibración manual es trivial, utilizando el procedimiento
+descrito en la Sección ~\ref{sec:ManualCalibration} se obtienen
+los parámetros de las cámaras utilizadas en nuestro conjunto de datos de evaluación y, utilizando las ecuaciones
+descritas de proyecciones, se obtienen la estimación de la altura de los individuos en escena.
+\par
+No obstante, para el caso del método automático, existen varios problemas:
+\begin{enumerate}
+  \item El modelo
+pre-entrenado por Rui Zhu \emph{et al}~\cite{SVMIW} no está disponible en ningún lado para ser utilizado
+directamente.
+\item El código de entrenamiento tampoco está disponible. Solo está disponible trozos parciales
+  de algunos métodos y funciones necesarias para ilustrar en un cuaderno de ``jupyter'' el
+  procedimiento de evaluación del modelo con una imagen de ejemplo.
+\item No se disponen de los mismos datos debido a la eliminación de SUN360~\cite{SUN360}, descrita en la Sección~\ref{sec:SUN360}
+\end{enumerate}
+Con la labor de investigación, se halló la solución para los problemas descritos anteriormente.
+Como alternativa a SUN360~\cite{SUN360}, se encontró el conjunto de datos de SPEC~\cite{SPEC}. El
+procedimiento de generación de imágenes descritos en el artículo de referencia~\cite{SVMIW},
+es el mismo que describe el repositorio de SPEC~\cite{SPEC}. Una vez solucionado el problema
+de los datos, utilizando información del artículo y los trozos de código disponible
+se obtuvo un procedimiento de entrenamiento con la librería ``maskrcnn-benchmark''~\cite{MaskRCNN}, con
+entrenamiento en múltiples tarjetas gráficas y servidores (por necesidades de escalabilidad y agilidad,
+permitiendo distribuir la carga y solventar problemas como la necesidad de memoria para entrenar con varias
+imágenes a la vez).
+\par
+No obstante, el código era inestable (problemas de sincronización de entrenamiento con múltiples tarjetas),
+de difícil mantenimiento, adaptación y extensibilidad (debido al desconocimiento de las
+intenciones de integración e implementación de los autores). Además, las curvas de entrenamiento parecían estancarse en mínimos
+locales como se ve en la Figura~\ref{fig:PreviousImplLoss}. Por estos motivos, se decidió realizar
+la implementación en la librería sucesora de ``maskrcnn-benchmark''~\cite{MaskRCNN}, en ``detectron2''~\cite{detectron2}.
+\par
+De esta forma, se obtuvieron diversos beneficios como la estabilidad en entrenamiento distribuido, mejor uso de la
+capacidad de cómputo y mejor legibilidad del código. Entre las razones tenemos:
+menos operaciones de copia de datos a la tarjeta gráfica, entrenamiento en precisión mixta (disminuye el uso de memoria,
+permitiendo así entrenar con más imágenes o modelos más complejos),
+ratio de aprendizaje dinámico, diferente por módulo, con calentamiento y recocido,
+mejor gestión de datos de visualización del entreno, con almacenado de imágenes de ejemplo,
+vectorización del proceso de estimación de la altura y más.
+\par
+Además de beneficios en implementación, al utilizar ``detectron2''~\cite{detectron2}, se dispone
+de modelos y arquitecturas nuevas con mejores rendimientos en detección. Siguiendo las
+directrices de implementación, se desarrolló un modelo más complejo con intención de
+obtener resultados similares a los de Rui Zhu \emph{et al}~\cite{SVMIW}.
+
+\begin{figure}[H]
+  \centering
+  \small
+  \includegraphics[width=0.5\textwidth]{imagenes/appendix/loss_plot.pdf}
+  \caption{En la Figura se observan las funciones de pérdidas (menor es mejor) del modelo al intentar resolver solamente el problema de estimación de parámetros de la cámara.
+    La línea superior verde, casi horizontal, es la implementación obtenida de unir los trozos de código de~\cite{SVMIW}.
+    El estancamiento puede deberse a que los autores realizaran modificaciones en la arquitectura que no se reflejan en los trozos de código disponibles ni en el artículo de referencia.
+    Por otro lado, la línea inferior naranja representa el error de entrenamiento de la nueva implementación en
+    ``detectron2''~\cite{detectron2}. Seguida de su error de validación, línea intermedia azul, que también presenta una tendencia negativa.
+    Es evidente la diferencia entre las implementaciones, donde la nueva parece aprender correctamente.
+  }
+  \label{fig:PreviousImplLoss}
+\end{figure}
+
+Para la gestión de los diferentes pasos a realizar, como la calibración manual de las cámaras o el filtrado de datos válidos,
+se diseñó un sistema basado en comandos para la ejecución de cada tarea de forma individual, pero permitiendo conexiones sencillas
+entre los pasos de manera secuencial como ilustra la Figura~\ref{fig:ScriptsDesign}.
+
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=0.65\textwidth]{imagenes/ScriptsDesign.png}
+  \end{center}
+  \caption{Se observa la abstracción del sistema por comandos creados para la realización de este proyecto.
+  Destacan los métodos de calibración, rectificación y estimación de la altura.
+}\label{fig:ScriptsDesign}
+\end{figure}
+\subsection*{Preprocesado de datos}
+Se utiliza preprocesados existentes en la librería ``detectron2''~\cite{detectron2}, que incorpora
+tanto estabilidad durante el entrenamiento como eficiencia computacional. Incluye transformación
+de las imágenes a tensores, normalización mediante medias y desviaciones estándares por canal de color
+sacados de ImageNet~\cite{ImageNet} (debido a que se utiliza un modelo pre-entrenado con esos datos),
+redimensionado dinámico preservando la relación de aspecto. No se habilita ninguna etapa de
+aumentación de datos, ya que se considera que se dispone de suficiente cantidad de ejemplos adecuados
+y medidas de regularización del modelo. Se habilita el agrupado de imágenes por aspecto (se considera que
+una imagen es horizontal si es más ancha que larga), para no solo beneficiarse de mayor rendimiento computacional
+sino que también para aumentar la estabilidad de las predicciones del módulo de estimación de parámetros de cámara.
+Se filtran ejemplos del conjunto de datos de calibración de cámara SPEC~\cite{SPEC} con valores inválidos para el tipo de imagen (corruptas o vacías), así como ejemplos
+considerados no válidos (véase la Figura~\ref{fig:Pano360BadSamples}) utilizando el proyecto de apoyo para visualización y filtrado de imágenes por atributos \code{https://github.com/briansenas/py-img-query} (desarrollado para este proyecto).
+
+\begin{figure}[!ht]
+  \centering
+  \small
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/appendix/23930544131.jpg}}
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/appendix/49521868852.jpg}}\\
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/appendix/30565712018.jpg}}
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/appendix/50462587448.jpg}}
+  \caption{Se observan ejemplos filtrados del conjunto de calibración de cámara de SPEC~\cite{SPEC}.
+  Aunque sean panorámicas se considera que este tipo de imagen no aporta ningún beneficio al entrenamiento del modelo.}
+  \label{fig:Pano360BadSamples}
+\end{figure}
+
+\subsection*{Detalles técnicos de la experimentación}\label{sec:TrainML}
+La implementación sobre ``detectron2''~\cite{detectron2} utiliza subclases definidas sobre las clases bases
+de los métodos implementados por META para la detección de personas, estimación de pose y segmentación panóptica.
+Se modifican ligeramente algunos métodos. Por ejemplo, para permitir el uso de una clase que utiliza una combinación de imágenes
+de diferentes conjuntos de datos (3 imágenes de detección de persona y estimación de altura por cada 1 imagen de calibración de
+parámetros de la cámara) se modifica el método de inicialización de los datos de entrenamiento.
+Además, dado el ratio diferenciado entre imágenes para cada componente del entrenamiento, es necesario modificar la
+función que inicializa el optimizador para ponderar dinámicamente cada componente según dicho ratio y el tamaño total
+de imágenes por cada iteración (siguiendo la fórmula $\frac{0.1*n_{gpu}*n_{img}}{256}$ de~\cite{goyal2018accuratelargeminibatchsgd}).
+Al contrario de los autores, en la primera fase del entrenamiento nuestro modelo para seguir minimizando los errores pasado las 40K iteracciones, llegando hasta 90K
+donde aparenta  haber convergido. La segunda fase parece converger con tan solo 5K iteraciones, con valores de re-proyección muy cercanos a 0.
+\par
+Para modificar características del entrenamiento se puede modificar el archivo de configuración en \code{configs/COCO-SCALE}.
+Dicho archivo permite activar o desactivar recorte del gradiente, calentamiento y recocido del entrenamiento, así como muchas
+funcionalidades adicionales. El script \code{train_calib.py} permite replicar los experimentos descritos. Tras lanzar una sesión
+de entrenamiento se guardarán resultados utilizando Tensorboard, en la carpeta \code{output}, permitiendo visualizar imágenes
+durante el entrenamiento así como las funciones de pérdida.
+\par
+Para la ejecución se utilizaron dos sistemas distintos. En las pruebas de alta carga, como extraer los fotogramas y filtrar las
+imágenes válidas en ambos conjuntos de datos se utilizó un ordenador con una CPU AMD Ryzen 7 5800X, 32 GB de RAM DDR4 y una tarjeta
+NVIDIA RTX 3060 12GB de VRAM. Para el entrenamiento distribuido en múltiples GPUs se utilizó el servidor de la
+Universidad de Granada con 3 GTX Titan X Pascal, permitiendo disponer de hasta 2x más capacidad de cómputo en el mismo tiempo.
