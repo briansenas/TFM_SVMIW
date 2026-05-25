@@ -12,21 +12,21 @@ classDef eval fill:#F4ECFF,stroke:#8E44AD,stroke-width:2,color:#111;
 %% TRAINING STAGE
 %% =====================================================
 
-subgraph T["TRAINING STAGE — DEEP LEARNING APPROACH"]
+subgraph T["Etapa de Entrenamiento del modelo"]
 
 direction TB
 
-A1["COCO-Scale Dataset"]
-A2["Pano360 Dataset"]
+A1["COCO-Scale dataset"]
+A2["Pano360 dataset"]
 
 A1 --> B
 A2 --> B
 
-B["New Single View Metrology in the Wild Implementation"]
+B["Nueva implementación del modelo de metrología monocular"]
 
-B --> C["Semi-supervised Learning Pipeline, minimizing reprojection loss based on estimated assumptions."]
+B --> C["Código de entrenamiento semi-supervisado, minimizando el error de re-proyección"]
 
-C --> D["Trained Deep Learning Model"]
+C --> D["Modelo entrenado final"]
 
 end
 
@@ -36,48 +36,44 @@ D --> D1
 %% INFERENCE STAGE
 %% =====================================================
 
-subgraph I["INFERENCE STAGE"]
+subgraph I["Procedimiento de Inferencia"]
 
 direction TB
 
-E["Custom Dataset with Ground Truth Heights"]
+E["Conjunto de datos con alturas conocidas "]
 
 %% ---------- Classical branch ----------
 
-subgraph C1["Classical Camera Calibration"]
+subgraph C1["Calibración de cámara clásica"]
 
 direction TB
 
-F["Chessboard-based Camera Calibration"]
+F["Procedimiento de calibración manual de cámara"]
 
-F --> G["Intrinsic and Extrinsic
-Camera Parameters"]
+F --> G["Obtención de parámetros intrínsecos y extrínsecos"]
 
-G --> H["3D-2D Geometric Reprojection"]
+G --> H["Re-proyección geométrica 3D-2D"]
 
-H --> I1["Estimated Human Heights
-(Classical Method)"]
+H --> I1["Estimación de altura (método clásico)"]
 
 end
 
 %% ---------- DL branch ----------
 
-subgraph D1["Deep Learning Inference"]
+subgraph D1["Inferencia por aprendizaje profundo"]
 
 direction TB
 
-J["Inference using
-Trained SVMW Model"]
+J["Inferencia utilizando modelo SVMIW"]
 
-J --> K["Estimated Human Heights
-(Deep Learning Method)"]
+J --> K["Estimación de altura (método por aprendizaje)"]
 
 end
 
 E --> C1
 E --> D1
 
-L["Experimental Comparison"]
+L["Comparación Experimental"]
 end
 
 I1 --> L

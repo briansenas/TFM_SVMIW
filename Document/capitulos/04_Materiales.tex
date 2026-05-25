@@ -14,13 +14,17 @@ un subconjunto de SUN360~\cite{SUN360} para validar el modelo de calibración y,
 \begin{table}[htp]
 \scriptsize
 \centering
-\begin{tabular}{lcccc}
+\begin{tabular}{|l|c|c|c|c}
 \hline
+\rowcolor[HTML]{FFCB2F}
 \textbf{Cámara} & \textbf{Tipo} & \textbf{Focal (mm)} & \textbf{CMOS} \\
 \hline
 RealSense D455 (RS) & Profundidad & 1.93 &  1/4'' OV9782 \\
+\hline
 Tapo C120 (Cam1) & Tipo cajero & 3.17 &  1/2.9'' \\
+\hline
 Dahua IPC-HDBW2831 (Cam2) & Domo & 2.8 &  1/2.7'' \\
+\hline
 Hikvision DS-2CD2046 (Cam3) & Bullet & 2.8 &  1/3'' \\
 \hline
 \end{tabular}
@@ -169,11 +173,11 @@ Para calcular la altura $H$, se identifican los puntos medios de la base (pies) 
 La altura estimada es la norma euclidiana de la diferencia entre ambos puntos tras ser proyectados al espacio 3D:
 \[ H = \|\mathbf{P}_{pies} - \mathbf{P}_{cabeza}\|_2 \]
 Si la premisa utilizada es la altura de la cámara, suponiendo que el objeto está sobre el suelo como plano
-de referencia, la altura se simplifica a la coordenada equivalente en 3D de la cabeza, por ejemplo $P_{cabeza_y}$.
+de referencia, la altura se simplifica a la coordenada que represente el eje vertical en 3D de la cabeza ($P_{cabeza_y}$).
 
 \subsection{Calibración y estimación automática}\label{sec:AutoMethod}
 % Explicar brevemente como funciona, incluir diagrama DDP
-El procedimiento utilizado para la estimación automática es el descrito por Rui Zhu \emph{et al}~\cite{SVMIW},
+El procedimiento utilizado para la estimación automática es el descrito por Zhu \emph{et al}~\cite{SVMIW},
 que emplea un marco de aprendizaje profundo, denominado \emph{ScaleNet}. La arquitectura propuesta, véase
 la Figura~\ref{fig:SVMIWPipe}, interpreta
 la interacción entre parámetros de cámara, los objetos de la escena 2D y suposiciones sobre su tamaño en 3D.
@@ -186,7 +190,7 @@ tiene sus delimitaciones superiores ($v_t$) e inferiores ($v_b$) determinados po
 \begin{equation}\label{eq:vb}
   v_b = \frac{-f\,sin\theta z + v_c cos\theta z - f\,h_{cam}}{z\, cos\theta}
 \end{equation}
-Donde $v_c$ y $u_c$ es el centro óptico de la cámara que se asume conocer. Tras despejar
+Donde $v_c$ es el centro óptico de la cámara que se asume conocer. Tras despejar
 $z$ de la Ecuación~\ref{eq:vb}, se deriva el límite superior del
 cuadro delimitador de la persona $v_t$. De esta forma, dado que se conoce el valor de $v_t$
 por parte del modelo de detección de objetos, se puede estimar de forma semi-supervisada
@@ -212,7 +216,7 @@ en el paso anterior.
     \subfloat{\includegraphics[width=0.75\textwidth]{imagenes/chapter4/pipeline.pdf}}
   \end{center}
   \caption{
-    Pipeline propuesta por Rui Zhu \emph{et al}~\cite{SVMIW}.
+    Pipeline propuesta por Zhu \emph{et al}~\cite{SVMIW}.
     Dado el modelo de escena definido por la imagen superior, podemos estimar la información necesaria
     para la estimación de metrología utilizando la secuencia de acciones definidas por la imagen inferior.
   }\label{fig:SVMIWPipe}

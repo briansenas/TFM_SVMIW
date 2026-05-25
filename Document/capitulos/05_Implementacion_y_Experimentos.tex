@@ -7,7 +7,7 @@ recogen en el Apéndice~\ref{app:TechnicalDetails}.
 El procedimiento experimental planteado se puede visualizar en la Figura~\ref{fig:Mermaid}.
 A continuación se detallan los resultados obtenidos con cada método.
 
-\begin{figure}[!ht]
+\begin{figure}[htp]
   \centering
   \includegraphics[width=0.5\textwidth]{imagenes/chapter5/diagram}
   \caption{Visualización del procedimiento experimental.}\label{fig:Mermaid}
@@ -28,7 +28,7 @@ Por otro lado, en las Figuras~\ref{fig:ManualBest} se observan los ejemplos
 con una estimación perfecta.
 Los resultados indican que este método depende de mediciones manuales exactas de la escena, así como el uso
 de un proceso de calibración de cámara extenso, para lograr errores de estimación aceptables.
-\begin{table}[!ht]
+\begin{table}[htp]
   \centering
   \small
 \begin{tabular}{|l|c|c|c|c|c|c|c|c}
@@ -44,24 +44,24 @@ Cam3 & 182.00 & 0.27 & 0.16 & 0.27 & 0.37 & 0.70 \\
 \hline
 \end{tabular}
 \caption{Se observa que, incluso con la cámara calibrada manualmente,  el error promedio, de estimación de la altura de los individuos en escena, es significativamente alto.
-Destacando un ejemplo con la cámara 2, con un error de 1.43 metros.}
+Destacando que un ejemplo con la cámara 2 obtuvo un error de 1.43 metros.}
 \label{tab:ManualResults}
 \end{table}
 
-\begin{figure}[!ht]
+\begin{figure}[htp]
   \centering
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam1.png}}
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam2.png}}\\
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam3.png}}
-\caption{Se observan ejemplos con las peores mediciones para cada cámara con el método manual, donde el número en verde (arriba) es el valor esperado.}\label{fig:ManualWorst}
+\caption{Se observan ejemplos con las peores mediciones para cada cámara con el método manual, donde el número en verde (superior) es el valor esperado.}\label{fig:ManualWorst}
 \end{figure}
 
-\begin{figure}[!ht]
+\begin{figure}[htp]
   \centering
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam1.png}}
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam2.png}}\\
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam3.png}}
-\caption{Se observan ejemplos de mediciones exactas con cada cámara con el método manual, donde el número verde (arriba) es el esperado.}\label{fig:ManualBest}
+\caption{Se observan ejemplos de mediciones exactas con cada cámara con el método manual, donde el número verde (superior) es el esperado.}\label{fig:ManualBest}
 \end{figure}
 
 \subsection{Resultados calibración automática}
@@ -78,7 +78,7 @@ las cámaras en conjunto es de 11 centímetros, 3.2 veces más pequeño que el m
 tercer cuartil mucho menores, dejando ver lo prometedor que puede llegar a ser este método. Destaca los valores máximos
 que no llegan a sobrepasar los 50 centímetros de error, mientras que el método de calibración manual ha llegado a tener
 un error de 143 centímetros (valor atípico, un error extremo de re-proyección).
-En las Figuras~\ref{fig:AutoWorst} y~\ref{fig:AutoBest}se
+En las Figuras~\ref{fig:AutoWorst} y~\ref{fig:AutoBest} se
 observan los peores y mejores resultados de este método. Dado que se conoce la altura de la cámara en las escenas,
 se pueden ver reflejados en la Tabla~\ref{tab:AutoCamResults} el error promedio
 de estimación del módulo de PointNet~\cite{PointNet} de la altura de la cámara.
@@ -93,7 +93,7 @@ aprendizaje de esta capa así como la magnitud del gradiente que le afecta ayuda
 regularizar este comportamiento. No obstante, la solución exacta sería encontrar
 una restricción adicional sobre la escena para ayudar a resolver esta ambigüedad.
 
-\begin{table}[!ht]
+\begin{table}[htp]
   \centering
   \small
 \begin{tabular}{|l|c|c|c|c|c|c|c|c}
@@ -113,27 +113,27 @@ Destaca el error medio de la cámara 3, que puede ser debido a su mejor calidad 
 \label{tab:AutoResults}
 \end{table}
 
-\begin{figure}[!ht]
+\begin{figure}[htp]
   \centering
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam1_svmiw.png}}
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam2_svmiw.png}}\\
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam3_svmiw.png}}
-\caption{Se observan ejemplos con las peores mediciones para cada cámara con el método automático, donde el número en verde (arriba) es el valor esperado.
+\caption{Se observan ejemplos con las peores mediciones para cada cámara con el método automático, donde el número en verde (superior) es el valor esperado.
 Destaca la restricción sobre las estimaciones que evita errores extremos con los observados en el método manual, ya que el modelo difícilmente estimará valores lejanos al ``a-priori'' estadístico impuesto de 1.75 metros.
 Por comparar, en la imagen superior derecha, el método manual estima una altura de 49 centímetros, un error 3.7 veces más grande.}
 \label{fig:AutoWorst}
 \end{figure}
 
-\begin{figure}[!ht]
+\begin{figure}[htp]
   \centering
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam1_svmiw.png}}
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam2_svmiw.png}}\\
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam3_svmiw.png}}
-\caption{Se observan ejemplos de mediciones exactas con cada cámara con el método automático, donde el número verde (arriba) es el esperado.}
+\caption{Se observan ejemplos de mediciones exactas con cada cámara con el método automático, donde el número verde (superior) es el esperado.}
 \label{fig:AutoBest}
 \end{figure}
 
-\begin{table}[!ht]
+\begin{table}[htp]
   \centering
   \small
 \begin{tabular}{|l|c|c|c|c|c|c|c|c}
