@@ -177,7 +177,7 @@ de referencia, la altura se simplifica a la coordenada que represente el eje ver
 
 \subsection{Calibración y estimación automática}\label{sec:AutoMethod}
 % Explicar brevemente como funciona, incluir diagrama DDP
-El procedimiento utilizado para la estimación automática es el descrito por Zhu \emph{et al}~\cite{SVMIW},
+El procedimiento utilizado para la estimación automática es el descrito por Zhu \emph{et al.}~\cite{SVMIW},
 que emplea un marco de aprendizaje profundo, denominado \emph{ScaleNet}. La arquitectura propuesta, véase
 la Figura~\ref{fig:SVMIWPipe}, interpreta
 la interacción entre parámetros de cámara, los objetos de la escena 2D y suposiciones sobre su tamaño en 3D.
@@ -216,7 +216,7 @@ en el paso anterior.
     \subfloat{\includegraphics[width=0.75\textwidth]{imagenes/chapter4/pipeline.pdf}}
   \end{center}
   \caption{
-    Pipeline propuesta por Zhu \emph{et al}~\cite{SVMIW}.
+    Pipeline propuesta por Zhu \emph{et al.}~\cite{SVMIW}.
     Dado el modelo de escena definido por la imagen superior, podemos estimar la información necesaria
     para la estimación de metrología utilizando la secuencia de acciones definidas por la imagen inferior.
   }\label{fig:SVMIWPipe}
@@ -235,9 +235,9 @@ $\alpha_1 = \alpha_2 = 10$, frente a la de calibración, $\alpha_3 = 1$.
   \mathcal{L} = \alpha_1\mathcal{L}_{det} + \alpha_2\mathcal{L}_{kps} + \alpha_3\mathcal{L}_{calib}
 \end{equation}
 
-En la fase dos del entrenamiento se añaden las pérdidas finales de re-proyección y el a-priori sobre las estimaciones del
+En la fase dos del entrenamiento se añaden las pérdidas finales de re-proyección y el \emph{a priori} sobre las estimaciones del
 tamaño de los objetos en escena para obtener la Ecuación~\ref{eq:LossPhaseTwo}. En este caso, la pérdida de re-proyección tiene
-un peso equivalente al error de detección, $\alpha_4 = 1$, mientras que el a-priori influye muy poco para evitar que el
+un peso equivalente al error de detección, $\alpha_4 = 1$, mientras que el \emph{a priori} influye muy poco para evitar que el
 modelo se reduzca a simplemente predecir el valor promedio de altura de los objetos, $\alpha_5 = 0.05$
 
 \begin{equation}\label{eq:LossPhaseTwo}

@@ -108,7 +108,7 @@ descritas de proyecciones, se obtienen la estimación de la altura de los indivi
 No obstante, para el caso del método automático, existen varios problemas:
 \begin{enumerate}
   \item El modelo
-pre-entrenado por Zhu \emph{et al}~\cite{SVMIW} no está disponible en ningún lado para ser utilizado
+pre-entrenado por Zhu \emph{et al.}~\cite{SVMIW} no está disponible en ningún lado para ser utilizado
 directamente.
 \item El código de entrenamiento tampoco está disponible. Solo están disponibles trozos parciales
   de algunos métodos y funciones necesarias para ilustrar en un cuaderno de ``jupyter'' el
@@ -142,7 +142,7 @@ vectorización del proceso de estimación de la altura y más.
 Además de beneficios en implementación, al utilizar ``detectron2''~\cite{detectron2}, se dispone
 de modelos y arquitecturas nuevas con mejores rendimientos en detección. Siguiendo las
 directrices de implementación, se desarrolló un modelo más complejo con intención de
-obtener resultados similares a los de Zhu \emph{et al}~\cite{SVMIW}.
+obtener resultados similares a los de Zhu \emph{et al.}~\cite{SVMIW}.
 
 \begin{figure}[H]
   \centering
@@ -181,7 +181,10 @@ y medidas de regularización del modelo. Se habilita el agrupado de imágenes po
 una imagen es horizontal si es más ancha que larga), para no solo beneficiarse de mayor rendimiento computacional,
 sino que también para aumentar la estabilidad de las predicciones del módulo de estimación de parámetros de cámara.
 Se filtran ejemplos del conjunto de datos de calibración de cámara SPEC~\cite{SPEC} con valores inválidos para el tipo de imagen (corruptas o vacías), así como ejemplos
-considerados no válidos (véase la Figura~\ref{fig:Pano360BadSamples}) utilizando el proyecto de apoyo para visualización y filtrado de imágenes por atributos \code{https://github.com/briansenas/py-img-query} (desarrollado para este proyecto).
+considerados no válidos (véase la Figura~\ref{fig:Pano360BadSamples})
+utilizando el proyecto de apoyo para visualización y filtrado de imágenes por atributos \code{https://github.com/briansenas/py-img-query}.
+Dicho proyecto de apoyo fue desarrollado con fin de permitir filtrar imágenes por atributos calculados como nivel de contraste, luminosidad, número de líneas y
+todas aquellas características que facilitaran el filtrado de imágenes redundantes para el entrenamiento del modelo.
 
 \begin{figure}[!ht]
   \centering
@@ -191,7 +194,7 @@ considerados no válidos (véase la Figura~\ref{fig:Pano360BadSamples}) utilizan
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/appendix/30565712018.jpg}}
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/appendix/50462587448.jpg}}
   \caption{Se observan ejemplos filtrados del conjunto de calibración de cámara de SPEC~\cite{SPEC}.
-  Aunque sean panorámicas se considera que este tipo de imagen no aporta ningún beneficio al entrenamiento del modelo.}
+  Aunque sean panorámicas, se considera que estos ejemplos no aportan ningún beneficio al entrenamiento del modelo.}
   \label{fig:Pano360BadSamples}
 \end{figure}
 
@@ -199,21 +202,21 @@ considerados no válidos (véase la Figura~\ref{fig:Pano360BadSamples}) utilizan
 La implementación sobre ``detectron2''~\cite{detectron2} utiliza subclases definidas sobre las clases bases
 de los métodos implementados por META para la detección de personas, estimación de pose y segmentación panóptica.
 Se modifican ligeramente algunos métodos. Por ejemplo, para permitir el uso de una clase que utiliza una combinación de imágenes
-de diferentes conjuntos de datos (3 imágenes de detección de persona y estimación de altura por cada 1 imagen de calibración de
+de diferentes conjuntos de datos (3 imágenes de detección de personas y estimación de altura por cada 1 imagen de calibración de
 parámetros de la cámara) se modifica el método de inicialización de los datos de entrenamiento.
 Además, dado el ratio diferenciado entre imágenes para cada componente del entrenamiento, es necesario modificar la
 función que inicializa el optimizador para ponderar dinámicamente cada componente según dicho ratio y el tamaño total
 de imágenes por cada iteración (siguiendo la fórmula $\frac{0.1*n_{gpu}*n_{img}}{256}$ de~\cite{goyal2018accuratelargeminibatchsgd}).
-Al contrario de los autores, en la primera fase del entrenamiento nuestro modelo para seguir minimizando los errores pasados las 40K iteracciones, llegando hasta 90K
-donde aparenta  haber convergido. La segunda fase parece converger con tan solo 5K iteraciones, con valores de re-proyección muy cercanos a 0.
+Al contrario de los autores, en la primera fase del entrenamiento nuestro modelo parece seguir minimizando los errores pasados las 40K iteraciones, llegando hasta 90K
+donde aparenta haber convergido. En la segunda fase parece converger con tan solo 5K iteraciones, con valores de re-proyección muy cercanos a 0.
 \par
 Para modificar características del entrenamiento se puede modificar el archivo de configuración en \code{configs/COCO-SCALE}.
 Dicho archivo permite activar o desactivar recorte del gradiente, calentamiento y recocido del entrenamiento, así como muchas
 funcionalidades adicionales. El script \code{train_calib.py} permite replicar los experimentos descritos. Tras lanzar una sesión
 de entrenamiento se guardarán resultados utilizando Tensorboard, en la carpeta \code{output}, permitiendo visualizar imágenes
-durante el entrenamiento así como las funciones de pérdida.
+durante el entrenamiento así como las funciones de pérdida y datos auxiliares.
 \par
-Para la ejecución se utilizaron dos sistemas distintos. En las pruebas de alta carga, como extraer los fotogramas y filtrar las
-imágenes válidas en ambos conjuntos de datos se utilizó un ordenador con una CPU AMD Ryzen 7 5800X, 32 GB de RAM DDR4 y una tarjeta
-NVIDIA RTX 3060 12GB de VRAM. Para el entrenamiento distribuido en múltiples GPUs se utilizó el servidor de la
-Universidad de Granada con 3 GTX Titan X Pascal, permitiendo disponer de hasta 2x más capacidad de cómputo en el mismo tiempo.
+Para la ejecución se utilizaron dos sistemas distintos. En las pruebas de alta demanda de CPU, como extraer los fotogramas y filtrar las
+imágenes válidas en ambos conjuntos de datos, se utilizó un ordenador con una CPU AMD Ryzen 7 5800X, 32 GB de RAM DDR4 y una tarjeta
+NVIDIA RTX 3060 12GB de VRAM. Para el entrenamiento distribuido en múltiples GPUs, se utilizó el servidor de la
+Universidad de Granada con 3 GTX Titan X Pascal, permitiendo disponer de hasta 2 veces más capacidad de cómputo en el mismo tiempo.

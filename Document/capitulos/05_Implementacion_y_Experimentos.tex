@@ -83,7 +83,7 @@ observan los peores y mejores resultados de este método. Dado que se conoce la 
 se pueden ver reflejados en la Tabla~\ref{tab:AutoCamResults} el error promedio
 de estimación del módulo de PointNet~\cite{PointNet} de la altura de la cámara.
 \par
-Durante el proceso de experimentación se observó que el modelo as veces colapsaba al ``a-priori'',
+Durante el proceso de experimentación se observó que el modelo as veces colapsaba al \emph{a priori},
 estimando todos los individuos en la escena la misma altura, cerca del promedio impuesto.
 Esto es posible debido a que el modelo puede ajustar tanto la altura de los sujetos en escena,
 su profundidad, como la altura de la cámara con respecto al suelo para disminuir
@@ -119,7 +119,7 @@ Destaca el error medio de la cámara 3, que puede ser debido a su mejor calidad 
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam2_svmiw.png}}\\
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam3_svmiw.png}}
 \caption{Se observan ejemplos con las peores mediciones para cada cámara con el método automático, donde el número en verde (superior) es el valor esperado.
-Destaca la restricción sobre las estimaciones que evita errores extremos con los observados en el método manual, ya que el modelo difícilmente estimará valores lejanos al ``a-priori'' estadístico impuesto de 1.75 metros.
+  Destaca la restricción sobre las estimaciones que evita errores extremos como los observados en el método manual, ya que el modelo difícilmente estimará valores lejanos al \emph{a priori} estadístico impuesto de 1.75 metros.
 Por comparar, en la imagen superior derecha, el método manual estima una altura de 49 centímetros, un error 3.7 veces más grande.}
 \label{fig:AutoWorst}
 \end{figure}

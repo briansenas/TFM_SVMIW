@@ -65,7 +65,7 @@ la cámara (véase la Ecuación~\ref{eq:EstimateAlpha}).
 \end{equation}
 Donde $N$ es la longitud de la imagen en píxeles y $w$ es la longitud del sensor de la cámara.
 No obstante, en caso de no poseer información al respecto del sensor se puede utilizar diversas técnicas~\cite{ManualCameraCalib}, como patrones de tablero de ajedrez.
-Finalmente, hasta el momento no se ha introducido ningún parámetro de distorsión al modelo de cámara. Sin embargo,
+Finalmente, hasta el momento no se ha incluido ningún parámetro de distorsión al modelo de cámara. Sin embargo,
 existen diferentes distorsiones que pueden ocurrir como inclinación o distorsiones radiales. Estos son parámetros
 adicionales que deben estimarse para obtener una re-proyección precisa.
 \begin{figure}[htp]
@@ -114,7 +114,7 @@ Otro desafío inherente son los efectos de los errores en el modelo de cámara, 
 Estos factores pueden introducir desviaciones significativas en las estimaciones.
 \par
 En los últimos años, se ha observado una integración creciente de métodos de aprendizaje profundo en la metrología de vista única.
-Las redes neuronales, entrenadas con grandes volúmenes de datos, han aprendido a capturar a priori geométricos que permiten
+Las redes neuronales, entrenadas con grandes volúmenes de datos, han aprendido a capturar \emph{a priori} geométricos que permiten
 estimar automáticamente la escala y profundidad de los objetos a partir de una sola imagen. La combinación del enfoque
 impulsado por datos con fundamentos geométricos de metrología de vista única nos permite obtener mediciones fundamentadas y explicables.
 

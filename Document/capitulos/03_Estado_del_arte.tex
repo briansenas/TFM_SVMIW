@@ -26,13 +26,13 @@ durante una proyección del espacio 3D al espacio 2D. No obstante, se vuelve via
 invariantes geométricas del espacio proyectivo, como los puntos de fuga, las líneas de horizonte y las
 homografías de planos.
 \par
-Uno de los trabajos seminales en este ámbito son los de Criminisi \emph{et al}~\cite{CriminisiReconstruction,CriminisiApplications},
+Uno de los trabajos seminales en este ámbito son los de Criminisi \emph{et al.}~\cite{CriminisiReconstruction,CriminisiApplications},
 que sentó las bases metodológicas para una metrología métrica a partir de una sola vista. En estos trabajos,
 se describen técnicas, robustas para estimar distancias, proporciones y relaciones ortogonales empleando herramientas como el
 ratio cruzado, la localización de los puntos de fuga, en combinación con información de escala proveniente de objetos de referencia
 en la escena.
 \par
-Durante los años posteriores, diversos trabajos extendieron este enfoque geométrico. Por ejemplo, Chen \emph{et al}~\cite{Chen2006}
+Durante los años posteriores, diversos trabajos extendieron este enfoque geométrico. Por ejemplo, Chen \emph{et al.}~\cite{Chen2006}
 propusieron algoritmos más robustos para imágenes no calibradas. Sin embargo, estos métodos seguían dependiendo fuertemente de
 suposiciones geométricas ideales, como la presencia clara de planos ortogonales o líneas paralelas en escena. Además de necesitar
 información de la escala de un objeto de referencia en la imagen, para poder extrapolar la escala absoluta de otros elementos.
@@ -40,11 +40,11 @@ información de la escala de un objeto de referencia en la imagen, para poder ex
 Con el avance de la visión por computador y el aumento en la disponibilidad de datos y poder computacional, comenzó a emerger una
 transición hacia enfoques más flexibles basados en aprendizaje. Un punto de inflexión fue el trabajo de \emph{Make3D}~\cite{Make3D},
 combinando principios geométricos con modelos de aprendizaje.  Este enfoque híbrido marcó el inicio de un cambio de paradigma,
-los sistemas comenzaron a aprender relaciones espaciales directamente de los datos, como en el trabajo de David~\emph{et al}~\cite{DepthMapMultiScale}.
+los sistemas comenzaron a aprender relaciones espaciales directamente de los datos, como en el trabajo de David~\emph{et al.}~\cite{DepthMapMultiScale}.
 En él, se utiliza dos redes neuronales profundas, una para predecir información de profundidad global que se refina posteriormente
 a trozos por la segunda.
 \par
-La culminación de esta transición puede observarse en el trabajo de Zhu~\emph{et al}~\cite{SVMIW}. En lugar de depender de estructuras
+La culminación de esta transición puede observarse en el trabajo de Zhu~\emph{et al.}~\cite{SVMIW}. En lugar de depender de estructuras
 geométricas visibles o calibraciones manuales, este enfoque utiliza redes profundas entrenadas con objetos de referencia comunes (como humanos
 y automóviles) para inferir escala y geometría en entornos reales y no estructurados. Este método representa una nueva generación
 de metrología visual, donde el conocimiento geométrico está implícito en el modelo aprendido y no codificado de forma explícita.
