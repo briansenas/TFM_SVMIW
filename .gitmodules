@@ -1,3 +1,7 @@
 [submodule "ScaleNet"]
 	path = ScaleNet
 	url = https://github.com/briansenas/ScaleNet
+[submodule "d2-scale-net"]
+	path = d2-scale-net
+	url = git@github.com:briansenas/detectron2-scale-net.git
+  branch = feature/multiple-classes
