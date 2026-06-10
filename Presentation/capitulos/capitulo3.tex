@@ -1,0 +1,172 @@
+\section{Materiales y métodos}
+\subsection{Single View Metrology in the Wild}
+\begin{frame}
+    \frametitle{Single View Metrology in the Wild}
+    \begin{figure}[!ht]
+      \center
+      \includegraphics[width=.65\textwidth]{imagenes/chapter2/scene_model.pdf}
+      \caption{Modelo de escena de Rui Zhu \emph{et al}\footnotemark}
+    \end{figure}
+    \footcitetext{SVMIW}
+\end{frame}
+
+\note{
+No obstante, nuestro enfoque será en el que más encaja con nuestro título
+``Single View Metrology in the Wild'' de Zhu et al.
+En él, argumentan poder estimar la escala absoluta de la imagen entrenando
+en datos no supervisado que nos permita modelar ciertas variables del modelo de escena que se
+dibuja en pantalla. Es el modelo típico proyectivo de una cámara estenopeica.
+La idea es simple en teoría, si logramos estimar ciertos parámetros sencillos de la escena,
+como el ángulo de rotación de la cámara con respecto al horizonte, así como detectar las personas
+y la caja que las encierra, podremos jugar a hacer re-proyecciones entre las escenas
+que nos dará la información de la altura de los objetos en escala absoluta.
+}
+
+\begin{frame}
+    \frametitle{Single View Metrology in the Wild}
+    \begin{enumerate}
+      \item Utilizando geometría perspectiva obtenemos las siguientes ecuaciones:
+    \end{enumerate}
+    \vspace{.5cm}
+      \begin{equation}
+          v_t = \frac{(f\, cos\theta + v_c\, sin\theta)\,h_{obj} + (-f\, sin\theta + v_c\, cos\theta)z - f\,h_{cam}}{h_{obj}tan\theta + z\,cos\theta}
+      \end{equation}
+      \begin{equation}
+        v_b = \frac{-f\,sin\theta z + v_c cos\theta z - f\,h_{cam}}{z\, cos\theta}
+      \end{equation}
+    \begin{enumerate}
+      \item Donde ``$v_t$'' y ``$v_b$'' son la parte superior e inferior de la persona en la imagen.
+    \end{enumerate}
+    \footcitetext{SVMIW}
+\end{frame}
+
+\note{
+  -Explicar un poco la ecuación y volver hacia a atrás en la imagen y enseñar "vt" y "vb"
+}
+
+
+\begin{frame}
+    \frametitle{Single View Metrology in the Wild}
+    \begin{figure}[!ht]
+      \center
+      \includegraphics[width=1\textwidth]{imagenes/chapter2/pipeline.pdf}
+      \caption{Pipeline propuesta por Rui Zhu \emph{et al}\footnotemark}
+    \end{figure}
+    \footcitetext{SVMIW}
+\end{frame}
+
+\note{}
+
+\begin{frame}
+    \frametitle{Single View Metrology in the Wild}
+    \begin{enumerate}
+      \item Las pérdidas adicionales introducidas por el artículo son:
+    \end{enumerate}
+    \vspace{.3cm}
+\begin{equation}
+  \mathcal{L}_{vt} ({v_t^i}_{i=1}^N) = \frac{1}{N}\sum_{i=1}^N ||v_{t_{det}}^i - v_t^i||
+\end{equation}
+\begin{equation}
+  \mathcal{L}_{h_{obj}} ({h_{obj}^i}_{i=1}^N) = \frac{1}{N}\sum_{i=1}^N \mathcal{P}(h_{obj}^i;\mu,\sigma)
+\end{equation}
+        \begin{itemize}
+          \item Donde $\mathcal{L}_{v_t}$ es el error de re-proyección y $\mathcal{L}_{h_{obj}}$ es el a-priori ($175cm\pm0.2cm$)
+        \end{itemize}
+    \footcitetext{SVMIW}
+\end{frame}
+
+\subsection{Problemas encontrados}
+\begin{frame}
+    \frametitle{Problemas encontrados}
+    \begin{enumerate}
+      \item No disponemos del modelo pre-entrenado por ellos.
+      \item No disponemos de código de entrenamiento.
+      \item El dataset de calibración de cámara SUN360\footnotemark ya no está disponible.
+    \end{enumerate}
+    \footcitetext{SUN360}
+\end{frame}
+
+\note{}
+
+\begin{frame}
+  \frametitle{Soluciones propuestas}
+  \begin{enumerate}
+    \item Se ha encontrado un sustituto de SUN360\footcite{SUN360}, PANO360\footcite{SPEC}
+      \begin{itemize}
+        \item Se obtiene un total de 187.206 imágenes para estimación de parámetros de cámara.
+      \end{itemize}
+    \item Se ha replicado el artículo utilizando ``detectron2''\footcite{detectron2}.
+      \begin{itemize}
+        \item Introduciendo mejoras de rendimiento y eficiencia a nivel de hardware
+        \item Simplificando el mantenimiento y extensibilidad del código
+      \end{itemize}
+  \end{enumerate}
+\end{frame}
+
+\subsection{Datos de validación}
+\begin{frame}
+  \frametitle{Datos de validación}
+\end{frame}
+
+\subsection{Entorno}
+\begin{frame}
+  \frametitle{Tecnologías utilizadas}
+  \begin{table}[htp]
+    \vspace{-.5cm}
+      \begin{tabular}{cccc}
+        \begin{minipage}{.2\textwidth}
+          \includegraphics[width=\textwidth]{imagenes/chapter3/Python}
+        \end{minipage}
+                                  &
+        \begin{minipage}{.2\textwidth}
+          \includegraphics[width=.9\textwidth]{imagenes/chapter3/FastAI}
+        \end{minipage}
+                                  &
+        \begin{minipage}{.2\textwidth}
+          \includegraphics[width=\textwidth]{imagenes/chapter3/Pytorch}
+        \end{minipage}
+                                  &
+        \begin{minipage}{.2\textwidth}
+          \includegraphics[width=.9\textwidth]{imagenes/chapter3/Open3D}
+        \end{minipage}
+                                  \\
+        \begin{minipage}{.2\textwidth}
+          \includegraphics[width=\textwidth]{imagenes/chapter3/Numpy}
+        \end{minipage}
+                                                        &
+        \begin{minipage}{.2\textwidth}
+          \includegraphics[width=.9\textwidth]{imagenes/chapter3/Scikit}
+        \end{minipage}
+                                                        &
+        \begin{minipage}{.2\textwidth}
+          \includegraphics[width=.9\textwidth]{imagenes/chapter3/Polars}
+        \end{minipage}
+        &
+                                                        \\
+                                                        &
+        \begin{minipage}{.2\textwidth}
+          \includegraphics[width=.9\textwidth]{imagenes/chapter3/Nvidia}
+        \end{minipage}
+                                                        &
+        \begin{minipage}{.2\textwidth}
+          \includegraphics[width=.9\textwidth]{imagenes/chapter3/Colab}
+        \end{minipage}
+                                                        &
+                                                        \\
+      \end{tabular}
+  \end{table}
+\end{frame}
+
+\note{
+Para el desarrollo y ejecución de los modelos fue necesario el uso de
+la librería de DL Pytorch junto con las librerías CUDA para poder ejecutar
+los modelos en las tarjetas gráficas de NVIDIA. Para los cálculos numéricos y
+el manejo de datos se utilizaron Numpy y Polars. Teniendo en cuenta que para el
+cálculo de las métricas hemos utilizado la librería de scikit-learn.
+Para la visualización y fácil manipulación de las nubes de puntos se hizo uso
+de la librería de Open3D y Pyntcloud.
+}
+
+
+
+\note{}

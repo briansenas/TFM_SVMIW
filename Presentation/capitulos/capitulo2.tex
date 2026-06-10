@@ -1,0 +1,51 @@
+\section{Estado del arte}
+\subsection[Búsqueda Scopus]{Búsqueda Scopus}
+\begin{frame}
+    \frametitle{Tendencia Scopus}
+    \begin{columns}
+      \column{0.6\textwidth}
+    \begin{enumerate}
+      \item \textbf{No hay muchas publicaciones}, aunque si una tendencia positiva.
+        \begin{itemize}
+          \item Tampoco hay muchos datasets con tamaños (altura) etiquetados.
+        \end{itemize}
+      \item La tarea consisten en intentar medir la escala absoluta.
+        \begin{itemize}
+          \item Factores importantes: \textbf{contenido, contraste y distorsiones}.
+        \end{itemize}
+    \end{enumerate}
+    \column{0.4\textwidth}
+    \begin{figure}
+      \begin{center}
+        \includegraphics[width=\textwidth]{imagenes/chapter1/Scopus-Analyze-Year}
+      \end{center}
+      \caption{Tendencia de publicaciones en el campo según Scopus.}
+    \end{figure}
+  \end{columns}
+  \vspace{-.2cm}
+\end{frame}
+\note{
+  Los artículos relacionados en el campo son pocos.
+  Si buscamos por los conceptos relacionados, remarcando el hecho de tratar con una sola imagen,
+  obtenemos una tendencia positiva en los últimos años, reforzando lo mencionado anteriormente, pero
+  sigue siendo un número relativamente ligero de publicaciones, con tan solo 35 en el último año.
+}
+\subsection{Estado del arte}
+\begin{frame}
+    \frametitle{Referencias}
+    \begin{enumerate}
+    \item Trabajos seminales de Criminisi \emph{et al}\footnotemark
+    \item Iteraciones sobre dichas ideas premisas geométricas.
+    \item Punto de inflexión con artículos como \emph{Make3D}\footnotemark \;y el trabajo de David \emph{et al}\footnotemark[3].
+    \end{enumerate}
+      \footcitetext{CriminisiReconstruction, CriminisiApplications, CriminisiPaintings}
+      \footcitetext{Make3D, DepthMapMultiScale}
+\end{frame}
+
+\note{
+  Por dar un poco de contexto del estado del arte, tenemos los trabajos seminales de Criminisi et al,
+que culminaron en una tesis muy importante para el campo, así como diversos trabajos que iteran sobre
+sus ideas. El punto de inflexión que nos hace tirar hacia el aprendizaje a través de los datos, lo se pueden ver en
+los trabajos de Make3D y David et al. Donde en ambos, aprenden información geométrica de la imagen
+como su profundidad utilizando markov random field o redes convolucionales.
+}
