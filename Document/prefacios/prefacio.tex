@@ -23,29 +23,28 @@
 
 \noindent{\textbf{Resumen}}\\
 La metrología monocular constituye una línea de investigación de gran relevancia debido a su potencial
-para obtener mediciones métricas precisas a partir de una única imagen, es decir, una sola vista de la escena.
-Es especialmente útil en situaciones donde no es posible o práctico capturar múltiples imágenes,
+para obtener mediciones precisas a partir de una única imagen, es decir, una sola vista de la escena.
+Es especialmente útil en situaciones donde no es posible, o práctico, capturar múltiples imágenes,
 desde diferentes ángulos. El auge del aprendizaje profundo ha abierto nuevas oportunidades para abordar
 este problema, permitiendo inferir información a partir de patrones visuales aprendidos. Este Trabajo de Fin de Máster
-presenta la implementación del método de aprendizaje semi-supervisado descrito por Zhu \emph{et al.}
-en \emph{Single View Metrology in the Wild}~\cite{SVMIW}, con el objetivo de contribuir al avance
+presenta una implementación actualizada del método de aprendizaje semi-supervisado descrito por Zhu \emph{et al.}
+en \emph{Single View Metrology in the Wild}, utilizando el reciente framework de detección de objetos \emph{detectron2}, con el objetivo de contribuir al avance
 de las técnicas de estimación geométrica en escenarios no controlados.
 \smallskip
 
-Como parte de esta contribución, el método ha sido adaptado e integrado en el framework
-de detección de objetos \emph{detectron2}~\cite{detectron2}.
-Esto permite aprovechar arquitecturas más recientes, una mayor modularidad, mejores mecanismos de optimización y entrenamiento distribuido, así como un rendimiento computacional superior y una mayor mantenibilidad del código.
-En relación a los datos, se utiliza un nuevo conjunto de datos de entrenamiento del módulo
-de calibración de cámara obtenido de la red social Flickr~\cite{SPEC}, como sustitución al
-conjunto de datos original SUN360~\cite{SUN360}, que ya no está disponible. Además, se recolectan múltiples fotogramas de cámaras de seguridad
-como conjunto de validación experimental del método implementado.
+Esta implementación actualizada permite aprovechar arquitecturas más recientes, una mayor modularidad,
+mejores mecanismos de optimización y entrenamiento distribuido, así como un rendimiento computacional superior.
+En relación a los datos, se utiliza un conjunto de datos alternativo, de entrenamiento del módulo
+de calibración de cámara obtenido de la red social Flickr, como sustitución al
+conjunto de datos original SUN360, que ya no está disponible. Además, se utilizan múltiples fotogramas de cámaras de seguridad
+como conjunto de validación experimental del método implementado,.
 \smallskip
 
 El rendimiento del sistema se evalúa frente al procedimiento tradicional basado en la calibración manual de
 la cámara y la obtención de mediciones adicionales de referencia en la escena para estimar la altura de los objetos.
 Si bien los resultados presentados en este trabajo son de carácter preliminar,
-se obtuvo un error medio de 11 cm. Este resultado resulta competitivo frente al método
-tradicional, que presenta un error medio de 35 cm, con la ventaja adicional de no
+se obtuvo un error medio de 14 cm. Este resultado resulta competitivo frente al método
+tradicional, que presenta un error medio de 37 cm, con la ventaja adicional de no
 requerir información complementaria ni mediciones previas de la escena
 
 \cleardoublepage
@@ -66,27 +65,27 @@ requerir información complementaria ni mediciones previas de la escena
 
 %\vspace{0.7cm}
 \noindent{\textbf{Abstract}}\\
-Monocular metrology constitutes a highly relevant research area due to its potential to obtain accurate metric measurements from a single image,i.e,
+Monocular metrology constitutes a highly relevant research area due to its potential to obtain accurate measurements from a single image,i.e,
 a single view of a scene. It is particularly useful in situations where capturing multiple images from different
 viewpoints is not feasible or practical. The rise of deep learning has opened new opportunities to address this problem
 by enabling the inference of geometric information from learned visual patterns.
-This Master's Thesis presents the implementation of the semi-supervised learning method described by Zhu \emph{et al.} in
-\emph{Single View Metrology in the Wild}~\cite{SVMIW}, with the aim of contributing to the advancement of geometric estimation techniques
+This Master's Thesis presents an updated implementation of the semi-supervised learning method described by Zhu \emph{et al.} in
+\emph{Single View Metrology in the Wild}, using the recent object detection framework detectron2,
+with the aim of contributing to the advancement of geometric estimation techniques
 in unconstrained environments.
 \smallskip
 
-As part of this contribution, the method has been adapted and integrated into the \emph{detectron2} object detection framework~\cite{detectron2}.
-This integration enables the use of more recent architectures, greater modularity, improved optimization mechanisms and distributed training capabilities,
-as well as superior computational performance and enhanced code maintainability. Regarding the data, a new training dataset for the camera calibration module, collected from the Flickr social network~\cite{SPEC},
-is employed as a replacement for the original SUN360 dataset~\cite{SUN360}, which is no longer available.
-In addition, multiple frames from surveillance cameras were collected to serve as an experimental validation dataset for the implemented method.
+This updated implementation enables the use of more recent architectures, greater modularity, improved optimization mechanisms and distributed training capabilities,
+as well as superior computational performance. Regarding the data, an alternative training dataset for the camera calibration module, collected from the Flickr social network,
+is employed as a replacement for the original SUN360 dataset, which is no longer available.
+In addition, multiple frames from surveillance cameras are used to serve as an experimental validation dataset for the implemented method.
 \smallskip
 
 The performance of the system is evaluated against the traditional procedure based on manual camera calibration and the
 acquisition of additional reference measurements within the scene to estimate object heights.
 Although the results presented in this work are preliminary, the proposed method achieved a
-mean error of 11 cm. This result is competitive with the traditional approach,
-which exhibits a mean error of 35 cm, while offering the additional advantage of
+mean error of 14 cm. This result is competitive with the traditional approach,
+which exhibits a mean error of 37 cm, while offering the additional advantage of
 not requiring supplementary information or prior measurements of the scene.
 
 \chapter*{}

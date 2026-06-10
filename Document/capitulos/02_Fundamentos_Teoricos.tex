@@ -12,11 +12,11 @@ tras aplicar la semejanza entre triángulos~\cite{Hartley2004,VisionBookMIT}.
     x=f\cdot\frac{X}{Z}, \; y=f\cdot\frac{Y}{Z}
 \end{equation}
 
-\begin{figure}[htp]
+\begin{figure}[!ht]
 \begin{center}
-    \includegraphics[width=0.7\textwidth]{imagenes/chapter2/pinhole-model}
+    \includegraphics[width=0.9\textwidth]{imagenes/chapter2/pinhole-model}
 \end{center}
-\caption{
+\caption[Modelo de cámara estenopeico sacado de ~\cite{Hartley2004}.]{
     Se observa la geometría subyacente del modelo de cámara estenopeico sacada de~\cite{Hartley2004}.
     La distancia entre el punto principal, P, y el centro de la cámara se denomina distancia focal, f, y
     nos permite obtener la relación entre las coordenadas del plano de imagen y del punto en las coordenadas
@@ -40,11 +40,11 @@ el vector de traslación t, que definen la posición y orientación de la cámar
 Por último, $s$ sería un factor de escala (la unidad de distancia en el espacio de píxeles puede ser distinto al de las coordenadas del mundo). Este modelo permite modelar coordenadas 3D del mundo a píxeles de la imagen, véase la
 Figura~\ref{fig:WorldToImageCoordinates}.
 
-\begin{figure}[htp]
+\begin{figure}[!ht]
 \begin{center}
-    \includegraphics[width=0.5\textwidth]{imagenes/chapter2/world_and_camera_coordinates}
+    \includegraphics[width=0.6\textwidth]{imagenes/chapter2/world_and_camera_coordinates}
 \end{center}
-\caption{Visualización de las transformaciones necesarias, $[R|t]$, para transformar las coordenadas 3D a 2D, sacada de~\cite{VisionBookMIT}.}
+\caption[Transformaciones geométricas de rotación y translación para alinear escenas 3D-2D.]{Visualización de las transformaciones necesarias, $[R|t]$, para transformar las coordenadas 3D a 2D, sacada de~\cite{VisionBookMIT}. Donde $P_C$ es el punto en coordenadas de la cámara y $P_w$ en la escena 3D. Existe una rotación, $R$, y translación, $T$, para transformar $P_C$ en $P_w$ o viceversa.}
 \label{fig:WorldToImageCoordinates}
 \end{figure}
 
@@ -68,11 +68,17 @@ No obstante, en caso de no poseer información al respecto del sensor se puede u
 Finalmente, hasta el momento no se ha incluido ningún parámetro de distorsión al modelo de cámara. Sin embargo,
 existen diferentes distorsiones que pueden ocurrir como inclinación o distorsiones radiales. Estos son parámetros
 adicionales que deben estimarse para obtener una re-proyección precisa.
-\begin{figure}[htp]
+\begin{figure}[!ht]
 \begin{center}
-    \includegraphics[width=0.5\textwidth]{imagenes/chapter2/pinhole_and_sensor}
+    \includegraphics[width=0.7\textwidth]{imagenes/chapter2/pinhole_and_sensor}
 \end{center}
-\caption{Proyección de una imagen sobre el sensor de una cámara~\cite{VisionBookMIT}.}
+\caption[Proyección de una imagen sobre el sensor de una cámara~\cite{VisionBookMIT}.]{
+Proyección de una imagen sobre el sensor de una cámara~\cite{VisionBookMIT}.
+Se observa como un punto $P$ en la escena
+se proyecta tanto sobre un plano virtual de imagen en (x, y) como, a su vez,
+en el sensor de la cámara tras pasar por el centro focal de la misma.
+La posición en píxeles del punto depende de la distancia focal, $f$, de la cámara.
+}
 \label{fig:ImageSensor}
 \end{figure}
 \section{Metrología de vista única}\label{sec:SVM}
@@ -96,14 +102,16 @@ como la altura y la distancia al objeto de referencia. La premisa subyacente de 
 aunque generalmente se pierden información de profundidad, existen invariantes geométricas que se preservan y
 nos permiten razonar sobre la estructura y la escala~\cite{VisionBookMIT,Hartley2004}(véase las Figuras~\ref{fig:PalmaHorizon} y~\ref{fig:OfficeMeasurements}).
 \par
-\begin{figure}[htp]
+\begin{figure}[!ht]
 \begin{center}
-    \subfloat{\includegraphics[width=0.6\textwidth]{imagenes/chapter2/palma_horizon}}
-    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter2/horizon_line}}
+    \subfloat{\includegraphics[width=0.55\textwidth]{imagenes/chapter2/horizon_line}}\\
+    \subfloat{\includegraphics[width=0.9\textwidth]{imagenes/chapter2/palma_horizon}}
 \end{center}
-\caption{Se observa como todas las líneas paralelas convergen a los mismos puntos de fuga.
+\caption[Cálculo de la línea del horizonte en la imagen por medio de los puntos de fuga.]{
+  Se observa como todas las líneas paralelas convergen a los mismos puntos de fuga.
 Con dicha premisa geométrica,
-la línea del horizonte se puede calcular como se indica en la imagen a la derecha, como la intersección de cuatro líneas, paralelas dos a dos.
+la línea del horizonte se puede calcular como se indica en la imagen superior,
+como la línea que une todos los puntos de fuga.
 Imágenes extraídas de~\cite{VisionBookMIT}.
 }
 \label{fig:PalmaHorizon}
@@ -118,9 +126,9 @@ Las redes neuronales, entrenadas con grandes volúmenes de datos, han aprendido 
 estimar automáticamente la escala y profundidad de los objetos a partir de una sola imagen. La combinación del enfoque
 impulsado por datos con fundamentos geométricos de metrología de vista única nos permite obtener mediciones fundamentadas y explicables.
 
-\begin{figure}[htp]
+\begin{figure}[!ht]
 \begin{center}
-    \includegraphics[width=0.4\textwidth]{imagenes/chapter2/office-measurements}
+    \includegraphics[width=0.5\textwidth]{imagenes/chapter2/office-measurements}
 \end{center}
 \caption{Ejemplo visual de información extraíble a partir una sola imagen si se conoce la longitud de alguna de líneas, extraída de~\cite{VisionBookMIT}.
 }
@@ -142,9 +150,9 @@ Los modelos de aprendizaje profundo están fuertemente inspirados en la estructu
 En términos generales, la extracción automática de características suele
 desempeñar mejores resultados frente a las características extraídas manualmente.
 \par
-\begin{figure}[htp]
+\begin{figure}[!ht]
   \centering
-  \includegraphics[width=0.7\textwidth]{imagenes/chapter2/ANNVisualization.png}
+  \includegraphics[width=1\textwidth]{imagenes/chapter2/ANNVisualization.png}
   \caption[Ejemplo gráfico de una red neuronal.]
   {Ejemplo gráfico de una red neuronal~\cite{NeuronImages, NeuronSimilarity,ShallowAndDeepNN}.
     (a) y (b) muestran una neurona biológica y una artificial, respectivamente.
@@ -171,30 +179,3 @@ Se repite el proceso descrito anteriormente varias veces con distintos ejemplos.
 aprendizaje. Debe de ser representativo, extenso y limpio de anormalidades, ya que estaremos extrayendo características
 relevantes a partir de ellos. El desarrollo de estas técnicas ha supuesto un avance fundamental en múltiples campos, como la
 visión por computador. Permitiendo mejorar la detección de objetos, estimaciones de profundidad y metrología.
-\section{Detección de objetos}
-La detección de objetos es una de las tareas fundamentales dentro del campo de la visión por computador. Consiste en identificar y localizar
-instancias de objetos de interés dentro de una imagen o secuencia de vídeo. A diferencia de la clasificación de imágenes, donde se
-asigna una etiqueta global a la imagen (por ejemplo, un 1 si la imagen posee un gato), la detección implica, además, la estimación de la posición
-espacial de los objetos (indicar dónde en la imagen está el gato)~\cite{ObjectDetectionSurvey}.
-\par
-En las primeras etapas, los detectores tradicionales combinaban la extracción de características manuales como Viola-Jones u HOG con
-clasificadores estadísticos~\cite{ObjectDetectionSurvey}. Se utilizaba ventanas deslizantes, que extraían trozos de la imagen, para calcular
-características locales. A continuación, se utilizaban dichas características para clasificar la presencia de objetos por medio de un
-clasificador estadístico, que aprendía con ejemplos de imágenes etiquetadas durante su entrenamiento (véase la Figura~\ref{fig:SelectiveSearch}).
-Sin embargo, estos enfoques presentaban importantes limitaciones en precisión, velocidad y fiabilidad frente a datos no vistos.
-\par
-La transición hacia modelos de aprendizaje más complejos ha sido impulsada por la disponibilidad de grandes conjuntos de datos anotados y
-por los avances en aprendizaje profundo~\cite{ObjectDetectionSurvey}. Sin embargo, muchos de los principios fundacionales siguen siendo
-los mismos: la combinación de representación visual, inferencia estadística y coherencia geométrica.
-
-\begin{figure}[H]
-\begin{center}
-    \includegraphics[width=0.7\textwidth]{imagenes/chapter2/selective_search}
-\end{center}
-\caption{
-Visualización del proceso de ventana deslizante en busca de objetos~\cite{VisionBookMIT}, en este caso se busca un coche.
-Se extraen características a múltiples escalas, se obtienen propuestas que se filtran basándose en el nivel de confianza del modelo. Finalmente,
-se ajusta la detección con métodos de refinamiento, como la eliminación de detecciones solapadas.
-}
-\label{fig:SelectiveSearch}
-\end{figure}

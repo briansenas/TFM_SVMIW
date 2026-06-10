@@ -1,13 +1,26 @@
 \chapter{Introducción}
 \section{Definición del problema}
 La metrología monocular, es decir, a partir de una única imagen, conocida como \emph{Single View Metrology} (SVM) en inglés, se
-refiere a la estimación de propiedades métricas del mundo tridimensional a partir de una sola vista bidimensional~\cite{VisionBookMIT,Hartley2004}.
+refiere a la estimación de propiedades métricas del mundo tridimensional a partir de una sola vista bidimensional~\cite{VisionBookMIT,Hartley2004}
+(véase la Figura~\ref{fig:SVM}).
 Este enfoque es especialmente útil en situaciones donde no es posible o práctico capturar múltiples imágenes desde diferentes ángulos, ya
 sea por limitaciones físicas, temporales o logísticas. El interés en este campo ha crecido en paralelo con los avances en visión
 por computador, aprendizaje profundo y la disponibilidad de grandes conjuntos de datos. Desde sus orígenes, técnicas
 como las presentadas por~\cite{CriminisiApplications, CriminisiReconstruction, CriminisiPaintings} han demostrado que es posible
 inferir medidas reales si se cuenta con ciertos supuestos geométricos, como líneas paralelas, puntos de fuga o planos rectangulares.
 \par
+
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=0.95\textwidth]{imagenes/chapter1/teaser.pdf}
+  \end{center}
+  \caption[Visualización del procedimiento de metrología monocular sacada de~\cite{SVMIW}.]{
+    Visualización del procedimiento de metrología monocular sacada de~\cite{SVMIW}. El objetivo es dada una imagen de entrada (izquierda), poder
+  establecer las relaciones geométricas necesarias para estimar correctamente la altura de los objetos en escena (medio, derecha).
+  Pudiendo incluso insertar otros objetos en la misma con la escala adecuada (derecha). }\label{fig:SVM}
+\end{figure}
+
+
 Sin embargo, la aplicación de SVM en entornos naturales o no controlados, conocida como \emph{Single View Metrology in the Wild}~\cite{SVMIW},
 plantea una serie de dificultades. En primer lugar, los métodos clásicos dependen fuertemente de la existencia de
 estructuras geométricas visibles y bien definidas~\cite{VisionBookMIT}, lo que limita su aplicabilidad a imágenes reales
@@ -21,7 +34,7 @@ de medidas métricas~\cite{VisionBookMIT}, véase la Figura~\ref{fig:Perspective
     \subfloat{\includegraphics[width=0.33\textwidth]{imagenes/chapter2/LegoRightBig}}
     \subfloat{\includegraphics[width=0.2\textwidth]{imagenes/chapter2/AmesRoom}}
 \end{center}
-\caption{Ilusión óptica que ocasiona a que un mismo objeto, el muñeco de lego, se vea de diferente tamaño según la posición en la habitación
+\caption[Ilusión óptica, la habitación de Ames.]{Ilusión óptica que ocasiona a que un mismo objeto, el muñeco de lego, se vea de diferente tamaño según la posición en la habitación
 de Ames (menor en la imagen a la izquierda que en la imagen central). La habitación de Ames está construida de forma irregular de forma que al mirar desde un punto en concreto aparenta completamente rectangular, véase la imagen a la derecha.
 Ilustraciones sacadas de~\cite{VisionBookMIT}.
 }\label{fig:PerspectiveIlusion}
@@ -61,16 +74,16 @@ abre la puerta a una amplia gama de aplicaciones reales~\cite{HoiemPopUp,HoiemOb
 
 En el ámbito de la visión por computador se requieren herramientas de metrología más accesibles y confiables.
 En este sentido, contribuir al desarrollo de soluciones que permitan extraer medidas fiables a partir de una sola imagen puede tener un impacto significativo en la democratización de tecnologías de medición, con efectos positivos en ámbitos como la justicia, la salud o la ingeniería.
-Por todo ello, se considera que el presente Trabajo Fin de Máster puede suponer una aportación relevante, tanto a nivel teórico como práctico, en el avance de técnicas robustas de metrología monocular aplicadas a contextos reales y no controlados.
+Por todo ello, se considera que el presente Trabajo Fin de Máster (TFM) puede suponer una aportación relevante, tanto a nivel teórico como práctico, en el avance de técnicas robustas de metrología monocular aplicadas a contextos reales y no controlados.
 
 \section{Objetivos}
-El objetivo principal de este Trabajo Fin de Máster (TFM) es desarrollar
+El objetivo principal de este TFM es implementar
 un \textbf{sistema de estimación automática de la estatura de individuos a partir de una sola imagen},
 utilizando técnicas de metrología monocular. Los objetivos específicos incluyen:
 \begin{enumerate}
     \item Revisar el estado del arte en técnicas de estimación de medidas antropométricas a partir de imágenes.
-    \item Implementar y validar un algoritmo basado en principios de metrología visual que estime con precisión la estatura de una persona.
-    \item Probar el sistema en diferentes contextos y con variabilidad en las condiciones de iluminación, perspectiva y posición de las personas.
+    \item Implementar un algoritmo basado en principios de metrología visual que estime con precisión la estatura de una persona.
+    \item Validar el sistema en diferentes contextos y con variabilidad en las condiciones de iluminación, perspectiva y posición de las personas.
 \end{enumerate}
 \section{Planificación del proyecto}
 Al planificar el proyecto, es fundamental tener en cuenta que el TFM
@@ -101,7 +114,7 @@ Las fases del ciclo de vida son:
       comparando desde la metrología con parámetros estimados con una técnica de calibración manual estándar,
       calibración basada en características de las cámaras y las estimadas por el algoritmo final.
 \end{itemize}
-\begin{table}[htp]
+\begin{table}[ht]
 \centering
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|c|c|llll|llll|lllll|llll|llll|}
@@ -128,7 +141,7 @@ los estudios. No obstante, dicha planificación sufrió retrasos y modificacione
 razones técnicas, como el estado del proyecto inicial o inexistencia de parte de los conjuntos de datos del autor, como
 personales. La planificación final se puede observar en la Tabla~\ref{tab:PlanificacionFinal}.
 
-\begin{table}[htp]
+\begin{table}[ht]
 \centering
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{|c|c|l|l|l|l|l|l|l|l|l|l|l|l|l|l|}
@@ -169,7 +182,7 @@ Para los cálculos, se estima un total de 147 días, 105 laborables y 440 horas,
   \begin{tabular}{ll}
 \hline
 \rowcolor[HTML]{FFCB2F}
-\multicolumn{1}{|c|}{\cellcolor[HTML]{FFCB2F}{\textbf{Item}}} & \multicolumn{1}{c|}{\cellcolor[HTML]{FFCB2F}{\textbf{Costo}}} \\ \hline
+\multicolumn{1}{|c|}{\cellcolor[HTML]{FFCB2F}{\textbf{Item}}} & \multicolumn{1}{c|}{\cellcolor[HTML]{FFCB2F}{\textbf{Coste}}} \\ \hline
 \multicolumn{1}{|l|}{Salario} & \multicolumn{1}{l|}{5.526,40\officialeuro} \\ \hline
 \multicolumn{1}{|l|}{Portátil de Gama Media} & \multicolumn{1}{l|}{700,00\officialeuro} \\ \hline
 \multicolumn{1}{|l|}{Google Colab Pro} & \multicolumn{1}{l|}{55,95\officialeuro} \\ \hline

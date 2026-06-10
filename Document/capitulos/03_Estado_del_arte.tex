@@ -1,7 +1,7 @@
 \chapter{Estado del Arte}
 \label{sec:EstadoDelArte}
 La metrología de vista única está captando cada vez más atención dentro de la comunidad
-científica y tecnológica debido a su enorme potencial para transformar cómo obtenemos información espacial
+científica y tecnológica, debido a su enorme potencial para transformar cómo obtenemos información espacial
 a partir de una sola imagen (véase la Figura~\ref{fig:ScopusSearch}). Esta técnica reduce
 significativamente los costes y complejidad de los sistemas de metrología, resultando
 altamente atractiva en aplicaciones móviles, industriales y de bajo presupuesto. Además,
@@ -9,16 +9,14 @@ los avances en visión por computador e inteligencia artificial permiten mejorar
 el uso y aplicabilidad de estos métodos. Profundizar en la investigación de la metrología de vista única
 no solo abre nuevas fronteras tecnológicas, sino que también responde a una necesidad creciente de
 soluciones más accesibles, precisas y eficientes.
-\begin{figure}[htp]
+\begin{figure}[!ht]
 \begin{center}
-    \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter3/Scopus-Analyze-Year}}
-    \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter3/Scopus-Analyze-Subject}}
+    \subfloat{\includegraphics[width=0.7\textwidth]{imagenes/chapter3/Scopus-Analyze-Year}}
+    % \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter3/Scopus-Analyze-Subject}}
 \end{center}
-\caption{Se observa, a la izquierda, una tendencia creciente en interés al campo de metrología de vista única, dado el incremento en número de publicaciones en los últimos años.
-A la derecha, se describe las áreas con mayor interés, destacan la ingeniería y ciencias de la computación. }
+\caption[Tendencia de búsquedas en Scopus.]{Se observa una tendencia creciente en interés al campo de metrología de vista única, dado el incremento en número de publicaciones en los últimos años.}
 \label{fig:ScopusSearch}
 \end{figure}
-\par
 La metrología de vista única es un área de la visión por computador que busca extraer información métrica
 tridimensional a partir de una única imagen, típicamente capturada por una cámara con proyección perspectiva.
 Esta tarea implica resolver un reto significativo, dada la pérdida de información de profundidad que ocurre
@@ -26,29 +24,108 @@ durante una proyección del espacio 3D al espacio 2D. No obstante, se vuelve via
 invariantes geométricas del espacio proyectivo, como los puntos de fuga, las líneas de horizonte y las
 homografías de planos.
 \par
-Uno de los trabajos seminales en este ámbito son los de Criminisi \emph{et al.}~\cite{CriminisiReconstruction,CriminisiApplications},
-que sentó las bases metodológicas para una metrología métrica a partir de una sola vista. En estos trabajos,
-se describen técnicas, robustas para estimar distancias, proporciones y relaciones ortogonales empleando herramientas como el
-ratio cruzado, la localización de los puntos de fuga, en combinación con información de escala proveniente de objetos de referencia
-en la escena.
+Una parte fundamental del procedimiento consiste en realizar la calibración de la cámara. En el campo de la
+visión por computador, la calibración de cámara ha tenido una larga historia~\cite{CalibrationSurvey}.
+Es el paso esencial en diversos problemas del campo, ya que permite obtener información de cómo se relaciona la escena 3D
+con el plano de imagen. Los métodos tradicionales de calibración dependen habitualmente de suposiciones
+sobre la escena o procedimientos manuales. El más común de ellos consiste en la grabación o toma de fotogramas
+con la presencia de un patrón de diseño conocido, como un tablero de ajedrez, que se mueve por la escena y
+se busca preservar sus características geométricas~\cite{ManualCameraCalib,heikkila1997four}.
+El problema de este proceso es la necesidad de una tediosa intervención manual, sin la seguridad de que funcione
+para nuevas escenas.
+El segundo, busca relaciones directas entre el
+espacio 3D-2D como puede ser las líneas y puntos de fuga~\cite{GeometricCalibration}. No obstante, necesita de escenas estructuradas y
+llenas de información geométrica, perdiendo precisión en escenas generales de diferentes entornos.
+Por último, existe la posibilidad de utilizar múltiples perspectivas para hacer una auto-calibración de la cámara~\cite{CameraSelfCalibration}.
+Estos métodos dependen de los límites de los algoritmos capaces de extraer características entre las escenas relacionadas.
 \par
-Durante los años posteriores, diversos trabajos extendieron este enfoque geométrico. Por ejemplo, Chen \emph{et al.}~\cite{Chen2006}
+Una vez obtenido los parámetros calibrados de la cámara, se pueden extraer más informaciones geométricas de la escena.
+Uno de los trabajos seminales en este ámbito son los de Criminisi \emph{et al.}~\cite{CriminisiReconstruction,CriminisiApplications},
+que sentó las bases metodológicas para una metrología métrica a partir de una sola vista. En estos trabajos
+se describen técnicas robustas para estimar distancias, proporciones y relaciones ortogonales, empleando herramientas como el
+ratio cruzado o la localización de los puntos de fuga, en combinación con información de escala proveniente de objetos
+de referencia en la escena. Durante los años posteriores, diversos trabajos extendieron este enfoque geométrico. Por ejemplo, Chen \emph{et al.}~\cite{Chen2006}
 propusieron algoritmos más robustos para imágenes no calibradas. Sin embargo, estos métodos seguían dependiendo fuertemente de
 suposiciones geométricas ideales, como la presencia clara de planos ortogonales o líneas paralelas en escena. Además de necesitar
 información de la escala de un objeto de referencia en la imagen, para poder extrapolar la escala absoluta de otros elementos.
 \par
 Con el avance de la visión por computador y el aumento en la disponibilidad de datos y poder computacional, comenzó a emerger una
-transición hacia enfoques más flexibles basados en aprendizaje. Un punto de inflexión fue el trabajo de \emph{Make3D}~\cite{Make3D},
-combinando principios geométricos con modelos de aprendizaje.  Este enfoque híbrido marcó el inicio de un cambio de paradigma,
+transición hacia enfoques más flexibles basados en aprendizaje. El aprendizaje profundo alcanza los mejores resultados en una
+multitud de subproblemas del campo de la visión por computador. En el caso de la calibración de cámara, existen diversos métodos
+que cada vez obtienen mejores resultados~\cite{CalibDataGeneration,SPEC,DeepCalib}, permitiendo disponer de un modelo capaz de estimar los parámetros para cualquier escena
+sin depender del modelo de cámara. De la misma forma, el aprendizaje profundo se ha vuelto cada vez más capaz de detectar objetos
+en la escena~\cite{ObjectDetectionSurvey}. Estos avances han permitido adaptar diversos modelos para realizar tareas de detección y metrología,
+estimando la altura o profundidad de los objetos en escena~\cite{SVMIW, SPEC, yang2024depthv2, DepthFromSingleImage}.
+En el trabajo de Günel \emph{et al.}~\cite{günel2018facebodyshapestell}, utilizan este enfoque basado en los datos para inferir la relación
+entre el contenido de la imagen y la altura de los individuos de la escena. Localizan la persona en la imagen, extraen diversas características
+de las mismas (como las características espaciales de la cara y cuerpo) y utilizan un modelo para predecir la altura con esas premisas
+extraídas. Similar al trabajo de BenAbdelkader \emph{et al.}~\cite{StatisticalHeight}, que utiliza \emph{a priori} antropométricos y geométricos de escena
+para realizar inferencia bayesiana sobre la estatura.
+\par
+Otro punto de inflexión fue el trabajo de \emph{Make3D}~\cite{Make3D},
+que también combina principios geométricos con modelos de aprendizaje.  Estos enfoques
+híbridos marcan el inicio de un cambio de paradigma,
 los sistemas comenzaron a aprender relaciones espaciales directamente de los datos, como en el trabajo de David~\emph{et al.}~\cite{DepthMapMultiScale}.
 En él, se utiliza dos redes neuronales profundas, una para predecir información de profundidad global que se refina posteriormente
 a trozos por la segunda.
-\par
 La culminación de esta transición puede observarse en el trabajo de Zhu~\emph{et al.}~\cite{SVMIW}. En lugar de depender de estructuras
 geométricas visibles o calibraciones manuales, este enfoque utiliza redes profundas entrenadas con objetos de referencia comunes (como humanos
 y automóviles) para inferir escala y geometría en entornos reales y no estructurados. Este método representa una nueva generación
 de metrología visual, donde el conocimiento geométrico está implícito en el modelo aprendido y no codificado de forma explícita.
+\par
 Así, el campo ha evolucionado desde un enfoque determinista y teóricamente riguroso hacia métodos basados en aprendizaje, más adaptativos,
 escalables y aplicables en condiciones del mundo real. Esta transición no solo refleja un cambio metodológico, sino también una ampliación
 significativa en el alcance y accesibilidad de la metrología de vista única en aplicaciones modernas como realidad aumentada o navegación
 autónoma.
+\begin{table}[ht]
+\centering
+\scriptsize
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{p{2.8cm} p{2.8cm} p{2.8cm} p{2.8cm}}
+\hline
+\textbf{Métodos} &
+\textbf{Calibración de cámara} &
+\textbf{Información para calibrar} &
+\textbf{Información para medir} \\
+\hline
+
+Calibración clásica con patrón &
+Estimación explícita de parámetros intrínsecos y extrínsecos mediante observación de un objeto conocido &
+Patrón calibrado (ajedrez, círculos, etc.), dimensiones conocidas y adquisición manual de varias imágenes &
+\\
+
+\hline
+
+Autocalibración geométrica &
+Recuperación de parámetros de cámara a partir de correspondencias entre imágenes y restricciones proyectivas &
+Múltiples imágenes de una misma escena, puntos o características emparejadas entre vistas &
+\\
+
+\hline
+
+Metrología monocular clásica
+&
+Puede utilizar una cámara previamente calibrada o estimar parcialmente la geometría proyectiva de la escena &
+Depende del método utilizado. Puede ser: puntos de fuga, horizonte, líneas paralelas o alguna estructura geométrica observable &
+Al menos una referencia métrica conocida (altura, longitud o distancia) para aplicar razones proyectivas o ratio cruzado \\
+
+\hline
+
+Calibración y metrología basada en aprendizaje profundo &
+Estimación automática de parámetros intrínsecos y/o extrínsecos de escena mediante redes neuronales &
+Conjunto de entrenamiento anotado, con información geométrica y antropométrica; durante inferencia únicamente una o varias imágenes &
+Dependiendo del método, puede requerirse una referencia métrica, estimación de profundidad o información geométrica adicional como en metrología clásica \\
+
+\hline
+
+Métodos híbridos
+(geometría + aprendizaje profundo) &
+Combinan calibración geométrica y estimación aprendida de parámetros de escena &
+Imagen monocular, geometría observable y modelo entrenado &
+Referencias geométricas débiles (verticales, horizonte, pose humana, etc.) o referencias métricas opcionales según el método \\
+
+\hline
+\end{tabular}
+\caption{Resumen de los principales enfoques de calibración de cámara y metrología monocular.}
+\label{tab:calib_metrology}
+\end{table}

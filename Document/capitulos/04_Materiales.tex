@@ -38,12 +38,12 @@ Esto es debido a que se utilizará el sensor de profundidad, ``CMOS 1/4'' OV9782
 tamaño de los objetos en escena utilizando el método clásico. Las cámaras empiezan a grabar simultáneamente, almacenando
 la información tanto en memoria como a través de la red. Se obtienen grabaciones en cuatro ubicaciones diferentes: una sala de seminarios,
 una rampa de entrada, un aparcamiento y una acera (véase la Figura~\ref{fig:DataExamples}).
-\begin{figure}[htp]
+\begin{figure}[!ht]
 \begin{center}
-    \subfloat{\includegraphics[width=0.25\textwidth]{imagenes/chapter4/ParkingLot.jpg}}
-    \subfloat{\includegraphics[width=0.25\textwidth]{imagenes/chapter4/EntranceRamp.jpg}}\\
-    \subfloat{\includegraphics[width=0.25\textwidth]{imagenes/chapter4/SeminarRoom.jpg}}
-    \subfloat{\includegraphics[width=0.25\textwidth]{imagenes/chapter4/Sidewalk.jpg}}
+    \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/ParkingLot.jpg}}
+    \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/EntranceRamp.jpg}}\\
+    \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/SeminarRoom.jpg}}
+    \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/Sidewalk.jpg}}
 \end{center}
 \caption{Ejemplo de grabaciones realizadas en las diferentes ubicaciones.}
 \label{fig:DataExamples}
@@ -51,7 +51,45 @@ una rampa de entrada, un aparcamiento y una acera (véase la Figura~\ref{fig:Dat
 % Nice end phrase perhaps?
 Este conjunto de datos, capturado bajo condiciones reales y desde múltiples puntos de vista, ha permitido una evaluación robusta de
 los métodos propuestos, facilitando el análisis de su rendimiento frente a diferentes configuraciones geométricas y
-tipos de cámaras de vigilancia. Tras filtrar los ejemplos válidos tenemos un total de 697 imágenes.
+tipos de cámaras de vigilancia. Tras filtrar los ejemplos válidos tenemos un total de 697 imágenes, con un total de 12 individuos de diferentes estaturas (véase la Tabla~\ref{tab:SubjectHeights}).
+\begin{table}[!htp]
+  \scriptsize
+  \centering
+\begin{tabular}{|c|c|c|}
+\hline
+\rowcolor[HTML]{FFCB2F}
+\textbf{Sujeto} & \textbf{Altura} & \textbf{Fotogramas} \\
+\hline
+idai001 & 162 & 70 \\
+\hline
+idai002 & 160 & 77 \\
+\hline
+idai003 & 184 & 5 \\
+\hline
+idai006 & 180 & 90 \\
+\hline
+idai007 & 169 & 65 \\
+\hline
+idai008 & 175 & 51 \\
+\hline
+idai009 & 178 & 4 \\
+\hline
+idai010 & 192 & 133 \\
+\hline
+idai011 & 174 & 6 \\
+\hline
+idai012 & 170 & 90 \\
+\hline
+idai014 & 174 & 49 \\
+\hline
+idai015 & 168 & 57 \\
+\hline
+\end{tabular}
+\caption{Se observan las diferentes estaturas de los 12 sujetos del conjunto de datos de cámaras de seguridad y su número de apariciones.}
+\label{tab:SubjectHeights}
+\end{table}
+
+
 \label{sec:COCO-Scale}
 \subsection{Estimación metrológica}
 \subsubsection{COCO-Scale}
@@ -67,12 +105,12 @@ contengan humanos o coches, para crear dos versiones del dataset, situados en un
 En el caso del dataset con personas, deben ser visibles tanto la cabeza como los tobillos, para poder realizar una estimación adecuada (véase la Figura~\ref{fig:COCO-ScaleSample}).
 El filtrado se realiza utilizando un modelo, Mask R-CNN~\cite{MaskRCNN}, capaz de detectar las personas y estimar los puntos de interés de su cuerpo, como tobillos y cabeza.
 En este trabajo, se utiliza solamente el conjunto de datos con personas. El número de imágenes de entrenamiento son 10.547, con 2.648 de validación.
-\begin{figure}[htp]
+\begin{figure}[!ht]
   \begin{center}
-    \subfloat{\includegraphics[width=0.25\textwidth]{imagenes/chapter4/COCOScale/sample-000000_reproj.jpg}}
-    \subfloat{\includegraphics[width=0.15\textwidth]{imagenes/chapter4/COCOScale/sample-000002_reproj.jpg}}\\
-    \subfloat{\includegraphics[width=0.25\textwidth ]{imagenes/chapter4/COCOScale/sample-000006_reproj.jpg}}
-    \subfloat{\includegraphics[width=0.20\textwidth]{imagenes/chapter4/COCOScale/sample-000009_reproj.jpg}}
+    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter4/COCOScale/sample-000000_reproj.jpg}}
+    \subfloat{\includegraphics[width=0.25\textwidth]{imagenes/chapter4/COCOScale/sample-000002_reproj.jpg}}\\
+    \subfloat{\includegraphics[width=0.4\textwidth ]{imagenes/chapter4/COCOScale/sample-000006_reproj.jpg}}
+    \subfloat{\includegraphics[width=0.35\textwidth]{imagenes/chapter4/COCOScale/sample-000009_reproj.jpg}}
   \end{center}
   \caption{Ejemplos de imágenes sacadas de COCO-Scale~\cite{SVMIW}. Se observan diferentes tamaños de imagen, rango de colores y las personas detectadas.}\label{fig:COCO-ScaleSample}
 \end{figure}
@@ -84,14 +122,14 @@ La idea consiste en obtener 7 imágenes rectificadas a partir de cada panorámic
 de cámara fundamental (estenopeica). Se utilizan distribuciones Cauchy para la rotación de la cámara, ratios de imágenes que
 siguen la distribución de Flickr y ImageNet~\cite{ImageNet}, con mayor énfasis ratio 4:3 por ser el más común. En la Figura~\ref{fig:CalibSample}, se
 observa un ejemplo de imagen panorámica y los trozos obtenidos con parámetros de cámara definidos aleatoriamente, acorde a las distribuciones definidas.
-\begin{figure}[htp]
+\begin{figure}[!ht]
   \begin{center}
-    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter4/Calib/pano_acizdacpcaveub.jpg}}\\
-    \subfloat{\includegraphics[width=0.3\textwidth]{imagenes/chapter4/Calib/pano_acizdacpcaveub.jpg-4.jpg}}
-    \subfloat{\includegraphics[width=0.2\textwidth]{imagenes/chapter4/Calib/pano_acizdacpcaveub.jpg-5.jpg}}
-    \subfloat{\includegraphics[width=0.2\textwidth]{imagenes/chapter4/Calib/pano_acizdacpcaveub.jpg-6.jpg}}
+    \subfloat{\includegraphics[width=0.6\textwidth]{imagenes/chapter4/Calib/pano_acizdacpcaveub.jpg}}\\
+    \subfloat{\includegraphics[width=0.35\textwidth]{imagenes/chapter4/Calib/pano_acizdacpcaveub.jpg-4.jpg}}
+    \subfloat{\includegraphics[width=0.25\textwidth]{imagenes/chapter4/Calib/pano_acizdacpcaveub.jpg-5.jpg}}
+    \subfloat{\includegraphics[width=0.25\textwidth]{imagenes/chapter4/Calib/pano_acizdacpcaveub.jpg-6.jpg}}
   \end{center}
-  \caption{Ejemplo de imagen panorámica, de la cual se extraen 3 trozos,con parámetros de cámara diferentes, utilizando el algoritmo de~\cite{CalibDataGeneration}.}\label{fig:CalibSample}
+  \caption{Ejemplo de imagen panorámica, de la cual se extraen 3 trozos, con parámetros de cámara diferentes, utilizando el algoritmo de~\cite{CalibDataGeneration}.}\label{fig:CalibSample}
 \end{figure}
 
 \subsubsection{SUN360}~\label{sec:SUN360}
@@ -100,10 +138,10 @@ de 360\textdegree$\times$180\textdegree que cubren una amplia variedad de escena
 Originalmente, contenía 67.583 panoramas categorizados por tipo de lugar (80 categorías), y ha sido utilizado extensamente para tareas de reconocimiento de escena, estimación de orientación y percepción global de entornos (véase la Figura~\ref{fig:SUN360Samples}).
 Actualmente, el acceso al dataset completo ha desaparecido, y solo se encuentran disponibles pequeños subconjuntos bajo otros nombres. Un ejemplo es~\cite{SUN360Extended}, que conserva 666 panoramas de escenas interiores, extraídas de SUN360.
 No obstante, para entrenar el modelo de calibración sería necesario un conjunto de datos mucho más grande, haciendo necesario recorrer a otros conjuntos de imágenes panorámicas que puedan suplantar su lugar, como Pano360~\cite{SPEC}.
-\begin{figure}[htp]
+\begin{figure}[!ht]
   \begin{center}
-    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter4/SUN360/pano_0.jpg}}
-    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter4/SUN360/pano_1.jpg}}
+    \subfloat{\includegraphics[width=0.6\textwidth]{imagenes/chapter4/SUN360/pano_0.jpg}}\\
+    \subfloat{\includegraphics[width=0.6\textwidth]{imagenes/chapter4/SUN360/pano_1.jpg}}
   \end{center}
   \caption{Ejemplos de escenas panorámicas de SUN360~\cite{SUN360}.}\label{fig:SUN360Samples}
 \end{figure}
@@ -114,10 +152,10 @@ panorámicas. Su objetivo consistía en obtener los parámetros de cámara para 
 los cuerpos 3D de humanos detectados en la escena (detección de poses). El dataset está compuesto,
 originalmente, por 35K imágenes panorámicas, cubriendo una amplia variedad de escenas interiores y exteriores
 (véase la Figura~\ref{fig:Pano360Sample}).
-\begin{figure}[htp]
+\begin{figure}[!ht]
   \begin{center}
-    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter4/Pano360/stripped-46549510}}
-    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter4/Pano360/stripped-50535259}}
+    \subfloat{\includegraphics[width=0.6\textwidth]{imagenes/chapter4/Pano360/stripped-46549510}}\\
+    \subfloat{\includegraphics[width=0.6\textwidth]{imagenes/chapter4/Pano360/stripped-50535259}}
   \end{center}
   \caption{Ejemplos de escenas panorámicas de Pano360~\cite{SPEC}}\label{fig:Pano360Sample}
 \end{figure}
@@ -144,10 +182,10 @@ como señalan~\cite{heikkila1997four}, la corrección de la distorsión radial y
 indispensable para garantizar que las mediciones posteriores no hereden errores sistemáticos.
 \begin{figure}[!ht]
   \begin{center}
-    \includegraphics[width=0.25\textwidth]{imagenes/chapter4/calib_pattern.jpg}
+    \includegraphics[width=0.35\textwidth]{imagenes/chapter4/calib_pattern.jpg}
   \end{center}
-  \caption{Patrón utilizado para la calibración manual de cámara~\cite{opencv_library}.
-  Se detectan esquinas y líneas paralelas que deben preservarse, lo que nos permite estimar homografías y refinar mediante el error de reproyección.}\label{fig:CameraPattern}
+  \caption[Patrón utilizado para la calibración manual de cámara~\cite{opencv_library}.]{Patrón utilizado para la calibración manual de cámara~\cite{opencv_library}.
+  Se detectan esquinas y líneas paralelas que deben preservarse, lo que nos permite estimar homografías y refinar mediante el error de re-proyección.}\label{fig:CameraPattern}
 \end{figure}
 Una vez calibrada la cámara, dado que para los datos de evaluación de nuestro sistema disponemos
 tanto de la información de profundidad del individuo con respecto a la cámara como la rotación de la mismas (véase Sección~\ref{sec:EvaluationData}),
@@ -208,24 +246,30 @@ Para la estimación de altura de la cámara se utiliza una módulo de estimació
 aprender relaciones geométricas entre la altura de cámara (a predecir), las cajas delimitadoras
 de los objetos en escena y el horizonte estimado. Se utiliza una variante de \emph{PointNet}~\cite{PointNet}.
 Además, utilizando una combinación en cascada de adaptaciones de \emph{PointNet} se logra
-refinar las predicciones utilizando la información de la escena completa junto al error de reproyección obtenido
+refinar las predicciones utilizando la información de la escena completa junto al error de re-proyección obtenido
 en el paso anterior.
 \begin{figure}[!ht]
   \begin{center}
-    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter4/scene_model.pdf}}\\
-    \subfloat{\includegraphics[width=0.75\textwidth]{imagenes/chapter4/pipeline.pdf}}
+    \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/scene_model.pdf}}\\
+    \subfloat{\includegraphics[width=0.8\textwidth]{imagenes/chapter4/pipeline.pdf}}
   \end{center}
-  \caption{
+  \caption[Pipeline propuesta por Zhu \emph{et al.}~\cite{SVMIW}.]
+  {
     Pipeline propuesta por Zhu \emph{et al.}~\cite{SVMIW}.
-    Dado el modelo de escena definido por la imagen superior, podemos estimar la información necesaria
+    Dado el modelo de escena definido por la imagen superior, podemos recuperar la información necesaria
     para la estimación de metrología utilizando la secuencia de acciones definidas por la imagen inferior.
+  Para ello, primeramente se estiman los parámetros de la cámara, ($\theta$, $h_\theta$), se detecta el objeto y
+  el recuadro que lo delimita, $(v_t, v_b, u_l, u_r)$, y se estima la altura del objeto, $h_{obj}$.
+  Con la información anterior, se estima la altura de la cámara, $h_{cam}$, aprendiendo
+  las relaciones geométricas entre dichas predicciones.
+  Por último, se obtiene la combinación de pérdidas, representadas por $\mathcal{L}$, para entrenar el modelo.
   }\label{fig:SVMIWPipe}
 \end{figure}
 
-El entrenamiento se realiza en dos grandes fases, utilizando una combinación línea de las pérdidas de detección,
+El entrenamiento se realiza en dos grandes fases, utilizando una combinación líneal de las pérdidas de detección,
 de estimación de los parámetros de la cámara, de la altura de los objetos y de su pose (para la variante enfocada
 solamente para la clase persona), y del error de re-proyección de la suposición sobre la escena 3D al plano de imagen.
-Dichas pérdidas se pueden observar en la Figura~\ref{fig:SVMIWPipe} en rojo.
+Dichas pérdidas se muestran en la Figura~\ref{fig:SVMIWPipe} en rojo.
 La primera fase consiste en alinear el modelo de detección de objetos con el módulo de estimación de parámetros de la
 escena, utilizando la Ecuación~\ref{eq:LossPhaseOne} que combina la pérdida de detección $\mathcal{L}_{det}$, de estimación de
 pose $\mathcal{L}_{kps}$, con la de calibración $\mathcal{L}_{calib}$. Las dos primeras tienen un mayor peso, con
