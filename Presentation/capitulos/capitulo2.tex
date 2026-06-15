@@ -12,6 +12,7 @@
       \item La tarea consisten en intentar medir la escala absoluta.
         \begin{itemize}
           \item Factores importantes: \textbf{contenido, contraste y distorsiones}.
+          \item Objetivo: explotar ciertas invariantes geométricas.
         \end{itemize}
     \end{enumerate}
     \column{0.4\textwidth}
@@ -25,27 +26,85 @@
   \vspace{-.2cm}
 \end{frame}
 \note{
-  Los artículos relacionados en el campo son pocos.
-  Si buscamos por los conceptos relacionados, remarcando el hecho de tratar con una sola imagen,
-  obtenemos una tendencia positiva en los últimos años, reforzando lo mencionado anteriormente, pero
-  sigue siendo un número relativamente ligero de publicaciones, con tan solo 35 en el último año.
+  La metrología de vista única, como decíamos anteriormente, está captando cada vez más atención dentro de la
+  comunidad debido a su potencial, véase la figura. Aún así, son pocos los números de artículos publicados.
+  Probablemente relacionado con las dificultades del campo y poca disponibilidad de datos.
+  Buscamos lidiar con los problemas mencionados anteriormente explotando invariantes geométricas.
 }
 \subsection{Estado del arte}
 \begin{frame}
-    \frametitle{Referencias}
-    \begin{enumerate}
-    \item Trabajos seminales de Criminisi \emph{et al}\footnotemark
-    \item Iteraciones sobre dichas ideas premisas geométricas.
-    \item Punto de inflexión con artículos como \emph{Make3D}\footnotemark \;y el trabajo de David \emph{et al}\footnotemark[3].
-    \end{enumerate}
-      \footcitetext{CriminisiReconstruction, CriminisiApplications, CriminisiPaintings}
-      \footcitetext{Make3D, DepthMapMultiScale}
+    \frametitle{Fundamentos}
+    \begin{columns}
+      \column{0.5\textwidth}
+      \begin{enumerate}
+        \item Una parte fundamental del procedimiento consiste en la calibración de cámara~\footnotemark.
+        \begin{enumerate}
+        \item Utilizando un patrón geométrico conocido.
+        \item Búsqueda de invariantes.
+        \item Auto-calibración multi-vista.
+        \end{enumerate}
+      \item Permite eliminar distorsiones\footnotemark.
+      \item Depende de la precisión y no siempre es generalizable.
+      \end{enumerate}
+      \column{0.5\textwidth}
+      \begin{figure}
+        \begin{center}
+          \includegraphics[width=0.9\textwidth]{imagenes/chapter2/pinhole_and_sensor.png}
+        \end{center}
+        \caption{Modelo de proyección de cámara.}
+      \end{figure}
+  \end{columns}
+    \footcitetext{CalibrationSurvey}
+    \footcitetext{VisionBookMIT}
 \end{frame}
 
 \note{
-  Por dar un poco de contexto del estado del arte, tenemos los trabajos seminales de Criminisi et al,
-que culminaron en una tesis muy importante para el campo, así como diversos trabajos que iteran sobre
-sus ideas. El punto de inflexión que nos hace tirar hacia el aprendizaje a través de los datos, lo se pueden ver en
-los trabajos de Make3D y David et al. Donde en ambos, aprenden información geométrica de la imagen
-como su profundidad utilizando markov random field o redes convolucionales.
+  Una parte fundamental del procedimiento significa entender cómo funciona la proyección 2D-3D.
+  Para ello, es necesario conocer ciertos parámetros proyectivos de nuestra cámara, un proceso llamado calibración.
+  Como sería conocer la distancia focal, las distorsiones radiales de la lente y el tamaño del sensor.
+  Hay varias formas para realizar la calibración, la mayoría procesos tediosos y manuales, requiriendo tipos de
+  imágenes concretos, como utilizando un patrón de ajedrez cuya geometría conocemos y procuramos preservar durante la
+  proyección, aprendiendo así homografías -- conjunto de operaciones -- que aplicar para distorsionar imágenes.
+  La limitación es que depende de la precisión de los algoritmos y los tipos de escenas, siendo no siempre generalizable.
+}
+
+\begin{frame}
+  \frametitle{Métodos clásicos}
+    \begin{columns}
+    \column{0.5\textwidth}
+    \begin{enumerate}
+      \item Criminisi \emph{et al.}   sentó las bases metodológicas~\footnotemark.
+      \item Describe técnicas para extracción de información geométrica.
+        \begin{itemize}
+          \item Ratio cruzado
+        \end{itemize}
+      \item Diversos autores extendieron sus trabajos.
+    \end{enumerate}
+    \column{0.5\textwidth}
+    \begin{figure}
+      \begin{center}
+        \includegraphics[width=\textwidth]{imagenes/chapter2/palma_horizon.png}
+      \end{center}
+      \caption{Ejemplo de extracción de información geométrica~\footnotemark}
+    \end{figure}
+  \end{columns}
+  \footcitetext{CriminisiApplications, CriminisiPaintings, CriminisiReconstruction}
+  \footcitetext{VisionBookMIT}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Aprendizaje profundo}
+  \begin{enumerate}
+    \item El aprendizaje profundo alcanza increíbles resultados en diversos campos.
+    \item Existen diversos métodos para la calibración automática de escena.
+    \item Combinan principios geométricos con modelos de aprendizaje~\footnotemark.
+  \end{enumerate}
+  \footcitetext{SVMIW}
+\end{frame}
+\note{
+  Ahí es donde brilla los métodos de aprendizaje profundo, aprenden a comprimir la información y características de
+  grandes conjuntos de datos, para extrapolar e inferir sobre datos no vistos.
+  Hemos visto increíbles avances en clasificación, recuperación de información, estimación de profundidad
+  y ahora en metrología monocular. Mediante la combinación de estos métodos de extracción
+  automática de información y principios geométricos se consiguen métodos como el que veremos a continuación.
 }

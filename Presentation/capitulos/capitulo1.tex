@@ -2,10 +2,30 @@
 \subsection{Contexto}
 \begin{frame}
   \frametitle{Contexto}
+  \begin{figure}[!ht]
+  \begin{center}
+      \includegraphics[width=\textwidth]{imagenes/chapter1/teaser.pdf}
+  \end{center}
+  \caption{Descripción del procedimiento de metrología monocular sacada de\footnotemark}
+  \end{figure}
+  \footcitetext{SVMIW}
+\end{frame}
+
+\note{
+Para ilustrar visualmente lo que buscamos conseguir con este proyecto, tenemos la siguiente figura
+sacada del artículo de referencia de metrología monocular en entornos no controlados. La idea
+principal es dada una imagen de entrada -- una sola vista de la escena -- poder, como en la imagen central derecha, realizar una
+medición en escala absoluta -- es decir, en metros -- de los objetos en escena. Esto nos abre
+puerta a un multitud de aplicaciones que discutiremos a continuación, como lo por ejemplo la
+inserción, en escala real,  de objetos en escena. Fíjense en la silla insertada al lado de la mujer.
+}
+
+\begin{frame}
+  \frametitle{Motivación}
   \begin{columns}
     \column{0.5\textwidth}
     \begin{enumerate}
-      \item Los métodos clásicos dependen fuertemente de estructura geométricas visibles y bien definidas\footnotemark.
+      \item Los métodos clásicos dependen de la calibración y conocimientos \emph{a priori} de la escena\footnotemark.
       \item El auge del aprendizaje profundo ha abierto nuevas oportunidades.
         \begin{itemize}
           \item Desafíos importantes: ambigüedad inherente a la escala absoluta.
@@ -13,43 +33,67 @@
         \end{itemize}
     \end{enumerate}
     \column{0.5\textwidth}
+    \vspace{-.8cm}
     \begin{figure}[!ht]
     \begin{center}
-        \subfloat{\includegraphics[width=0.325\textwidth]{imagenes/chapter1/LegoLeftSmall}}
-        \subfloat{\includegraphics[width=0.33\textwidth]{imagenes/chapter1/LegoRightBig}}
-        \subfloat{\includegraphics[width=0.2\textwidth]{imagenes/chapter1/AmesRoom}}
+        \subfloat{\includegraphics[width=0.3\textwidth, angle=90]{imagenes/chapter1/AmesRoom}}\\
+        \subfloat{\includegraphics[width=0.425\textwidth]{imagenes/chapter1/LegoLeftSmall}}
+        \subfloat{\includegraphics[width=0.43\textwidth]{imagenes/chapter1/LegoRightBig}}
     \end{center}
-    \caption{Ilusión óptica, un mismo objeto se percibe de tamaño diferente según su posición en la imagen\footnotemark[1].}
+    \caption{Ilusión óptica, un mismo objeto se percibe de tamaño diferente\footnotemark[2].}
     \end{figure}
     \end{columns}
     \footcitetext{VisionBookMIT}
 \end{frame}
 
 \note{
-Básicamente queremos, a partir de una imagen, realizar la estimación de propiedades métricas de la misma.
-Es especialmente útil en situaciones donde no es práctico capturar múltiples imágenes, desde diferentes ángulos.
-Los métodos clásicos dependen de propiedades geométricas visibles y bien definidas en la imagen,
-como el paralelismo, ortogonalidad, colinealidad, coplanaridad, así como información sobre la escena,
-lo que limita su aplicabilidad.
-El auge de aprendizaje profundo, así como en todos los campos, abre nuevas puertas en este dado su gran
-capacidad de extracción e interpretación de información automática.
-Aún así, seguimos teniendo problemas típicos del área de visión por computador, debido a
-factores como la pérdida de información inherente a la proyección perspectiva de una escena
-3D a 2D, problemas respecto a la iluminación, contraste y otras distorsiones.
-A estas, se junta la problemática de la ambigüedad de escala en la imagen.
+  Es especialmente útil en situaciones donde no es práctico capturar múltiples imágenes, desde diferentes ángulos.
+  Sin embargo la aplicación de mediciones monoculares en entornos naturales -- no controlados -- plantea diversas dificultades.
+  Como se observa en la Figura, es muy fácil provocar ilusiones ópticas de profundidad y tamaño, haciendo esta tarea realmente compleja.
+  No obstante, el interés en el campo ha crecido en paralelo con los grandes avances en visión por computador y aprendizaje profundo.
+  Conceptualmente, lo que buscamos es extraer propiedades geométricas visibles y bien definidas en la imagen,
+  como el paralelismo, ortogonalidad, colinealidad, coplanaridad, así como información sobre la escena.
+  Todo mientras luchamos contra los problemas clásicos de la visión por computador, como la pérdida de información proyectiva,
+  iluminación, contraste y diversas distorsiones de imagen.
 }
 
 \begin{frame}
   \frametitle{Aplicaciones}
+  \begin{columns}
+    \column{0.5\textwidth}
+    \begin{enumerate}
+      \item \textbf{Entornos forenses}: Estimación de sospechosos y víctimas a partir de grabaciones.
+      \item \textbf{Biomecánica}: Análisis postural o del movimiento en atletas.
+      \item \textbf{Reconstrucción de escenas}: Cálculo de medidas reales de estructuras.
+      \item \textbf{Geometría en pinturas}: Comparación de alturas, formas geométricas o patrones.
+    \end{enumerate}
+    \column{0.5\textwidth}
+    \begin{figure}[!ht]
+      \begin{center}
+        \includegraphics[width=0.85\textwidth]{imagenes/chapter1/office-measurements.jpg}
+      \end{center}
+      \caption{Ejemplo visual de información extraíble a partir de una sola imagen\footnotemark.}\label{fig:}
+    \end{figure}
+  \end{columns}
+  \footcitetext{VisionBookMIT}
 \end{frame}
 
-\subsection{Motivación}
-\begin{frame}
-  \frametitle{Motivación}
-\end{frame}
-
+\note{
+  (Leer lista de aplicaciones)
+  (Recordar la primera diapositiva donde se hizo una inserción de objeto en escena)
+  En el ámbito de la visión por computador se requieren herramientas más accesibles y confiables.
+  Contribuir al desarrollo de soluciones para extraer medidas de una sola imagen puede tener un impacto significativo
+  en diversos ámbitos como la justicia, la salud o ingeniería.
+}
 
 \subsection{Objetivos}
 \begin{frame}
   \frametitle{Objetivos}
+  \begin{figure}[!ht]
+    \begin{center}
+      \includegraphics[width=0.95\textwidth]{imagenes/chapter1/test-crop.png}
+    \end{center}
+    \caption{Objetivos del proyecto\footnotemark.}
+  \end{figure}
+  \footnotetext{Ilustración generada por inteligencia artificial (IA).}
 \end{frame}
