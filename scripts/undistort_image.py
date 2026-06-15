@@ -36,6 +36,8 @@ def undistort_image(
     image = cv2.imread(image_path)
     if image is None:
         raise ValueError(f"Unable to load image: {image_path}")
+    # Convert BGR to RGB for matplotlib
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
     # Load calibration data
     calib = load_camera_parameters(intrinsics_path)
