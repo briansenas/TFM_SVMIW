@@ -37,7 +37,7 @@ El segundo, busca relaciones directas entre el
 espacio 3D-2D como puede ser las líneas y puntos de fuga~\cite{GeometricCalibration}. No obstante, necesita de escenas estructuradas y
 llenas de información geométrica, perdiendo precisión en escenas generales de diferentes entornos.
 Por último, existe la posibilidad de utilizar múltiples perspectivas para hacer una auto-calibración de la cámara~\cite{CameraSelfCalibration}.
-Estos métodos dependen de los límites de los algoritmos capaces de extraer características entre las escenas relacionadas.
+Sin embargo, estos métodos dependen de los límites de los algoritmos capaces de extraer características para relacionar las múltiples escenas.
 \par
 Una vez obtenido los parámetros calibrados de la cámara, se pueden extraer más informaciones geométricas de la escena.
 Uno de los trabajos seminales en este ámbito son los de Criminisi \emph{et al.}~\cite{CriminisiReconstruction,CriminisiApplications},
@@ -59,19 +59,25 @@ estimando la altura o profundidad de los objetos en escena~\cite{SVMIW, SPEC, ya
 En el trabajo de Günel \emph{et al.}~\cite{günel2018facebodyshapestell}, utilizan este enfoque basado en los datos para inferir la relación
 entre el contenido de la imagen y la altura de los individuos de la escena. Localizan la persona en la imagen, extraen diversas características
 de las mismas (como las características espaciales de la cara y cuerpo) y utilizan un modelo para predecir la altura con esas premisas
-extraídas. Similar al trabajo de BenAbdelkader \emph{et al.}~\cite{StatisticalHeight}, que utiliza \emph{a priori} antropométricos y geométricos de escena
-para realizar inferencia bayesiana sobre la estatura.
+extraídas. Para ello, recopilan automáticamente información disponible en internet sobre personas famosas, extrayendo sus fotos y
+alturas asociadas, para crear un conjunto de datos denominado IMDB-100K, con 101.664 ejemplos etiquetados.
 \par
 Otro punto de inflexión fue el trabajo de \emph{Make3D}~\cite{Make3D},
-que también combina principios geométricos con modelos de aprendizaje.  Estos enfoques
+que combina principios geométricos con modelos de aprendizaje.  Estos enfoques
 híbridos marcan el inicio de un cambio de paradigma,
 los sistemas comenzaron a aprender relaciones espaciales directamente de los datos, como en el trabajo de David~\emph{et al.}~\cite{DepthMapMultiScale}.
-En él, se utiliza dos redes neuronales profundas, una para predecir información de profundidad global que se refina posteriormente
-a trozos por la segunda.
+En él, se utiliza dos redes neuronales profundas, una para predecir información de profundidad global
+que se refina posteriormente a trozos por la segunda.
 La culminación de esta transición puede observarse en el trabajo de Zhu~\emph{et al.}~\cite{SVMIW}. En lugar de depender de estructuras
-geométricas visibles o calibraciones manuales, este enfoque utiliza redes profundas entrenadas con objetos de referencia comunes (como humanos
-y automóviles) para inferir escala y geometría en entornos reales y no estructurados. Este método representa una nueva generación
-de metrología visual, donde el conocimiento geométrico está implícito en el modelo aprendido y no codificado de forma explícita.
+geométricas visibles o calibraciones manuales, este enfoque utiliza redes profundas entrenadas con objetos
+de referencia comunes (como humanos y automóviles) para inferir escala y geometría en entornos
+reales y no estructurados.
+A diferencia de métodos previos que requieren conocer la altura real de los objetos de referencia,
+la propuesta de Zhu~\emph{et al.} no necesita esta información, ya que incorpora restricciones geométricas
+sobre las predicciones del modelo durante el entrenamiento, permitiendo aprender relaciones métricas directamente a
+partir de los datos. Para ello, utilizan tanto el conjunto de datos de fotos panorámicas SUN360~\cite{SUN360},
+que incluye un total de 67.583 imágenes de interiores y exteriores, como un subconjunto de datos de personas extraído de COCO~\cite{COCO},
+con 10.547 ejemplos.
 \par
 Así, el campo ha evolucionado desde un enfoque determinista y teóricamente riguroso hacia métodos basados en aprendizaje, más adaptativos,
 escalables y aplicables en condiciones del mundo real. Esta transición no solo refleja un cambio metodológico, sino también una ampliación
@@ -89,21 +95,21 @@ autónoma.
 \textbf{Información para medir} \\
 \hline
 
-Calibración clásica con patrón &
+Calibración clásica con patrón~\cite{ManualCameraCalib, CalibrationSurvey} &
 Estimación explícita de parámetros intrínsecos y extrínsecos mediante observación de un objeto conocido &
 Patrón calibrado (ajedrez, círculos, etc.), dimensiones conocidas y adquisición manual de varias imágenes &
 \\
 
 \hline
 
-Autocalibración geométrica &
+Autocalibración geométrica~\cite{CameraSelfCalibration, CalibrationSurvey}&
 Recuperación de parámetros de cámara a partir de correspondencias entre imágenes y restricciones proyectivas &
 Múltiples imágenes de una misma escena, puntos o características emparejadas entre vistas &
 \\
 
 \hline
 
-Metrología monocular clásica
+Metrología monocular clásica~\cite{CriminisiApplications}
 &
 Puede utilizar una cámara previamente calibrada o estimar parcialmente la geometría proyectiva de la escena &
 Depende del método utilizado. Puede ser: puntos de fuga, horizonte, líneas paralelas o alguna estructura geométrica observable &
@@ -111,7 +117,7 @@ Al menos una referencia métrica conocida (altura, longitud o distancia) para ap
 
 \hline
 
-Calibración y metrología basada en aprendizaje profundo &
+Calibración y metrología basada en aprendizaje profundo~\cite{SVMIW, DepthMapMultiScale} &
 Estimación automática de parámetros intrínsecos y/o extrínsecos de escena mediante redes neuronales &
 Conjunto de entrenamiento anotado, con información geométrica y antropométrica; durante inferencia únicamente una o varias imágenes &
 Dependiendo del método, puede requerirse una referencia métrica, estimación de profundidad o información geométrica adicional como en metrología clásica \\
@@ -119,13 +125,19 @@ Dependiendo del método, puede requerirse una referencia métrica, estimación d
 \hline
 
 Métodos híbridos
-(geometría + aprendizaje profundo) &
+(geometría + aprendizaje profundo)~\cite{Make3D, GeoCalib} &
 Combinan calibración geométrica y estimación aprendida de parámetros de escena &
 Imagen monocular, geometría observable y modelo entrenado &
 Referencias geométricas débiles (verticales, horizonte, pose humana, etc.) o referencias métricas opcionales según el método \\
 
 \hline
 \end{tabular}
-\caption{Resumen de los principales enfoques de calibración de cámara y metrología monocular.}
+\caption[Resumen de los principales enfoques de calibración de cámara y metrología monocular.]{
+  Resumen de los principales enfoques de calibración de cámara y metrología monocular.
+  La primera columna presenta la clasificación de los métodos considerados.
+  A continuación, la segunda columna describe el procedimiento de calibración de cámara
+  correspondiente y la tercera especifica la información requerida para su aplicación.
+  Por último, la cuarta columna resume el proceso de estimación metrológica asociado a cada método.
+}
 \label{tab:calib_metrology}
 \end{table}

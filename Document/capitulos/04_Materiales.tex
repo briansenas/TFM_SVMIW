@@ -1,8 +1,8 @@
 \chapter{Materiales y Métodos}
 \section{Materiales}
 Para la evaluación y validación de los métodos de metrología de vista única desarrollados en este trabajo,
-se ha empleado un conjunto de datos privado, capturado específicamente con fines experimentales.
-Dicho conjunto fue recogido en diversas localizaciones del entorno urbano mediante un sistema multicámara,
+se ha empleado un conjunto de datos privado, capturado específicamente con fines experimentales, pertenecientes a la empresa Panacea~\cite{panacea2026}.
+Dicho conjunto, al que denominaremos Panacea, fue recogido en diversas localizaciones del entorno urbano mediante un sistema multicámara,
 en el que se estableció como referencia principal una cámara con sensor de profundidad. A continuación,
 se describen las cámaras utilizadas, así como su disposición relativa y características técnicas.
 Además de dicho dataset, se han empleado los conjuntos de datos de~\cite{SVMIW} para validar el método
@@ -45,7 +45,7 @@ una rampa de entrada, un aparcamiento y una acera (véase la Figura~\ref{fig:Dat
     \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/SeminarRoom.jpg}}
     \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/Sidewalk.jpg}}
 \end{center}
-\caption{Ejemplo de grabaciones realizadas en las diferentes ubicaciones.}
+\caption{Ejemplo de grabaciones del conjunto de datos Panacea~\cite{panacea2026}, realizadas en diferentes ubicaciones.}
 \label{fig:DataExamples}
 \end{figure}
 % Nice end phrase perhaps?
@@ -85,7 +85,9 @@ idai014 & 174 & 49 \\
 idai015 & 168 & 57 \\
 \hline
 \end{tabular}
-\caption{Se observan las diferentes estaturas de los 12 sujetos del conjunto de datos de cámaras de seguridad y su número de apariciones.}
+\caption[Características descriptivas de los individuos del conjunto de datos Panacea~\cite{panacea2026}.]{
+  Características descriptivas de los individuos del conjunto de datos Panacea~\cite{panacea2026}.
+  Se observan las diferentes estaturas de los 12 sujetos del conjunto de datos de cámaras de seguridad y su número de apariciones.}
 \label{tab:SubjectHeights}
 \end{table}
 
@@ -112,7 +114,7 @@ En este trabajo, se utiliza solamente el conjunto de datos con personas. El núm
     \subfloat{\includegraphics[width=0.4\textwidth ]{imagenes/chapter4/COCOScale/sample-000006_reproj.jpg}}
     \subfloat{\includegraphics[width=0.35\textwidth]{imagenes/chapter4/COCOScale/sample-000009_reproj.jpg}}
   \end{center}
-  \caption{Ejemplos de imágenes sacadas de COCO-Scale~\cite{SVMIW}. Se observan diferentes tamaños de imagen, rango de colores y las personas detectadas.}\label{fig:COCO-ScaleSample}
+  \caption[Ejemplos de imágenes extraída de COCO-Scale~\cite{SVMIW}.]{Ejemplos de imágenes extraída de COCO-Scale~\cite{SVMIW}. Se observan diferentes tamaños de imagen, rango de colores y las personas detectadas.}\label{fig:COCO-ScaleSample}
 \end{figure}
 \subsection{Calibración de cámara}
 Para la generación del conjunto de datos de calibración de cámara, se utiliza el esquema de generación definido
@@ -129,7 +131,9 @@ observa un ejemplo de imagen panorámica y los trozos obtenidos con parámetros 
     \subfloat{\includegraphics[width=0.25\textwidth]{imagenes/chapter4/Calib/pano_acizdacpcaveub.jpg-5.jpg}}
     \subfloat{\includegraphics[width=0.25\textwidth]{imagenes/chapter4/Calib/pano_acizdacpcaveub.jpg-6.jpg}}
   \end{center}
-  \caption{Ejemplo de imagen panorámica, de la cual se extraen 3 trozos, con parámetros de cámara diferentes, utilizando el algoritmo de~\cite{CalibDataGeneration}.}\label{fig:CalibSample}
+  \caption[Ejemplo de imágenes obtenidas de una escena panorámica utilizando el algoritmo de~\cite{CalibDataGeneration}.]{
+  Ejemplo de imágenes obtenidas de una escena panorámica utilizando el algoritmo de~\cite{CalibDataGeneration}.
+  Dada una imagen panorámica de SUN360~\cite{SUN360}, se extraen 3 trozos, con parámetros de cámara diferentes.}\label{fig:CalibSample}
 \end{figure}
 
 \subsubsection{SUN360}~\label{sec:SUN360}
@@ -165,6 +169,9 @@ de la política de privacidad de las fotos publicadas por los usuarios o su disp
 de que hayan sido eliminadas por los propietarios de las mismas. Este dataset, aunque es menos de la
 mitad del tamaño del dataset original SUN360~\cite{SUN360}, nos permite generar una vasta cantidad
 de imágenes de entrenamiento para la calibración de nuestro modelo de estimación de parámetros de cámara.
+Además, es una alternativa razonable debido a su similitud en términos de naturaleza panorámica, diversidad
+de escenas y cobertura de entornos interiores y exteriores. Es decir, mantiene una estructura suficientemente
+rica y variada como para preservar la capacidad de generalización del modelo entrenado en SUN360~\cite{SUN360}.
 \section{Métodos}
 \subsection{Calibración y estimación manual}\label{sec:ManualCalibration}
 % Explicar brevemente como funciona
@@ -250,8 +257,8 @@ refinar las predicciones utilizando la información de la escena completa junto 
 en el paso anterior.
 \begin{figure}[!ht]
   \begin{center}
-    \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/scene_model.pdf}}\\
-    \subfloat{\includegraphics[width=0.8\textwidth]{imagenes/chapter4/pipeline.pdf}}
+    \subfloat{\includegraphics[width=0.7\textwidth]{imagenes/chapter4/scene_model.pdf}}\\
+    \subfloat{\includegraphics[width=\textwidth]{imagenes/chapter4/pipeline.pdf}}
   \end{center}
   \caption[Pipeline propuesta por Zhu \emph{et al.}~\cite{SVMIW}.]
   {
@@ -262,7 +269,13 @@ en el paso anterior.
   el recuadro que lo delimita, $(v_t, v_b, u_l, u_r)$, y se estima la altura del objeto, $h_{obj}$.
   Con la información anterior, se estima la altura de la cámara, $h_{cam}$, aprendiendo
   las relaciones geométricas entre dichas predicciones.
-  Por último, se obtiene la combinación de pérdidas, representadas por $\mathcal{L}$, para entrenar el modelo.
+  Una vez que se dispone de toda la información del modelo de escena,
+  se realiza una re-proyección de la escena 3D estimada al plano 2D y se calcula el error de re-proyección, $v_{t_0}$.
+  Finalmente, con la información del error de re-proyección se pueden concatenar múltiples capas de
+  refinamiento, que estiman ajustes sobre las estimaciones de altura de las personas y la cámara, para
+  volver a medir el error de re-proyección ($v_{t_i}$, siendo $i$ asociado al número de etapas de refinamiento utilizadas).
+  Cada estimación tiene asociada una pérdida, representada por $\mathcal{L}$. Se utiliza una combinación lineal
+  de todas ellas para entrenar el modelo final.
   }\label{fig:SVMIWPipe}
 \end{figure}
 

@@ -1,8 +1,8 @@
 \chapter{Fundamentos Teóricos}
 \section{Modelado de cámara}\label{sec:CameraModel}
-La formación de imágenes en sistemas de visión por computadora se basa en la proyección perspectiva,
-un modelo geométrico que describe cómo los puntos del espacio tridimensional (3D), habitualmente denominado
-las coordenadas del mundo, se proyectan sobre un plano bidimensional (2D), el plano de la imagen.
+La formación de imágenes en sistemas de visión por computador se basa en la proyección perspectiva,
+un modelo geométrico que describe cómo los puntos del espacio tridimensional (3D), habitualmente denominados
+``coordenadas del mundo'', se proyectan sobre un plano bidimensional (2D), denominado ``el plano de la imagen''.
 En la Figura~\ref{fig:PinHole} se observa el modelo fundamental, de cámara estenopeica,
 que idealiza la cámara como un sistema sin lentes donde los rayos de luz pasan por un solo punto.
 Un punto perteneciente al espacio 3D, $P=(X,Y,Z)$, se proyecta
@@ -16,17 +16,23 @@ tras aplicar la semejanza entre triángulos~\cite{Hartley2004,VisionBookMIT}.
 \begin{center}
     \includegraphics[width=0.9\textwidth]{imagenes/chapter2/pinhole-model}
 \end{center}
-\caption[Modelo de cámara estenopeico sacado de ~\cite{Hartley2004}.]{
-    Se observa la geometría subyacente del modelo de cámara estenopeico sacada de~\cite{Hartley2004}.
-    La distancia entre el punto principal, P, y el centro de la cámara se denomina distancia focal, f, y
-    nos permite obtener la relación entre las coordenadas del plano de imagen y del punto en las coordenadas
+\caption[Modelo de cámara estenopeico extraído de ~\cite{Hartley2004}.]{
+    Geometría subyacente del modelo de cámara estenopeica extraída de~\cite{Hartley2004}.
+    Un punto tridimensional del espacio ($\mathbf{X}=(X,Y,Z)^T$) se proyecta sobre el plano
+    de imagen en el punto ($\mathbf{x}=(x,y)^T$) a través de un rayo visual que pasa por el
+    centro de cámara ($C$). El eje principal corresponde a la recta que atraviesa el centro
+    de la cámara y es perpendicular al plano de imagen, definiendo la dirección de observación
+    de la cámara (habitualmente considerada el eje de profundidad de la escena, $Z$).
+    La distancia entre el punto principal, $p$, y el centro de la cámara se denomina distancia focal, $f$, y
+    nos permite obtener la relación entre las coordenadas del plano de imagen y las coordenadas
     del mundo utilizando trigonometría.
 }
 \label{fig:PinHole}
 \end{figure}
 
-La Ecuación~\ref{eq:2DProyection} define la proyección de perspectiva, donde objetos distantes aparentan más pequeños,
-con un escalado inverso a su distancia en el eje Z. Este modelo también se aplica a la visión humana.
+La Ecuación~\ref{eq:2DProyection} define la proyección de perspectiva, donde objetos distantes aparentan ser
+más pequeños, con un escalado inverso a su distancia en el eje Z.
+Este modelo también se aplica a la visión humana.
 Esta transformación se puede expresar de forma matricial mediante coordenadas homogéneas. Si $P=(X,Y,Z,1)^T$ y $p=(x, y, 1)^T$,
 la proyección se puede expresar acorde a la Ecuación~\ref{eq:ProyectionFormula}.
 
@@ -34,30 +40,32 @@ la proyección se puede expresar acorde a la Ecuación~\ref{eq:ProyectionFormula
     s\begin{bmatrix}x\\y\\1\end{bmatrix} = K\cdot\left[R|t\right]\cdot\begin{bmatrix}X\\Y\\Z\\1\end{bmatrix}
 \end{equation}
 
-Donde $K$ es la matriz intrínseca de la cámara, que contiene los parámetros internos como la distancia focal y el
-punto principal, véase la Ecuación~\ref{eq:KMatrix}. $[R|t]$ es la concatenación de la matriz de rotación R y
+Donde $K$ es la matriz intrínseca de la cámara, que contiene los parámetros internos, como la distancia focal y el
+punto principal. K se muestra en la Ecuación~\ref{eq:KMatrix}. $[R|t]$ es la concatenación de la matriz de rotación R y
 el vector de traslación t, que definen la posición y orientación de la cámara respecto al eje del mundo (parámetros extrínsecos).
-Por último, $s$ sería un factor de escala (la unidad de distancia en el espacio de píxeles puede ser distinto al de las coordenadas del mundo). Este modelo permite modelar coordenadas 3D del mundo a píxeles de la imagen, véase la
-Figura~\ref{fig:WorldToImageCoordinates}.
+Por último, $s$ sería un factor de escala (la unidad de distancia en el espacio de píxeles puede ser distinto al de las coordenadas del mundo). Este modelo permite transformar
+coordenadas 3D del mundo a píxeles de la imagen, tal y como se muestra visualmente en la Figura~\ref{fig:WorldToImageCoordinates}.
 
 \begin{figure}[!ht]
 \begin{center}
     \includegraphics[width=0.6\textwidth]{imagenes/chapter2/world_and_camera_coordinates}
 \end{center}
-\caption[Transformaciones geométricas de rotación y translación para alinear escenas 3D-2D.]{Visualización de las transformaciones necesarias, $[R|t]$, para transformar las coordenadas 3D a 2D, sacada de~\cite{VisionBookMIT}. Donde $P_C$ es el punto en coordenadas de la cámara y $P_w$ en la escena 3D. Existe una rotación, $R$, y translación, $T$, para transformar $P_C$ en $P_w$ o viceversa.}
+\caption[Transformaciones geométricas de rotación y translación para alinear escenas 3D-2D~\cite{VisionBookMIT}.]{
+Visualización de las transformaciones necesarias, para transformar las coordenadas 3D a 2D, extraída de~\cite{VisionBookMIT}. Donde $P_C$ es el punto en coordenadas de la cámara y $P_w$ es el punto en la escena 3D. Existe una rotación, $R$, y translación, $T$, para transformar $P_C$ en $P_w$ o viceversa.
+}
 \label{fig:WorldToImageCoordinates}
 \end{figure}
 
 \begin{equation}\label{eq:KMatrix}
     K = \begin{bmatrix}
-        f & q_x & cx &\\
-        q_y & f & cy &\\
+        f & s & cx &\\
+        0 & f & cy &\\
         0 & 0 & 1 &\\
     \end{bmatrix}
 \end{equation}
-En la Ecuación~\ref{eq:KMatrix}, $f$ es la distancia focal, $(q_x, q_y)$ son distorsiones de inclinación y $(c_x, c_y)$ es la correspondencia al punto principal (central) del sensor de la imagen.
+En la Ecuación~\ref{eq:KMatrix}, $f$ es la distancia focal, $s$ es la distorsión por inclinación y $(c_x, c_y)$ es la correspondencia al punto principal (central) del sensor de la imagen.
 Los parámetros $f$ y $c$ se pueden estimar a partir las características de las cámaras, si se conoce dicha información, o mediante
-métodos de calibración. Con la Figura~\ref{fig:ImageSensor} se observa que la posición de los píxeles
+métodos de calibración. En la Figura~\ref{fig:ImageSensor} se observa que la posición de los píxeles
 depende de la distancia focal, $f$, de forma que se utiliza una constante $a$ para definir esa relación física de
 la cámara (véase la Ecuación~\ref{eq:EstimateAlpha}).
 \begin{equation}\label{eq:EstimateAlpha}
@@ -66,21 +74,24 @@ la cámara (véase la Ecuación~\ref{eq:EstimateAlpha}).
 Donde $N$ es la longitud de la imagen en píxeles y $w$ es la longitud del sensor de la cámara.
 No obstante, en caso de no poseer información al respecto del sensor se puede utilizar diversas técnicas~\cite{ManualCameraCalib}, como patrones de tablero de ajedrez.
 Finalmente, hasta el momento no se ha incluido ningún parámetro de distorsión al modelo de cámara. Sin embargo,
-existen diferentes distorsiones que pueden ocurrir como inclinación o distorsiones radiales. Estos son parámetros
+existen diferentes distorsiones que pueden ocurrir, como la inclinación o distorsiones radiales. Estos son parámetros
 adicionales que deben estimarse para obtener una re-proyección precisa.
+La re-proyección de cámara es una operación que consiste en proyectar puntos tridimensionales de
+la escena sobre el plano de imagen mediante un modelo geométrico de cámara (véase la Figura~\ref{fig:ImageSensor}).
 \begin{figure}[!ht]
 \begin{center}
     \includegraphics[width=0.7\textwidth]{imagenes/chapter2/pinhole_and_sensor}
 \end{center}
 \caption[Proyección de una imagen sobre el sensor de una cámara~\cite{VisionBookMIT}.]{
 Proyección de una imagen sobre el sensor de una cámara~\cite{VisionBookMIT}.
-Se observa como un punto $P$ en la escena
-se proyecta tanto sobre un plano virtual de imagen en (x, y) como, a su vez,
+Se observa cómo un punto $P$ en la escena
+se proyecta tanto sobre un plano de imagen en (x, y) como, a su vez,
 en el sensor de la cámara tras pasar por el centro focal de la misma.
 La posición en píxeles del punto depende de la distancia focal, $f$, de la cámara.
 }
 \label{fig:ImageSensor}
 \end{figure}
+
 \section{Metrología de vista única}\label{sec:SVM}
 La metrología de vista única (SVM) se refiere al conjunto de técnicas y principios que permite la extracción
 de información geométrica del espacio 3D a partir de una única imagen 2D, habitualmente captura por una
@@ -101,17 +112,16 @@ del sensor y otros factores de la cámara, mientras que los segundos se refieren
 como la altura y la distancia al objeto de referencia. La premisa subyacente de los métodos SVM es que,
 aunque generalmente se pierden información de profundidad, existen invariantes geométricas que se preservan y
 nos permiten razonar sobre la estructura y la escala~\cite{VisionBookMIT,Hartley2004}(véase las Figuras~\ref{fig:PalmaHorizon} y~\ref{fig:OfficeMeasurements}).
-\par
 \begin{figure}[!ht]
 \begin{center}
     \subfloat{\includegraphics[width=0.55\textwidth]{imagenes/chapter2/horizon_line}}\\
     \subfloat{\includegraphics[width=0.9\textwidth]{imagenes/chapter2/palma_horizon}}
 \end{center}
-\caption[Cálculo de la línea del horizonte en la imagen por medio de los puntos de fuga.]{
-  Se observa como todas las líneas paralelas convergen a los mismos puntos de fuga.
+\caption[Cálculo de la línea del horizonte en la imagen por medio de los puntos de fuga~\cite{VisionBookMIT}.]{
+  Se observa cómo todas las líneas paralelas convergen a los mismos puntos de fuga.
 Con dicha premisa geométrica,
 la línea del horizonte se puede calcular como se indica en la imagen superior,
-como la línea que une todos los puntos de fuga.
+utilizando los puntos de fuga y la línea que los une.
 Imágenes extraídas de~\cite{VisionBookMIT}.
 }
 \label{fig:PalmaHorizon}
@@ -130,13 +140,13 @@ impulsado por datos con fundamentos geométricos de metrología de vista única 
 \begin{center}
     \includegraphics[width=0.5\textwidth]{imagenes/chapter2/office-measurements}
 \end{center}
-\caption{Ejemplo visual de información extraíble a partir una sola imagen si se conoce la longitud de alguna de líneas, extraída de~\cite{VisionBookMIT}.
+\caption{Ejemplo visual de información extraíble a partir una sola imagen si se conoce la longitud de alguna de las líneas, extraída de~\cite{VisionBookMIT}.
 }
 \label{fig:OfficeMeasurements}
 \end{figure}
 
 \section{Aprendizaje automático y profundo}
-El aprendizaje automático~\cite{IAModernApproach} es una rama del campo de la inteligencia artificial,
+El aprendizaje automático~\cite{IAModernApproach, LearningFromData, bishop2006pattern, pml1Book, pml2Book} es una rama del campo de la inteligencia artificial,
 cuyo objetivo principal es dotar a las máquinas de la capacidad de aprender a partir de los datos sin ser explícitamente
 programadas para ello. El aprendizaje automático permite extraer patrones y realizar predicciones basándose en los datos por
 medio de algoritmos y modelos estadísticos~\cite{LearningFromData}. Esta capacidad resulta especialmente valiosa para
@@ -153,7 +163,7 @@ desempeñar mejores resultados frente a las características extraídas manualme
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=1\textwidth]{imagenes/chapter2/ANNVisualization.png}
-  \caption[Ejemplo gráfico de una red neuronal.]
+  \caption[Ejemplo gráfico de una red neuronal~\cite{NeuronImages, NeuronSimilarity,ShallowAndDeepNN}.]
   {Ejemplo gráfico de una red neuronal~\cite{NeuronImages, NeuronSimilarity,ShallowAndDeepNN}.
     (a) y (b) muestran una neurona biológica y una artificial, respectivamente.
     (c) describe el proceso mediante el cual las neuronas se comunican entre sí para transmitir información (sinapsis).
