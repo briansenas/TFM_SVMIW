@@ -17,24 +17,39 @@ inferir medidas reales si se cuenta con ciertos supuestos geométricos, como lí
   \caption[Visualización del procedimiento de metrología monocular extraída de~\cite{SVMIW}.]{
     Visualización del procedimiento de metrología monocular extraída de~\cite{SVMIW}. El objetivo es dada una imagen de entrada (izquierda), poder
   establecer las relaciones geométricas necesarias para estimar correctamente la medidas métricas de mundo. En este ejemplo, de la personas en la escena (medio, derecha).
-  Una posible aplicación directa de establecer dichas relaciones, es la inserción de objetos en la escena (derecha).}\label{fig:SVM}
+  Una posible aplicación directa de establecer dichas relaciones, es la inserción de objetos en la escena en la escala adecuada (derecha).}\label{fig:SVM}
 \end{figure}
-
 
 Sin embargo, la aplicación de SVM en entornos naturales o no controlados, conocida como \emph{Single View Metrology in the Wild}~\cite{SVMIW},
 plantea una serie de dificultades. En primer lugar, los métodos clásicos dependen fuertemente de la existencia de
 estructuras geométricas visibles y bien definidas~\cite{VisionBookMIT}, lo que limita su aplicabilidad a imágenes reales
-donde estas condiciones raramente se cumplen. Además, factores como la iluminación variable, la distorsión de la lente, la oclusión,
+donde estas condiciones raramente se cumplen (véase la Figura~\ref{fig:GeometricFeatures}). Además, factores como la iluminación variable, la distorsión de la lente, la oclusión,
 la falta de información de calibración de cámara, y la diversidad de escalas y perspectivas complican aún más la estimación precisa
 de medidas métricas~\cite{VisionBookMIT} (véase la Figura~\ref{fig:PerspectiveIlusion}).
-
 \begin{figure}[!ht]
+\begin{center}
+    \subfloat{\includegraphics[width=.4\textwidth]{imagenes/chapter1/low_horizon_vp.jpg}}
+    \subfloat{\includegraphics[width=.4\textwidth]{imagenes/chapter1/horizon-sea.jpg}}
+\end{center}
+\caption[Comparativa entre escenas y sus características geométricas~\cite{VisionBookMIT,SPEC}.]
+{
+Comparativa entre escenas y sus características geométricas~\cite{VisionBookMIT,SPEC}.
+En la imagen izquierda, extraída de~\cite{VisionBookMIT}, se observa una escena rica en
+características geométricas. Dicha imagen presenta líneas paralelas, perpendiculares y
+objetos de referencia a diferentes distancias. Por otro lado, la imagen a la derecha extraída
+del conjunto de datos de~\cite{SPEC}, es
+un paisaje con muy poca información geométrica a simple vista.
+}\label{fig:GeometricFeatures}
+\end{figure}
+
+\begin{figure}[!htp]
 \begin{center}
     \subfloat{\includegraphics[width=0.325\textwidth]{imagenes/chapter2/LegoLeftSmall}}
     \subfloat{\includegraphics[width=0.33\textwidth]{imagenes/chapter2/LegoRightBig}}
     \subfloat{\includegraphics[width=0.2\textwidth]{imagenes/chapter2/AmesRoom}}
 \end{center}
-\caption[Ilusión óptica, la habitación de Ames~\cite{VisionBookMIT}.]{Ilusión óptica que ocasiona a que un mismo objeto (en este caso, el muñeco de LEGO®) se vea de diferente tamaño según la posición en la que se encuentre en la habitación
+\caption[Ilusión óptica, la habitación de Ames~\cite{VisionBookMIT}.]{
+  Ilusión óptica que ocasiona a que un mismo objeto (en este caso, el muñeco de LEGO\textsuperscript{\textregistered}) se vea de diferente tamaño según la posición en la que se encuentre en la habitación
 de Ames (menor en la imagen a la izquierda que en la imagen central). La habitación de Ames está construida de forma irregular, de modo que al mirar desde un punto concreto aparenta ser completamente rectangular.
 La planta de dicha habitación se muestra en el plano de la derecha.
 Ilustraciones extraídas de~\cite{VisionBookMIT}.
@@ -78,12 +93,42 @@ El proyecto está disponible en \url{https://github.com/briansenas/TFM_SVMIW}.
 El objetivo principal de este TFM es implementar
 un \textbf{sistema de estimación automática de la estatura de individuos a partir de una sola imagen},
 utilizando técnicas de metrología monocular. Los objetivos específicos incluyen:
-% NOTE : Incluir alguna imagen que especifique las diferencias entre los métodos?
 \begin{enumerate}
     \item Revisar el estado del arte en técnicas de estimación de medidas antropométricas a partir de imágenes.
     \item Implementar un algoritmo basado en principios de metrología visual que estime con precisión la estatura de una persona.
     \item Validar y analizar el rendimiento del sistema en diferentes contextos y con variabilidad en las condiciones de iluminación, perspectiva y posición de las personas.
 \end{enumerate}
+En la Figura~\ref{fig:ManualVSAuto} se enseña la diferencia
+entre el procedimiento habitual de calibración de escena manual frente al método automático.
+Mientras que los métodos tradicionales requieren una preparación exhaustiva del entorno, con mediciones precisas,
+la utilización de modelos basados en aprendizaje profundo son capaces de inferir información visual relevante para la estimación
+métrica a partir de una única imagen. La transición del primer procedimiento al segundo tiene como objetivo reducir significativamente
+la intervención humana y simplificar la puesta en marcha de los sistemas de metrología.
+Esto permite disminuir los costes y tiempos asociados a la configuración inicial, minimizar errores derivados y mejorar
+la adaptabilidad del sistema ante cambios de escena.
+Se realizará una comparativa entre ambos métodos en las secciones posteriores.
+
+\begin{figure}[!ht]
+  \begin{center}
+    \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter1/simple_calibration_1.jpg}}\\
+    \subfloat{\includegraphics[width=\textwidth]{imagenes/chapter1/SVMIW-input.png}}
+  \end{center}
+  \caption[Ejemplo visual de calibración manual de escena~\cite{VisionBookMIT} frente a método automático~\cite{SVMIW}.]{
+  Ejemplo visual de calibración manual de escena~\cite{VisionBookMIT} frente a método automático~\cite{SVMIW}.
+  La imagen superior ilustra el procedimiento habitual de calibración de escena, donde se utiliza un patrón, como puede ser un tablero
+  de ajedrez, para calibrar los parámetros de la cámara, a la vez que se recogen información adicional, como la distancia y el ángulo
+  de visión de la cámara respecto a un plano de referencia (en este caso, la mesa). Con esta información, se puede
+  realizar la medición de objetos en escena.
+  Por otro lado, en la imagen inferior se observa el objetivo de esta implementación:
+  conseguir hacer estimación de tamaño a partir de imágenes cualesquiera,
+  sin información adicional.
+  Para ello, se debe entrenar un estimador de los parámetros de la cámara, de la altura
+  de la misma y, finalmente, del tamaño del objeto, unificando las estimaciones y
+  resolviendo las restricciones proyectivas.
+  }
+\label{fig:ManualVSAuto}
+\end{figure}
+
 \section{Planificación del proyecto}
 De cara a planificar el proyecto, resulta fundamental tener en cuenta que el TFM
 tiene una carga de 12 créditos ECTS, donde cada
@@ -148,7 +193,7 @@ de cámara. La planificación final se puede observar en la Tabla~\ref{tab:Plani
 \begin{tabular}{|c|c|l|l|l|l|l|l|l|l|l|l|l|l|l|l|}
 \hline
 \rowcolor[HTML]{FFC702}
-Tarea & Semanas - Horas & Mayo & Junio & Julio & Agosto & Septiembre & Octubre & Noviembre & Diciembre & Enero & Febrero & Marzo & Abril & Mayo & Junio \\
+\textbf{Tarea} & \textbf{Semanas - Horas} & \textbf{May} & \textbf{Jun} & \textbf{Jul} & \textbf{Ago} & \textbf{Sept} & \textbf{Oct} & \textbf{Nov} & \textbf{Dic} & \textbf{Ene} & \textbf{Feb} & \textbf{Mar} & \textbf{Abr} & \textbf{May} & Jun \\
 \hline
 Análisis Requisitos & 3 - 60 &\cellcolor[HTML]{9B9B9B}& & &\cellcolor[HTML]{9B9B9B} & & &\cellcolor[HTML]{9B9B9B} & & & & & & &   \\ \cline{1-1}
 Diseño & 3 - 60              & &\cellcolor[HTML]{9B9B9B}& & & & & & & & & & & &  \\ \cline{1-1}

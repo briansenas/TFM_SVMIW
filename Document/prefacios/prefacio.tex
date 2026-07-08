@@ -26,11 +26,11 @@ para obtener mediciones precisas a partir de una única imagen, es decir, una so
 Es especialmente útil en situaciones donde no es posible, o práctico, capturar múltiples imágenes,
 desde diferentes ángulos. El auge del aprendizaje profundo ha abierto nuevas oportunidades para abordar
 este problema, permitiendo inferir información a partir de patrones visuales aprendidos. Este Trabajo de Fin de Máster
-presenta una implementación actualizada del método de aprendizaje semi-supervisado descrito por Zhu \emph{et al.}
+presenta una implementación del método de aprendizaje semi-supervisado descrito por Zhu \emph{et al.}
 en \emph{Single View Metrology in the Wild}, publicado en la European Conference on Computer Vision en 2020.
 \smallskip
 
-La implementación se realiza en el reciente framework de detección de objetos \emph{detectron2},
+La implementación se realiza en el reciente framework de detección de objetos \emph{Detectron2},
 permitiendo aprovechar arquitecturas más recientes, una mayor modularidad,
 mejores mecanismos de optimización y entrenamiento distribuido, así como un rendimiento computacional superior.
 En relación a los datos, se utiliza un conjunto de datos obtenido de la red social Flickr
@@ -43,7 +43,7 @@ como conjunto de validación experimental del método implementado.
 El rendimiento del sistema se evalúa frente al procedimiento tradicional basado en la calibración manual de
 la cámara y la obtención de mediciones adicionales de referencia en la escena para estimar la altura de los objetos.
 Si bien los resultados presentados en este trabajo son de carácter preliminar,
-se obtuvo un error medio de $14\pm8$ cm. Este resultado resulta claramente superior al método
+se obtuvo un error medio de $12\pm8$ cm. Este resultado resulta claramente superior al método
 tradicional, que presenta un error medio de $37\pm21$ cm, con la ventaja adicional de no
 requerir información complementaria ni mediciones previas de la escena
 
@@ -69,11 +69,11 @@ Monocular metrology constitutes a highly relevant research area due to its poten
 a single view of a scene. It is particularly useful in situations where capturing multiple images from different
 viewpoints is not feasible or practical. The rise of deep learning has opened new opportunities to address this problem
 by enabling the inference of geometric information from learned visual patterns.
-This Master's Thesis presents an updated implementation of the semi-supervised learning method described by Zhu \emph{et al.} in
+This Master's Thesis presents an implementation of the semi-supervised learning method described by Zhu \emph{et al.} in
 \emph{Single View Metrology in the Wild}, published on the European Conference on Computer Vision in 2020.
 \smallskip
 
-The implementation is made with the recent object detection framework detectron2,
+The implementation is made with the recent object detection framework Detectron2,
 enabling the use of more recent architectures, greater modularity, improved optimization mechanisms and distributed training capabilities,
 as well as superior computational performance. Regarding the data, a training dataset collected from the Flickr social network
 is employed for the camera calibration module, as a replacement for the original SUN360 dataset, which is no longer available.
@@ -83,7 +83,7 @@ In addition, multiple frames from surveillance cameras are used to serve as an e
 The performance of the system is evaluated against the traditional procedure based on manual camera calibration and the
 acquisition of additional reference measurements within the scene to estimate object heights.
 Although the results presented in this work are preliminary, the proposed method achieved a
-mean error of $14\pm8$ cm. This result is clearly superior than the traditional approach,
+mean error of $12\pm8$ cm. This result is clearly superior than the traditional approach,
 which exhibits a mean error of $37\pm21$ cm, while offering the additional advantage of
 not requiring supplementary information or prior measurements of the scene.
 

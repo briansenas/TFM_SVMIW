@@ -16,7 +16,7 @@ tras aplicar la semejanza entre triángulos~\cite{Hartley2004,VisionBookMIT}.
 \begin{center}
     \includegraphics[width=0.9\textwidth]{imagenes/chapter2/pinhole-model}
 \end{center}
-\caption[Modelo de cámara estenopeico extraído de ~\cite{Hartley2004}.]{
+\caption[Modelo de cámara estenopeico extraído de~\cite{Hartley2004}.]{
     Geometría subyacente del modelo de cámara estenopeica extraída de~\cite{Hartley2004}.
     Un punto tridimensional del espacio ($\mathbf{X}=(X,Y,Z)^T$) se proyecta sobre el plano
     de imagen en el punto ($\mathbf{x}=(x,y)^T$) a través de un rayo visual que pasa por el
@@ -105,13 +105,60 @@ profundidad sobre la misma coordenada de píxel. Como resultado, múltiples conf
 pueden resultar en la misma imagen, haciendo que el proceso inverso, de obtener información 3D a partir de
 la imagen 2D, sea realmente costoso sin suposiciones adicionales.
 \par
-Es por ello, que los métodos de SVM se basan en principios de geometría proyectiva, utilizando información
+Como ejemplo paradigmático de las dificultades inherentes de estimar distancias físicas a través
+de imágenes con una sola perspectiva, en la Figura~\ref{fig:StereoVision}
+se observa el planteamiento de estimación de profundidad de un objeto
+en una escena multi-vista. Suponiendo que se ha resuelto favorablemente el problema de correspondencia (es decir, de
+determinar qué pixel de la imagen izquierda corresponde al punto físico observado en la imagen derecha), se
+puede aplicar similitud de triángulos para obtener la Ecuación~\ref{eq:StereoZ}.
+
+\begin{equation}\label{eq:StereoZ}
+  \frac{T+x_r-x_l}{Z-f}=\frac{T}{Z}
+  \quad\Longrightarrow\quad
+  Z=\frac{Tf}{x_l-x_r}
+  =\frac{fT}{d},
+\end{equation}
+
+Siendo $T$ la distancia entre las cámaras, $x_l$ y $x_r$ la proyección del punto sobre cada plano de
+imagen (cámara izquierda, $l$, y derecha, $r$) y $f$ la distancia focal. La diferencia entre las
+proyecciones del punto ($x_l - x_r$) se denomina disparidad, $d$.
+Con esta Ecuación~\ref{eq:StereoZ}, se puede estimar la profundidad de un objeto a partir de múltiples vistas.
+No obstante, en el caso de que solo disponemos de una cámara, es decir, eliminamos la vista
+adicional de la escena, el objeto puede estar en cualquier punto de la línea
+que atraviesa el plano de imagen de la cámara.
+Aunque la estimación de profundidad no sea el problema en cuestión,
+sino que es el de estimar el tamaño de la altura, este ejemplo es significativo de la
+clase de problemas que nos podemos encontrar en metrología de vista única.
+
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=0.95\textwidth]{imagenes/chapter2/triangularization_stereo.png}
+  \end{center}
+  \caption[Visualización de la estimación de profundidad en escenas multi-vista~\cite{VisionBookMIT}.]{
+  Visualización de la estimación de profundidad en escenas multi-vista~\cite{VisionBookMIT}.
+  En la imagen izquierda (a), se observa como un punto, $P$, se proyecta sobre dos planos de imagen de diferentes
+  cámaras separadas por una distancia $T$. Cada cámara tiene su eje de coordenadas utilizando el subíndice
+  $l$ y $r$, para izquierda y derecha. Se asume, por simplicidad, que tienen la misma distancia focal.
+  Al dibujar el plano que determina las líneas que cruza cada plano de imagen, pasando por el punto $P$ y el
+  centro óptico de cada cámara (punto central de cada eje de coordenadas de color negro), se obtiene la imagen derecha (b).
+  Se observa que forman triángulos similares (coloreados en amarillo y uniendo el amarillo al naranja) que permiten aplicar la semejanza de triángulos para obtener
+  la Ecuación~\ref{eq:StereoZ}.
+  }\label{fig:StereoVision}
+\end{figure}
+
+\par
+En consecuencia, los métodos SVM no pueden apoyarse en las mismas pistas geométricas que la visión
+estéreo y deben recurrir a información geométrica adicional. Mayoritariamente,
+se basan en principios de geometría proyectiva, utilizando información
 sobre los puntos de fuga, ortogonalidad, paralelismo y otras informaciones de la escena con fin de obtener
 los parámetros intrínsecos y extrínsecos de la cámara. Los primeros refieren a la distancia focal, tamaño
 del sensor y otros factores de la cámara, mientras que los segundos se refieren a su posición en el mundo,
 como la altura y la distancia al objeto de referencia. La premisa subyacente de los métodos SVM es que,
-aunque generalmente se pierden información de profundidad, existen invariantes geométricas que se preservan y
-nos permiten razonar sobre la estructura y la escala~\cite{VisionBookMIT,Hartley2004}(véase las Figuras~\ref{fig:PalmaHorizon} y~\ref{fig:OfficeMeasurements}).
+aunque generalmente se pierde información de profundidad en vista única, existen invariantes geométricas
+que se preservan y nos permiten razonar sobre la estructura y la escala~\cite{VisionBookMIT,Hartley2004}(véase las Figuras~\ref{fig:PalmaHorizon} y~\ref{fig:OfficeMeasurements}).
+Algunas de esas invariantes podrían ser dimensiones conocidas o restricciones geométricas (paralelismo u ortogonalidad de paredes y pisos).
+Otro desafío inherente son los efectos de los errores en el modelo de cámara, distorsiones ópticas o supuestos de perspectiva inadecuados.
+Estos factores pueden introducir desviaciones significativas en las estimaciones.
 \begin{figure}[!ht]
 \begin{center}
     \subfloat{\includegraphics[width=0.55\textwidth]{imagenes/chapter2/horizon_line}}\\
@@ -126,10 +173,6 @@ Imágenes extraídas de~\cite{VisionBookMIT}.
 }
 \label{fig:PalmaHorizon}
 \end{figure}
-
-Algunas de esas invariantes podrían ser dimensiones conocidas o restricciones geométricas (paralelismo u ortogonalidad de paredes y pisos).
-Otro desafío inherente son los efectos de los errores en el modelo de cámara, distorsiones ópticas o supuestos de perspectiva inadecuados.
-Estos factores pueden introducir desviaciones significativas en las estimaciones.
 \par
 En los últimos años, se ha observado una integración creciente de métodos de aprendizaje profundo en la metrología de vista única.
 Las redes neuronales, entrenadas con grandes volúmenes de datos, han aprendido a capturar \emph{a priori} geométricos que permiten

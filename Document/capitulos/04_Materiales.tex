@@ -8,13 +8,13 @@ se describen las cámaras utilizadas, así como su disposición relativa y carac
 Además de dicho dataset, se han empleado los conjuntos de datos de~\cite{SVMIW} para validar el método
 por aprendizaje automático descrito, así como entrenar un modelo propio para la resolución del problema planteado (metrología de vista única).
 Estos son COCO-Scale, una variante del conjunto de datos COCO~\cite{COCO} con ejemplos filtrados (más detalles en la Sección~\ref{sec:COCO-Scale}),
-un subconjunto de SUN360~\cite{SUN360} para validar el modelo de calibración y, por último, Pano360~\cite{SPEC} para entrenar el modelo de calibración.
+Pano360~\cite{SPEC} para entrenar el modelo de calibración y Kitti~\cite{Kitti} para validar el modelo.
 
 \subsection{Sistema de captura}\label{sec:EvaluationData}
 \begin{table}[htp]
 \scriptsize
 \centering
-\begin{tabular}{|l|c|c|c|c}
+\begin{tabular}{|l|c|c|c|c|}
 \hline
 \rowcolor[HTML]{FFCB2F}
 \textbf{Cámara} & \textbf{Tipo} & \textbf{Focal (mm)} & \textbf{CMOS} \\
@@ -123,7 +123,8 @@ permitiendo modelar relaciones espaciales globales que no son accesibles desde i
 La idea consiste en obtener 7 imágenes rectificadas a partir de cada panorámica utilizando el modelo
 de cámara fundamental (estenopeica). Se utilizan distribuciones Cauchy para la rotación de la cámara, ratios de imágenes que
 siguen la distribución de Flickr y ImageNet~\cite{ImageNet}, con mayor énfasis ratio 4:3 por ser el más común. En la Figura~\ref{fig:CalibSample}, se
-observa un ejemplo de imagen panorámica y los trozos obtenidos con parámetros de cámara definidos aleatoriamente, acorde a las distribuciones definidas.
+observa un ejemplo de imagen panorámica y los trozos obtenidos con parámetros de cámara definidos aleatoriamente, acorde a las distribuciones definidas
+(más detalles en el Apéndice~\ref{app:DataDistribution}).
 \begin{figure}[!ht]
   \begin{center}
     \subfloat{\includegraphics[width=0.6\textwidth]{imagenes/chapter4/Calib/pano_acizdacpcaveub.jpg}}\\
@@ -172,6 +173,30 @@ de imágenes de entrenamiento para la calibración de nuestro modelo de estimaci
 Además, es una alternativa razonable debido a su similitud en términos de naturaleza panorámica, diversidad
 de escenas y cobertura de entornos interiores y exteriores. Es decir, mantiene una estructura suficientemente
 rica y variada como para preservar la capacidad de generalización del modelo entrenado en SUN360~\cite{SUN360}.
+\subsubsection{Kitti}
+El conjunto de datos Kitti~\cite{Kitti} de detección de objetos constituye unos de los referentes más
+utilizados para la evaluación de algoritmos de detección de objetos en escenarios de conducción autónoma.
+Se ha utilizado para poder evaluar la capacidad del modelo de aprendizaje automático debido a que dispone de
+anotaciones detalladas de los objetos presentes en la escena. Entre las etiquetas disponibles se incluyen la
+clase del objeto, el nivel de truncamiento (fracción del objeto fuera de los límites de la imagen), grado de oclusión (nivel
+en el que objeto está oculto por otros elementos de la escena), las dimensiones físicas del objeto (altura, anchura y longitud),
+su posición tridimensional y parámetros de la cámara. Esta riqueza de información permite seleccionar subconjuntos específicos,
+estableciendo criterios de filtrados adaptados.
+\par
+En este trabajo se emplea la etiqueta correspondiente al tipo de objeto para seleccionar únicamente las instancias de la
+clase peatonal, aunque el mismo procedimiento podría extenderse para incluir la clase coche con
+fin de reproducir el escenario de detección multi-clase descrito en el artículo de referencia de Zhu~\emph{et al}~\cite{SVMIW}.
+Aplicando un filtrado que conserva exclusivamente aquellas imágenes que contienen al menos un peatón completamente
+visible (es decir, sin truncamiento y sin oclusión), se obtiene un subconjunto formado por 1352 imágenes que constituye
+el conjunto de datos empleados en los experimentos realizados. En la Figura~\ref{fig:KittiSample}
+se observan ejemplos de imágenes extraídas.
+\begin{figure}[!ht]
+  \begin{center}
+    \subfloat{\includegraphics[width=0.7\textwidth]{imagenes/chapter4/Kitti/000073.png}}\\
+    \subfloat{\includegraphics[width=0.7\textwidth]{imagenes/chapter4/Kitti/000074.png}}
+  \end{center}
+  \caption{Ejemplos de escenas etiquetadas de Kitti~\cite{Kitti}}\label{fig:KittiSample}
+\end{figure}
 \section{Métodos}
 \subsection{Calibración y estimación manual}\label{sec:ManualCalibration}
 % Explicar brevemente como funciona
@@ -300,3 +325,19 @@ modelo se reduzca a simplemente predecir el valor promedio de altura de los obje
 \begin{equation}\label{eq:LossPhaseTwo}
   \mathcal{L} = \alpha_1\mathcal{L}_{det} + \alpha_2\mathcal{L}_{kps} + \alpha_3\mathcal{L}_{calib} + \alpha_4\mathcal{L}_{vt} + \alpha_5\mathcal{L}_{h_{obj}}
 \end{equation}
+El entrenamiento se lleva a cabo utilizando, en cada \emph{batch} (conjunto de ejemplos procesados en una iteración),
+tres imágenes correspondientes a la tarea de detección de personas y estimación de altura
+(esta última únicamente durante la fase dos del entrenamiento),
+junto con un ejemplo destinado a la calibración de los parámetros de la cámara.
+\par
+Adicionalmente, en esta implementación, se ha planteado la incorporación de una etapa previa,
+denominada fase cero, en la que el entrenamiento se centra exclusivamente en los clasificadores
+encargados de estimar los parámetros de la cámara, manteniendo congelado el esqueleto del modelo
+(evitando que se ajusten las capas iniciales de extracción de características generales).
+\par
+El propósito de esta fase inicial es incrementar la exposición de dichos clasificadores a un mayor número de ejemplos de entrenamiento,
+con el fin de mejorar la precisión en la estimación de los parámetros de la cámara antes de iniciar la fase uno.
+De este modo, cuando se desbloquea el esqueleto del modelo (permitiendo que todas las capas aprendan)
+y se lanza el entrenamiento conjunto de las tareas de detección de personas, estimación de altura y estimación de los parámetros de la cámara,
+se reduce el riesgo de que alguna de las ramas del modelo presente un nivel de aprendizaje significativamente inferior al de las demás,
+favoreciendo así un proceso de optimización más equilibrado.

@@ -28,8 +28,8 @@ versiones del proyecto se utilizó GitHub en varios repositorios, inyectados com
 en el repositorio principal: \url{https://github.com/briansenas/TFM_SVMIW}
 \par
 La implementación del método de calibración manual es trivial, utilizando el procedimiento
-descrito en la Sección ~\ref{sec:ManualCalibration} se obtienen
-los parámetros de las cámaras utilizadas en nuestro conjunto de datos de evaluación y, utilizando las ecuaciones
+descrito en la Sección~\ref{sec:ManualCalibration} se obtienen
+los parámetros de las cámaras utilizadas en el conjunto de datos de evaluación y, utilizando las ecuaciones
 descritas de proyecciones, se obtienen la estimación de la altura de los individuos en escena.
 \par
 No obstante, para el caso del método automático, existen varios problemas:
@@ -44,8 +44,8 @@ directamente.
 Con la labor de investigación, se halló la solución para los problemas descritos anteriormente.
 Como alternativa a SUN360~\cite{SUN360}, se encontró el conjunto de datos de SPEC~\cite{SPEC}. El
 procedimiento de generación de imágenes descritos en el artículo de referencia~\cite{SVMIW},
-es el mismo que describe el repositorio de SPEC~\cite{SPEC}. Una vez solucionado el problema
-de los datos, utilizando información del artículo y los trozos de código disponible
+se basa en~\cite{CalibDataGeneration} y es similar al que describe el repositorio de SPEC~\cite{SPEC}.
+Una vez solucionado el problema de los datos, utilizando información del artículo y los trozos de código disponible
 se obtuvo un procedimiento de entrenamiento con la librería ``maskrcnn-benchmark''~\cite{MaskRCNN}, con
 entrenamiento en múltiples tarjetas gráficas y servidores (por necesidades de escalabilidad y agilidad,
 permitiendo distribuir la carga y solventar problemas como la necesidad de memoria para entrenar con varias
@@ -53,21 +53,21 @@ imágenes a la vez).
 \par
 No obstante, el código era inestable (problemas de sincronización de entrenamiento con múltiples tarjetas),
 de difícil mantenimiento, adaptación y extensibilidad (debido al desconocimiento de las
-intenciones de integración e implementación de los autores). Además, las curvas de entrenamiento parecían estancarse en mínimos
-locales como se ve en la Figura~\ref{fig:PreviousImplLoss}. Por estos motivos, se decidió realizar
-la implementación en la librería sucesora de ``maskrcnn-benchmark''~\cite{MaskRCNN}, en ``detectron2''~\cite{detectron2}.
+intenciones de integración e implementación de los autores). Además, las curvas de entrenamiento
+parecían estancarse en mínimos locales como se ve en la Figura~\ref{fig:PreviousImplLoss}. Por estos motivos, se decidió realizar
+la implementación en la librería sucesora de ``maskrcnn-benchmark''~\cite{MaskRCNN}, en ``Detectron2''~\cite{detectron2}.
 \par
 De esta forma, se obtuvieron diversos beneficios como la estabilidad en entrenamiento distribuido, mejor uso de la
 capacidad de cómputo y mejor legibilidad del código. Entre las razones tenemos:
 menos operaciones de copia de datos a la tarjeta gráfica, entrenamiento en precisión mixta (disminuye el uso de memoria,
 permitiendo así entrenar con más imágenes o modelos más complejos),
-ratio de aprendizaje dinámico, diferente por módulo, con calentamiento y recocido,
+ratio de aprendizaje dinámico (cambiante y diferente por módulo), con calentamiento y recocido,
 mejor gestión de datos de visualización del entreno, con almacenado de imágenes de ejemplo,
 vectorización del proceso de estimación de la altura y más.
 \par
-Además de beneficios en implementación, al utilizar ``detectron2''~\cite{detectron2}, se dispone
+Además de beneficios en implementación, al utilizar ``Detectron2''~\cite{detectron2}, se dispone
 de modelos y arquitecturas nuevas con mejores rendimientos en detección. Siguiendo las
-directrices de implementación, se desarrolló un modelo más complejo con intención de
+directrices de implementación, se desarrolló un modelo con intención de
 obtener resultados similares a los de Zhu \emph{et al.}~\cite{SVMIW}.
 
 \begin{figure}[!ht]
@@ -76,9 +76,9 @@ obtener resultados similares a los de Zhu \emph{et al.}~\cite{SVMIW}.
   \includegraphics[width=0.6\textwidth]{imagenes/appendix/loss_plot.pdf}
   \caption[Funciones de pérdidas del modelo de estimación de parámetros de cámara.]{En la Figura se observan las funciones de pérdidas (menor es mejor) del modelo al intentar resolver solamente el problema de estimación de parámetros de la cámara.
     La línea superior verde, casi horizontal, es la implementación obtenida de unir los trozos de código de~\cite{SVMIW}.
-    El estancamiento puede deberse a que los autores realizaran modificaciones en la arquitectura que no se reflejan en los trozos de código disponibles ni en el artículo de referencia.
+    El estancamiento puede deberse a que los autores realizaran modificaciones en la arquitectura que no se reflejan en los trozos de código disponibles.
     Por otro lado, la línea inferior naranja representa el error de entrenamiento de la nueva implementación en
-    ``detectron2''~\cite{detectron2}. Seguida de su error de validación, línea intermedia azul, que también presenta una tendencia negativa.
+    ``Detectron2''~\cite{detectron2}. Seguida de su error de validación, línea intermedia azul, que también presenta una tendencia negativa.
     Es evidente la diferencia entre las implementaciones, donde la nueva parece aprender correctamente.
   }
   \label{fig:PreviousImplLoss}
@@ -86,7 +86,9 @@ obtener resultados similares a los de Zhu \emph{et al.}~\cite{SVMIW}.
 
 Para la gestión de los diferentes pasos a realizar, como la calibración manual de las cámaras o el filtrado de datos válidos,
 se diseñó un sistema basado en comandos para la ejecución de cada tarea de forma individual, pero permitiendo conexiones sencillas
-entre los pasos de manera secuencial como ilustra la Figura~\ref{fig:ScriptsDesign}.
+entre los pasos de manera secuencial (véase la Figura~\ref{fig:ScriptsDesign}).
+Por otro lado, en el Apéndice~\ref{app:LaunchExperiments} se detalla
+cómo replicar las fases de entrenamiento del modelo de aprendizaje automático.
 
 \begin{figure}[!ht]
   \begin{center}
@@ -97,7 +99,7 @@ entre los pasos de manera secuencial como ilustra la Figura~\ref{fig:ScriptsDesi
 }\label{fig:ScriptsDesign}
 \end{figure}
 \subsection*{Preprocesado de datos}
-Se utiliza preprocesados existentes en la librería ``detectron2''~\cite{detectron2}, que incorpora
+Se utiliza preprocesados existentes en la librería ``Detectron2''~\cite{detectron2}, que incorpora
 tanto estabilidad durante el entrenamiento como eficiencia computacional. Incluye transformación
 de las imágenes a tensores, normalización mediante medias y desviaciones estándar por canal de color
 extraídos de ImageNet~\cite{ImageNet} (debido a que se utiliza un modelo pre-entrenado con esos datos),
@@ -125,7 +127,7 @@ todas aquellas características que facilitaran el filtrado de imágenes redunda
 \end{figure}
 
 \subsection{Detalles técnicos de la experimentación}\label{sec:TrainML}
-La implementación sobre ``detectron2''~\cite{detectron2} utiliza subclases definidas sobre las clases bases
+La implementación sobre ``Detectron2''~\cite{detectron2} utiliza subclases definidas sobre las clases bases
 de los métodos implementados por META para la detección de personas, estimación de pose y segmentación panóptica.
 Se modifican ligeramente algunos métodos. Por ejemplo, para permitir el uso de una clase que utiliza una combinación de imágenes
 de diferentes conjuntos de datos (3 imágenes de detección de personas y estimación de altura por cada 1 imagen de calibración de
@@ -133,19 +135,45 @@ parámetros de la cámara) se modifica el método de inicialización de los dato
 Además, dado el ratio diferenciado entre imágenes para cada componente del entrenamiento, es necesario modificar la
 función que inicializa el optimizador para ponderar dinámicamente cada componente según dicho ratio y el tamaño total
 de imágenes por cada iteración (siguiendo la fórmula $\frac{0.1*n_{gpu}*n_{img}}{256}$ de~\cite{goyal2018accuratelargeminibatchsgd}).
-Al contrario de los autores, en la primera fase del entrenamiento nuestro modelo parece seguir minimizando los errores pasados las 40K iteraciones, llegando hasta 90K
-donde aparenta haber convergido. En la segunda fase parece converger con tan solo 5K iteraciones, con valores de re-proyección muy cercanos a 0.
+\par
+Tanto en la primera como en la segunda fase de entrenamiento, las limitaciones de memoria obligan a reducir
+a la mitad el número de ejemplos procesados en cada iteración con respecto a la configuración empleada en el trabajo original~\cite{SVMIW}.
+A pesar de esta restricción, durante la primera fase el modelo se acerca a la convergencia tras aproximadamente 30K iteraciones,
+un comportamiento consistente con el descrito por los autores, quienes indican en el material suplementario que el
+entrenamiento finaliza en torno a las 40K iteraciones.
+En la segunda fase se observa un comportamiento similar.
+la pérdida empieza a aplanarse cerca de aproximadamente 30K iteraciones,
+alcanzando valores de error de re-proyección próximos a cero.
+En contraste, los autores reportan una convergencia en torno a las 120K iteraciones para esta misma etapa.
+\par
+En conjunto, estos resultados muestran que las mejoras introducidas en este proyecto
+permiten acelerar el proceso de optimización, ya que el modelo alcanza un rendimiento
+comparable al método original con un número sustancialmente menor de iteraciones,
+incluso cuando en cada una de ellas se procesa la mitad de ejemplos por iteración
+frente al trabajo de referencia~\cite{SVMIW}.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=0.8\textwidth]{imagenes/chapter5/d2_det_only_losses.pdf}
+  \caption[Valor de pérdida en las diferentes fases del entrenamiento del modelo sin estimación de poses.]{
+     Valor de pérdida en las diferentes fases del entrenamiento del modelo sin estimación de poses.
+     Se observa que las pérdidas se acumulan (son menores en cada fase) y convergen rápidamente.
+  }
+  \label{fig:DetOnlyLosses}
+\end{figure}
+
 \par
 Para modificar características del entrenamiento se puede modificar el archivo de configuración en \code{configs/COCO-SCALE}.
 Dicho archivo permite activar o desactivar recorte del gradiente, calentamiento y recocido del entrenamiento, así como muchas
-funcionalidades adicionales. El script \code{train_calib.py} permite replicar los experimentos descritos. Tras lanzar una sesión
-de entrenamiento se guardarán resultados utilizando Tensorboard, en la carpeta \code{output}, permitiendo visualizar imágenes
-durante el entrenamiento así como las funciones de pérdida y datos auxiliares.
+funcionalidades adicionales. Para lanzar el entrenamiento, se debe hacer uso del script \code{train_calib.py}.
+Dicho script permite replicar los experimentos descritos (véase Apéndice~\ref{app:LaunchExperiments}). Tras lanzar una sesión
+de entrenamiento se guardarán resultados utilizando Tensorboard~\cite{Tensorflow}, en la carpeta \code{output}, permitiendo visualizar imágenes
+durante el entrenamiento así como las funciones de pérdida y datos auxiliares (véase Apéndice~\ref{app:VisualizeTraining}).
 \par
 Para la ejecución se utilizaron dos sistemas distintos. En las pruebas de alta demanda de CPU, como extraer los fotogramas y filtrar las
 imágenes válidas en ambos conjuntos de datos, se utilizó un ordenador con una CPU AMD Ryzen 7 5800X, 32 GB de RAM DDR4 y una tarjeta
 NVIDIA RTX 3060 12GB de VRAM. Para el entrenamiento distribuido en múltiples GPUs, se utilizó el servidor de la
-Universidad de Granada con 3 GTX Titan X Pascal, permitiendo disponer de hasta 2 veces más capacidad de cómputo en el mismo tiempo.
+Universidad de Granada con 3 GTX Titan X Pascal (cuando disponible), permitiendo disponer de hasta 3 veces más capacidad de cómputo en el mismo tiempo.
 
 \section{Resultados calibración manual}
 En la Tabla~\ref{tab:ManualResults} se observan los resultados de
@@ -233,28 +261,108 @@ Se observan los errores promedios en metros del método de referencia que predic
 Para el entrenamiento del modelo se utilizó una tasa de aprendizaje extraída de~\cite{goyal2018accuratelargeminibatchsgd},
 con un planificador para reducir su valor conforme se acerca al número total de iteraciones programadas,
 con un recorte del gradiente según la norma L2 (para evitar divergencia durante el entrenamiento por conjuntos de ejemplos
-ruidosos) y se opta por utilizar el mayor número de imágenes por iteraciones que nos permitan los servidores disponibles y sus capacidades.
-El entrenamiento se realiza en dos fases, como descrito en la Sección~\ref{sec:AutoMethod},
-donde la primera calibra la estimación de los parámetros de la cámara y el detector de personas por 90K iteraciones.
-Finalmente, se realiza un entreno de 5K iteraciones para la estimación de la altura del sujeto y la cámara.
+ruidosos) y se opta por utilizar el mayor número de imágenes por iteraciones que nos permita
+el hardware disponible. Debido a la alta demanda de uso de los servidores, se ha utilizado
+una única tarjeta de cómputo de 12GB de VRAM y, por lo tanto, la mitad de número de ejemplos de entrenamiento
+por iteración en comparación al artículo de referencia~\cite{SVMIW}.
 \par
-En la Tabla~\ref{tab:AutoResults} se observan los resultados de método de estimación automática. El error promedio de
-las cámaras en conjunto es de 14 centímetros, 2.6 veces más pequeño que el método manual.
-Un error similar al método de referencia, pero logrando permitir la altura exacta de individuos cuya altura no es 1.75 metros en diversas escenas.
-% NOTE: Igual debería obtener una tabla con estos resultados comparativos
-% En comparativa, en el artículo de Zhu \emph{et al.} consiguen un error promedio en el conjunto de datos Kitty~\cite{Kitty} y IMDB-25k de 9 centímetros,
-% entrenando el modelo hasta 120k iteraciones. Kitty~\cite{Kitty} es un conjunto de datos de conducción autónoma que proporciona
-% imágenes y datos de sensores capturados en entornos reales. Por lo tanto, permite comparar la altura estimada frente la real.
-% De forma similar, IMDB-25K es una recopilación automática de imágenes e información de altura de personas famosas obtenidas de internet.
-% \par
+El entrenamiento se realiza en tres fases, como descrito en la Sección~\ref{sec:AutoMethod},
+La primera entrena solamente la estimación de los parámetros de la cámara mientras mantiene las capas iniciales,
+de extracción de características generales, congeladas para no afectar a la capacidad del modelo de detectar personas.
+La segunda, entrena conjuntamente la estimación de parámetros de la cámara y la detección de personas, para alinear el
+modelo al tipo de persona que debemos detectar. Se debe detectar solamente personas totalmente visibles y que se
+encuentren sobre el suelo. Es decir, se debe restringir la capacidad del modelo generalista, de detección de personas,
+a este subconjunto de personas que cumplen estas restricciones geométricas para la estimación de su estatura.
+Finalmente, se añade las últimas capas y función de pérdida para la estimación de la altura del sujeto y la cámara.
+Todas las fases se entrenan por 30K iteraciones.
+\par
+En la Tabla~\ref{tab:CalibResults} se compara los resultados obtenidos en esta implementación
+con la tabla de resultados del artículo~\cite{SPEC}, que incluye los resultados del artículo de referencia~\cite{SVMIW},
+sobre el conjunto de datos Pano360. Se evidencia la capacidad de esta implementación de replicar, e incluso superar,
+la precisión obtenida en algunas métricas de las referencias, con un menor requisito computacional.
+Realizando únicamente 1 época, frente a 30 épocas que realizan en~\cite{SPEC}. En términos de número
+total de ejemplos de calibración vistos, se observan 1.78 veces menos ejemplos que~\cite{SVMIW}.
+
+\begin{table}[!ht]
+  \centering
+  \scriptsize
+  \begin{tabular}{|l|c|c|c|}
+  \hline
+  \rowcolor[HTML]{FFCB2F}
+  \textbf{Método} & \textbf{VFOV ($^\circ$)$\downarrow$} & \textbf{Pitch ($^\circ$)$\downarrow$} & \textbf{Roll ($^\circ$)$\downarrow$} \\
+  \hline
+  ScaleNet~\cite{SVMIW} & 5.68 & 2.61 & 1.41 \\
+  \hline
+  CamCalib (KL Loss)~\cite{SPEC} & 3.53 & 2.32 & 1.15 \\
+  \hline
+  CamCalib (Softargmax-L2)~\cite{SPEC} & 3.34 & 2.06 & 1.11 \\
+  \hline
+  CamCalib (Softargmax-biased-L2)~\cite{SPEC} & \textbf{3.24} & \textbf{1.94} & 1.02 \\
+  \hline
+  Modelo Entero (Softargmax-biased-L2) & 3.98 & 2.43 & \textbf{0.89} \\
+  \hline
+  Solo clasificadores (Softargmax-biased-L2) & 6.09 & 3.78 & 1.54 \\
+  \hline
+  \end{tabular}
+  \caption[Tabla comparativa de la precisión de la estimación de los parámetros de la cámara en Pano360~\cite{SPEC}.]
+  {
+    Tabla comparativa de la precisión de la estimación de los parámetros de la cámara en Pano360~\cite{SPEC}.
+    Los resultados son extraídos de~\cite{SPEC}. Aunque no se tiene la partición exacta en la cuál se
+    evaluó los demás modelos, se utiliza la misma proporción de ejemplos de validación (3.6\%).
+    La implementación actual demuestra ser capaz de igualar los resultados de las implementaciones de referencia
+    viendo en total hasta 33 veces menos ejemplos que CamCalib~\cite{SPEC}, y 1.78 veces menos que ScaleNet~\cite{SVMIW}.
+}\label{tab:CalibResults}
+\end{table}
+
+En la Tabla~\ref{tab:vt_losses} se compara el error de
+re-proyección obtenido en el conjunto de test de COCO-Scale, así como en el de entrenamiento de Kitti-person.
+Se observa que el error de re-proyección es muy similar en el primer conjunto y, aunque ligeramente diferente en el segundo,
+el error de medición en Kitti-person es idéntico.
+En este último, aunque no se disponga de la misma partición de datos que los autores de referencia~\cite{SVMIW},
+la partición utilizada contiene 1352 imágenes frente a las 298 imágenes utilizadas por los mismos.
+Siendo así, más representativo el hecho de haber logrado obtener un error de medición tan acertado pese al ligero incremento en pérdida de re-proyección.
+
+\begin{table}[!ht]
+  \centering
+  \scriptsize
+  \begin{tabular}{|l|c|c|c|}
+  \hline
+  \rowcolor[HTML]{FFCB2F}
+  \textbf{Dataset} & \textbf{Método} & \textbf{Error de re-proyección} & \textbf{Error de medición}\\
+  \hline
+  \multirow{2}{*}{COCO-Scale} & ScaleNet SN-L3~\cite{SVMIW} & 0.07 & -\\
+  \cline{2-4}
+                                     & Nuestro & 0.08 & - \\
+  \hline
+  \multirow{2}{*}{Kitti-person*} & ScaleNet SN-L3~\cite{SVMIW} & 0.03 & 0.10 metros\\
+  \cline{2-4}
+                                & Nuestro & 0.07 & 0.10 metros\\
+  \hline
+  \end{tabular}
+  \caption[Tabla comparativa de error de re-proyección obtenido.]{
+  Tabla comparativa de error de re-proyección obtenido.
+  Se observa que el modelo es capaz de aprender correctamente, obteniendo valores
+  muy cercanos a los de referencia. Todo ello con 70K iteraciones menos, utilizando la mitad de ejemplos
+  por cada. La partición utilizada de Kitti-person no es exactamente igual al del artículo~\cite{SVMIW},
+  incluye muchas más imágenes, con un total de 1352 frente a 298.
+  Aún así, logramos obtener un error medio de altura similar.
+}\label{tab:vt_losses}
+\end{table}
+
+En la Tabla~\ref{tab:AutoResults}
+se observan los resultados de método de estimación automática. El error promedio de
+las cámaras en conjunto es de 12 centímetros, 3 veces más pequeño que el método manual.
+Un error ligeramente inferior al método de referencia, pero logrando permitir la estimación de la
+altura exacta de individuos cuya altura no es 1.75 metros en diversas escenas.
 Los valores de mediana y tercer cuartil son mucho menores que el método clásico, dejando ver lo prometedor que puede llegar a ser este método.
-Destaca los valores máximos que no llegan a sobrepasar los 50 centímetros de error, mientras que el método de calibración manual ha llegado a tener
+Destaca los valores máximos que no llegan a sobrepasar los 32 centímetros de error, mientras que el método de calibración manual ha llegado a tener
 un error de 143 centímetros (valor atípico, un error extremo de re-proyección).
+
 En las Figuras~\ref{fig:AutoWorst} y~\ref{fig:AutoBest} se
 observan los peores y mejores resultados de este método.
 Dado que se conoce la altura de la cámara en las escenas,
-se pueden ver reflejados en la Tabla~\ref{tab:AutoCamResults} el error promedio
-de estimación del módulo de PointNet~\cite{PointNet} de la altura de la cámara.
+se pueden ver reflejados en la Tabla~\ref{tab:AutoCamResults}
+el error promedio de estimación del módulo de PointNet~\cite{PointNet} de la altura de la cámara.
 Realizar un entrenamiento más largo del modelo puede que reduzca la varianza y el error obtenido,
 tanto en la estimación de la altura de la cámara como del sujeto en escena.
 En la Tabla~\ref{tab:Results} se recogen los resultados finales
@@ -272,17 +380,18 @@ de 1.75 metros, con el beneficio de acertar en múltiples escenas, de diferente 
 \rowcolor[HTML]{FFCB2F}
 \textbf{Cámara }& \textbf{Soporte }& $\bm{\mu}$ & $\bm{\sigma}$ & $\bm{Q_2}$ & $\bm{Q_3}$ & \textbf{Máximo}\\
 \hline
-Cam1 & 222 & 0.21 & 0.11 & 0.19 & 0.26 & 0.43 \\
+Cam1 & 222 & 0.15 & 0.10 & 0.18 & 0.21 & 0.31 \\
 \hline
-Cam2 & 293 & 0.12 & 0.07 & 0.11 & 0.16 & 0.38 \\
+Cam2 & 293 & 0.12 & 0.06 & 0.11 & 0.16 & 0.30 \\
 \hline
-Cam3 & 182 & 0.09 & 0.06 & 0.10 & 0.12 & 0.24 \\
+Cam3 & 182 & 0.10 & 0.09 & 0.04 & 0.22 & 0.26 \\
 \hline
 \end{tabular}
 \caption[Tabla de errores de estimación del método por aprendizaje profundo, expresados en metros.]{
   Tabla de errores de estimación del método por aprendizaje profundo, expresados en metros.
-  Se observan resultados prometedores del método de estimación automática, semi-supervisado por el error de re-proyección.
-Destaca el error medio de la cámara 3, que puede ser debido a su mejor calidad de imagen.}
+  Se observan resultados prometedores del método de estimación automática, semi-supervisado por
+  el error de re-proyección.
+ Destaca el error medio de la cámara 3, que puede ser debido a su mejor calidad de imagen.}
 \label{tab:AutoResults}
 \end{table}
 
@@ -294,11 +403,11 @@ Destaca el error medio de la cámara 3, que puede ser debido a su mejor calidad 
 \rowcolor[HTML]{FFCB2F}
 \textbf{Cámara }& \textbf{Soporte }& $\bm{\mu}$ & $\bm{\sigma}$ & $\bm{Q_2}$ & $\bm{Q_3}$ & \textbf{Máximo}\\
 \hline
-Cam1 & 222 & 0.58 & 0.26 & 0.67 & 0.83 & 0.92 \\
+Cam1 & 222 & 0.37 & 0.10 & 0.40 & 0.44 & 0.48 \\
 \hline
-Cam2 & 293 & 0.38 & 0.13 & 0.35 & 0.44 & 0.76 \\
+Cam2 & 293 & 0.27 & 0.10 & 0.28 & 0.32 & 0.46 \\
 \hline
-Cam3 & 182 & 0.95 & 0.11 & 1.00 & 1.00 & 1.20 \\
+Cam3 & 182 & 0.12 & 0.06 & 0.12 & 0.16 & 0.27 \\
 \hline
 \end{tabular}
 \caption[Tabla de errores de estimación de la altura de la cámara con aprendizaje automático, expresados en metros.]{
@@ -329,7 +438,7 @@ Por comparar, en la imagen superior derecha, el método manual estima una altura
 \label{fig:AutoBest}
 \end{figure}
 
-Durante el proceso de experimentación se observó que el modelo as veces colapsaba al \emph{a priori},
+Durante las fases iniciales de experimentación se observó que el modelo as veces colapsaba al \emph{a priori},
 estimando todos los individuos en la escena la misma altura, cerca del promedio impuesto.
 Esto es posible debido a que el modelo puede ajustar tanto la altura de los sujetos en escena,
 su profundidad, como la altura de la cámara con respecto al suelo para disminuir
@@ -351,7 +460,7 @@ una restricción adicional sobre la escena para ayudar a resolver esta ambigüed
       \hline
       Clásico & 0.37 & 0.26 & 0.33 & 0.49 & 1.42 \\
       \hline
-      SVMIW & 0.14 & 0.10 & 0.12 & 0.18 & 0.43 \\
+      Nuestro & 0.12 & 0.08 & 0.11 & 0.19 & 0.29 \\
       \hline
     \end{tabular}
   \end{center}
@@ -359,7 +468,7 @@ una restricción adicional sobre la escena para ayudar a resolver esta ambigüed
   Tabla resumen de comparativa final, con errores expresados en metros.
   Se observa que incluir un \emph{a priori} sobre las estimaciones mejora el error promedio y máximo significativamente.
   El modelo consigue un error mediano inferior al estimador baseline. No obstante, presente una mayor
-  variabilidad, con estimaciones con errores hasta 2.5 veces más grandes. Realizar un entrenamiento
-  más largo y buscar una ponderación más precisa de la función pérdida podría mejorar dichos resultados.
+  variabilidad, con estimaciones con errores hasta casi 2 veces más grandes. Realizar un entrenamiento
+  más largo y buscar una ponderación más precisa de las funciones de pérdida podría mejorar los resultados.
 }\label{tab:Results}
 \end{table}

@@ -9,7 +9,7 @@ En primer lugar, se realizó un estudio de la literatura relativa a la metrolog�
 estimación del tamaño de objetos en escena a su profundidad dentro de la misma.
 Se ha investigado requisitos previos para el uso de métodos clásicos de extracción de información de la escena,
 así cómo métodos que utilizan técnicas de aprendizaje profundo.
-Los primeros, requieren intervención humana, mediante calibración manual de cámara y conocimiento de la escena
+Los primeros requieren intervención humana, mediante calibración manual de cámara y conocimiento de la escena
 (altura, posición y rotación de la cámara) con respecto a los objetos. Los últimos,
 aprender a extraer dicha información de forma automática a partir de los datos.
 Durante el análisis del estado del arte, se observa el salto en complejidad teórica al tratar de
@@ -40,7 +40,7 @@ en la escena al mundo 3D en escala métrica y se obtiene la estatura.
 A diferencia del método clásico, el enfoque basado en aprendizaje profundo no requiere proporcionar
 manualmente los parámetros geométricos de la escena durante la inferencia, sino que los estima
 implícitamente a partir de la imagen mediante \emph{priors} aprendidos durante el entrenamiento.
-Es entrenado en 2 fases, utilizando 2 conjuntos de datos a
+Es entrenado en 3 fases, siendo las dos últimas utilizando 2 conjuntos de datos a
 la vez. Uno que permite trabajar sobre la calibración de los parámetros de la escena
 (como las rotaciones de la cámara y su campo de visión) y otro que permite aprender
 a minimizar el error de re-proyección sin saber la altura real de los sujetos o de la cámara en la escena.
@@ -50,19 +50,25 @@ frente al método clásico. El disponer de una regularización sobre el valor pr
 de la altura de los objetos favorece una disminución significativa del error medio del
 método clásico en casos desfavorables (por problemas de calibración o imprecisiones en
 las mediciones de referencia). El error promedio del método clásico es de 37 centímetros
-frente a 14 centímetros del método semi-supervisado, demostrando el gran potencial de
+frente a 12 centímetros del método semi-supervisado, demostrando el gran potencial de
 este método, ya que no necesita de datos etiquetados de las características de la escena.
 Con este proyecto se dispone de una implementación del código de~\cite{SVMIW}, con el
 caso de estimación de pose para humanos y el caso multi-clase (en este caso, como
 en el artículo de referencia, se utiliza la clase coche y humano, pero es fácilmente
-extensible para cualquier objeto).
-Además, se crea adicionalmente un pequeño sistema de visualización de datos y búsqueda
-de imágenes según características extraídas de la escena,
-para la exploración de datos de entrenamiento y filtrado de imágenes, eliminando aquellas que no aportan.
+extensible para cualquier objeto). Se realiza una exploración de datos, comparando los métodos de generación de datos sintéticos
+de~\cite{SVMIW} y~\cite{SPEC}. Incluyendo la eliminación de imágenes irrelevantes, gracias al desarrollo
+de un sistema de visualización y búsqueda de imágenes según características extraídas automáticamente,
+permitiendo encontrar imágenes redundantes para reducir el tamaño y ruido del conjunto de datos.
+Además, se logra un incremento en rendimiento computacional y eficiencia de optimización del
+modelo de aprendizaje automático, logrando reducir el tiempo y número de iteraciones
+totales necesarias. Todo ello gracias a optimizaciones varias como aumentación de datos,
+ratio de aprendizaje dinámico y por módulo, regularización por recorte del gradiente
+y vectorización del proceso de metrología.
 \par
-Se concluye que se han completado satisfactoriamente los objetivos planteados, determinando la
+Por lo tanto, se concluye que se han completado satisfactoriamente los objetivos planteados, determinando la
 posibilidad de resolución del problema y permitiendo una extensión del mismo para diferentes
-objetos, conjuntos de datos, arquitecturas de redes convolucionales o métodos de entrenamiento más recientes.
+objetos, conjuntos de datos, arquitecturas de redes convolucionales o métodos de entrenamiento más recientes
+(Véase el Apéndice~\ref{app:YAMLConfig}).
 Abriendo así la puerta a futuras investigaciones en el campo. Todo el código disponible está
 centralizado en GitHub~\code{https://github.com/briansenas/TFM_SVMIW}, a excepción del conjunto
 de datos de validación dado que son datos confidenciales, propiedad de la empresa Panacea~\cite{panacea2026}.
@@ -79,9 +85,9 @@ de datos de estimación de profundidad, podría dar lugar a un modelo más capaz
 Incluso, se podría optar por utilizar los avances del campo de estimación de profundidad,
 como~\cite{yang2024depthv2} capaz de estimar la profundidad en escala métrica,
 para estimar nuestra variable $z$ en vez de intentar estimar la altura de la cámara.
-Dicho campo, utiliza la coherencia entre escenas en un video (fotogramas vecinos) para entrenar sus modelos,
-algo que también se podría adaptar a este caso y disponer así de un mayor conjunto de datos, así como
-una regularización más sobre las predicciones.
+El campo de estimación de profundidad, utiliza la coherencia entre escenas en un video
+(fotogramas vecinos) para entrenar sus modelos, algo que también se podría adaptar a este caso
+y disponer así de un mayor conjunto de datos, así como una regularización más sobre las predicciones.
 \par
 Por otro lado, se pueden explorar otros métodos que permitan obtener un modelo
 más explicable como~\cite{SAKINA2024765}, que utilizan
