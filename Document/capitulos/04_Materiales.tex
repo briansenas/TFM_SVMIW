@@ -137,7 +137,7 @@ observa un ejemplo de imagen panorámica y los trozos obtenidos con parámetros 
   Dada una imagen panorámica de SUN360~\cite{SUN360}, se extraen 3 trozos, con parámetros de cámara diferentes.}\label{fig:CalibSample}
 \end{figure}
 
-\subsubsection{SUN360}~\label{sec:SUN360}
+\subsubsection{SUN360}\label{sec:SUN360}
 El dataset SUN360~\cite{SUN360} consiste en un conjunto de imágenes panorámicas esféricas
 de 360\textdegree$\times$180\textdegree que cubren una amplia variedad de escenas interiores y exteriores con alta resolución.
 Originalmente, contenía 67.583 panoramas categorizados por tipo de lugar (80 categorías), y ha sido utilizado extensamente para tareas de reconocimiento de escena, estimación de orientación y percepción global de entornos (véase la Figura~\ref{fig:SUN360Samples}).
@@ -173,6 +173,9 @@ de imágenes de entrenamiento para la calibración de nuestro modelo de estimaci
 Además, es una alternativa razonable debido a su similitud en términos de naturaleza panorámica, diversidad
 de escenas y cobertura de entornos interiores y exteriores. Es decir, mantiene una estructura suficientemente
 rica y variada como para preservar la capacidad de generalización del modelo entrenado en SUN360~\cite{SUN360}.
+Se generan 12 ejemplos por cada panorámica, para un total de 347.304 imágenes de entrenamiento y 12.732 de validación
+(más detalles en el Apéndice~\ref{app:DataDistribution}).
+
 \subsubsection{Kitti}
 El conjunto de datos Kitti~\cite{Kitti} de detección de objetos constituye unos de los referentes más
 utilizados para la evaluación de algoritmos de detección de objetos en escenarios de conducción autónoma.
@@ -192,10 +195,15 @@ el conjunto de datos empleados en los experimentos realizados. En la Figura~\ref
 se observan ejemplos de imágenes extraídas.
 \begin{figure}[!ht]
   \begin{center}
-    \subfloat{\includegraphics[width=0.7\textwidth]{imagenes/chapter4/Kitti/000073.png}}\\
-    \subfloat{\includegraphics[width=0.7\textwidth]{imagenes/chapter4/Kitti/000074.png}}
+    \subfloat{\includegraphics[width=0.8\textwidth]{imagenes/chapter4/Kitti/000073.png}}\\
+    \subfloat{\includegraphics[width=0.8\textwidth]{imagenes/chapter4/Kitti/000074.png}}
   \end{center}
-  \caption{Ejemplos de escenas etiquetadas de Kitti~\cite{Kitti}}\label{fig:KittiSample}
+  \caption[Ejemplos de escenas etiquetadas de Kitti~\cite{Kitti}.]{
+  Ejemplos de escenas etiquetadas de Kitti~\cite{Kitti}.
+  Se filtran el conjunto de imágenes por aquellas que contengan al menos una persona completamente visible,
+  sin que esta esté parcialmente ocluida por otro objeto o truncada debido a los límites de la imagen.
+}
+  \label{fig:KittiSample}
 \end{figure}
 \section{Métodos}
 \subsection{Calibración y estimación manual}\label{sec:ManualCalibration}
@@ -327,17 +335,40 @@ modelo se reduzca a simplemente predecir el valor promedio de altura de los obje
 \end{equation}
 El entrenamiento se lleva a cabo utilizando, en cada \emph{batch} (conjunto de ejemplos procesados en una iteración),
 tres imágenes correspondientes a la tarea de detección de personas y estimación de altura
-(esta última únicamente durante la fase dos del entrenamiento),
+(esta última únicamente durante la fase dos del entrenamiento)
 junto con un ejemplo destinado a la calibración de los parámetros de la cámara.
 \par
 Adicionalmente, en esta implementación, se ha planteado la incorporación de una etapa previa,
 denominada fase cero, en la que el entrenamiento se centra exclusivamente en los clasificadores
 encargados de estimar los parámetros de la cámara, manteniendo congelado el esqueleto del modelo
 (evitando que se ajusten las capas iniciales de extracción de características generales).
-\par
 El propósito de esta fase inicial es incrementar la exposición de dichos clasificadores a un mayor número de ejemplos de entrenamiento,
 con el fin de mejorar la precisión en la estimación de los parámetros de la cámara antes de iniciar la fase uno.
 De este modo, cuando se desbloquea el esqueleto del modelo (permitiendo que todas las capas aprendan)
 y se lanza el entrenamiento conjunto de las tareas de detección de personas, estimación de altura y estimación de los parámetros de la cámara,
 se reduce el riesgo de que alguna de las ramas del modelo presente un nivel de aprendizaje significativamente inferior al de las demás,
 favoreciendo así un proceso de optimización más equilibrado.
+\par
+Finalmente, extendiendo el trabajo de~\cite{SPEC}, en lugar de emplear la pérdida de la divergencia Kullback-Leibler (KL)
+como los autores de~\cite{SVMIW} se utiliza una adaptación del \emph{softargmax}, con pérdida L2, para entrenar el módulo de estimación de parámetros
+de cámara. La primera pérdida, KL, se utiliza como medida de asimetría estadística para cuantificar la discrepancia entre
+una distribución de probabilidad de referencia y una distribución aproximada (estimada por el modelo). La segunda, se
+consolida como una forma de hacer diferenciable la operación de obtener la posición en un vector del valor máximo (\emph{argmax}).
+El operador normaliza las estimaciones mediante una función exponencial (\emph{softmax}) para transformarlo en una distribución
+de probabilidad espacial continua. Posteriormente, calcula la esperanza matemática promediando las posiciones de ponderadas
+por sus respectivas densidades.
+\par
+Además, en~\cite{SPEC} se observa que penalizar más las sobre-estimaciones del campo de visión vertical de la cámara
+ayuda a obtener un mejor modelo para calibración directa de cámara. Por ello, utilizan una versión asimétrica que
+penaliza más a sobre-estimaciones siguiendo la Ecuación~\ref{eq:biased-l2},
+que será la función de pérdida utilizada en esta implementación.
+\begin{equation}
+\mathcal{L}_{\text{calib-softargmax-biased-L2}}(\hat{\upsilon}, \upsilon)=
+\begin{cases}
+\dfrac{(\hat{\upsilon}-\upsilon)^2}
+{(\hat{\upsilon}-\upsilon)^2+1},
+& \text{si } \hat{\upsilon}\le \upsilon, \\[8pt]
+(\hat{\upsilon}-\upsilon)^2,
+& \text{en otro caso.}
+\end{cases}
+\end{equation}\label{eq:biased-l2}

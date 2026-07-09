@@ -47,8 +47,8 @@ procedimiento de generación de imágenes descritos en el artículo de referenci
 se basa en~\cite{CalibDataGeneration} y es similar al que describe el repositorio de SPEC~\cite{SPEC}.
 Una vez solucionado el problema de los datos, utilizando información del artículo y los trozos de código disponible
 se obtuvo un procedimiento de entrenamiento con la librería ``maskrcnn-benchmark''~\cite{MaskRCNN}, con
-entrenamiento en múltiples tarjetas gráficas y servidores (por necesidades de escalabilidad y agilidad,
-permitiendo distribuir la carga y solventar problemas como la necesidad de memoria para entrenar con varias
+entrenamiento en múltiples tarjetas gráficas y servidores (por necesidades de escalabilidad,
+permitiendo distribuir la carga y solventar problemas como la necesidad de memoria para entrenar con muchas
 imágenes a la vez).
 \par
 No obstante, el código era inestable (problemas de sincronización de entrenamiento con múltiples tarjetas),
@@ -77,8 +77,9 @@ obtener resultados similares a los de Zhu \emph{et al.}~\cite{SVMIW}.
   \caption[Funciones de pérdidas del modelo de estimación de parámetros de cámara.]{En la Figura se observan las funciones de pérdidas (menor es mejor) del modelo al intentar resolver solamente el problema de estimación de parámetros de la cámara.
     La línea superior verde, casi horizontal, es la implementación obtenida de unir los trozos de código de~\cite{SVMIW}.
     El estancamiento puede deberse a que los autores realizaran modificaciones en la arquitectura que no se reflejan en los trozos de código disponibles.
-    Por otro lado, la línea inferior naranja representa el error de entrenamiento de la nueva implementación en
-    ``Detectron2''~\cite{detectron2}. Seguida de su error de validación, línea intermedia azul, que también presenta una tendencia negativa.
+    Por otro lado, la línea inferior naranja representa el error de entrenamiento de las fases iniciales de la
+    implementación en ``Detectron2''~\cite{detectron2} (utilizando la misma función de pérdida).
+    Seguida de su error de validación, línea intermedia azul, que también presenta una tendencia negativa.
     Es evidente la diferencia entre las implementaciones, donde la nueva parece aprender correctamente.
   }
   \label{fig:PreviousImplLoss}
@@ -155,14 +156,13 @@ frente al trabajo de referencia~\cite{SVMIW}.
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=0.8\textwidth]{imagenes/chapter5/d2_det_only_losses.pdf}
-  \caption[Valor de pérdida en las diferentes fases del entrenamiento del modelo sin estimación de poses.]{
-     Valor de pérdida en las diferentes fases del entrenamiento del modelo sin estimación de poses.
+  \caption[Valor de pérdida total en las diferentes fases del entrenamiento del modelo sin estimación de poses.]{
+     Valor de pérdida total en las diferentes fases del entrenamiento del modelo sin estimación de poses.
      Se observa que las pérdidas se acumulan (son menores en cada fase) y convergen rápidamente.
   }
   \label{fig:DetOnlyLosses}
 \end{figure}
 
-\par
 Para modificar características del entrenamiento se puede modificar el archivo de configuración en \code{configs/COCO-SCALE}.
 Dicho archivo permite activar o desactivar recorte del gradiente, calentamiento y recocido del entrenamiento, así como muchas
 funcionalidades adicionales. Para lanzar el entrenamiento, se debe hacer uso del script \code{train_calib.py}.
@@ -280,8 +280,7 @@ En la Tabla~\ref{tab:CalibResults} se compara los resultados obtenidos en esta i
 con la tabla de resultados del artículo~\cite{SPEC}, que incluye los resultados del artículo de referencia~\cite{SVMIW},
 sobre el conjunto de datos Pano360. Se evidencia la capacidad de esta implementación de replicar, e incluso superar,
 la precisión obtenida en algunas métricas de las referencias, con un menor requisito computacional.
-Realizando únicamente 1 época, frente a 30 épocas que realizan en~\cite{SPEC}. En términos de número
-total de ejemplos de calibración vistos, se observan 1.78 veces menos ejemplos que~\cite{SVMIW}.
+En términos de número total de ejemplos de calibración vistos, se observan 33 veces menos ejemplos que~\cite{SPEC} y 1.78 veces menos que~\cite{SVMIW}.
 
 \begin{table}[!ht]
   \centering

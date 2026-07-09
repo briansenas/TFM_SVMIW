@@ -91,10 +91,10 @@ Cam3 (Hikvision) & 2.050 & (-1.2130, +0.2400, +0.6120) \\
 
 \section{Utilizando Detectron2}\label{app:YAMLConfig}
 El sistema de configuración de \emph{Detectron2}~\cite{detectron2} se basa en una arquitectura jerárquica de ficheros YAML.
-En el Ejemplo~\ref{lst:ROIHYaml}, se observa la configuración de la experimentación del modelo de estimación de la altura.
 En dichos ficheros, se definen parámetros de entrenamiento, arquitectura, conjuntos de datos, optimización y evaluación de forma centralizada.
 De esta forma, es posible llevar a cabo un seguimiento del historial de cambios en experimentos a través de herramientas como Git, así como
 la creación de variantes sin redundancia al utilizar el sistema de herencia, simplificando el mantenimiento y la comparación sistemática de experimentos.
+En el Ejemplo~\ref{lst:ROIHYaml}, se observa la configuración de la experimentación del modelo de estimación de la altura.
 \par
 Otro mecanismo principal que habilita una flexibilidad experimental recae sobre el sistema de registros, entre los que
 destacan \lstinline{META_ARCH_REGISTRY}, encargado de asociar identificadores a arquitectura de modelos, el registro \lstinline{ROI_HEADS_REGISTRY},
@@ -107,7 +107,7 @@ modificar el flujo general de entrenamiento (véase el Ejemplo~\ref{lst:ModelReg
 Como consecuencia, una vez registradas las nuevas clases y actualizada la configuración, el modelo puede entrenarse
 directamente utilizando los procedimientos de entrenamiento ya definidos. A su vez, se puede extender
 la clase encargada de realizar el entrenamiento para incluir procedimientos adicionales (como es el caso
-del entrenamiento en precisión mixta, AMP).
+del entrenamiento en precisión mixta).
 
 \noindent\begin{minipage}{\textwidth}
 \begin{lstlisting}[
@@ -151,10 +151,10 @@ Otra demostración de la extensibilidad de la implementación en \emph{Detectron
 la posibilidad de redefinir o modificar flujos existentes por medio de la sobre-carga de
 funciones y métodos, sin tener que modificar la lógica principal del código. Un ejemplo de ello
 es la sobre-carga del método \lstinline{visualize_training} de la meta-arquitectura que permite
-guardar inferencias durante el entrenamiento para observar si el modelo está aprendiendo correctamente.
+guardar visualizaciones de la estimaciones del modelo durante el entrenamiento. Esto permite
+realizar un análisis cualitativo del proceso de aprendizaje del modelo.
 En la Figura~\ref{fig:VisualizeTraining},
-se observan las predicciones del módulo de estimación
-de parámetros de la cámara durante el entrenamiento.
+se observan cómo las predicciones del módulo de estimación de parámetros de la cámara son cada vez más precisas durante el entrenamiento.
 \par
 Esto es posible debido al uso de Tensorboard~\cite{Tensorflow}, una herramienta de monitorización ampliamente
 utilizada en aprendizaje profundo. Tensorboard permite registrar y visualizar de forma interactiva distintos
