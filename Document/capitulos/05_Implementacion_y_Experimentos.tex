@@ -281,8 +281,15 @@ con la tabla de resultados del artículo~\cite{SPEC}, que incluye los resultados
 sobre el conjunto de datos Pano360. Se evidencia la capacidad de esta implementación de replicar, e incluso superar,
 la precisión obtenida en algunas métricas de las referencias, con un menor requisito computacional.
 En términos de número total de ejemplos de calibración vistos, se observan 33 veces menos ejemplos que~\cite{SPEC} y 1.78 veces menos que~\cite{SVMIW}.
+Se incluye también los resultados del modelo final, una vez entrenado sobre todas las fases, y se observa
+que su capacidad de estimar los parámetros de la cámara no divergen tanto del modelo entrenado solamente para
+ello. De hecho, su capacidad de estimar el ángulo de visión vertical (\emph{vfov}) y el de inclinación (\emph{pitch})
+mejora ligeramente frente al modelo entero entrenado solamente para la fase 0 (de calibración de cámara).
+Esto puede ser debido a que el modelo en la fase final tiene acumulado más iteraciones totales, así como
+la presencia de la restricción proyectiva de estimación de altura que afecta a las predicciones de los ángulos
+de la cámara.
 
-\begin{table}[!ht]
+\begin{table}[!htp]
   \centering
   \scriptsize
   \begin{tabular}{|l|c|c|c|}
@@ -298,9 +305,11 @@ En términos de número total de ejemplos de calibración vistos, se observan 33
   \hline
   CamCalib (Softargmax-biased-L2)~\cite{SPEC} & \textbf{3.24} & \textbf{1.94} & 1.02 \\
   \hline
-  Modelo Entero (Softargmax-biased-L2) & 3.98 & 2.43 & \textbf{0.89} \\
+  Modelo entero fase 0 (Softargmax-biased-L2) & 3.98 & 2.43 & \textbf{0.89} \\
   \hline
-  Solo clasificadores (Softargmax-biased-L2) & 6.09 & 3.78 & 1.54 \\
+  Solo clasificadores fase 0 (Softargmax-biased-L2) & 6.09 & 3.78 & 1.54 \\
+  \hline
+  Modelo fase final (Softargmax-biased-L2) & 3.42 & 2.30 & 1.04 \\
   \hline
   \end{tabular}
   \caption[Tabla comparativa de la precisión de la estimación de los parámetros de la cámara en Pano360~\cite{SPEC}.]
@@ -394,7 +403,7 @@ Cam3 & 182 & 0.10 & 0.09 & 0.04 & 0.22 & 0.26 \\
 \label{tab:AutoResults}
 \end{table}
 
-\begin{table}[H]
+\begin{table}[!ht]
   \centering
   \scriptsize
 \begin{tabular}{|l|c|c|c|c|c|c|}
