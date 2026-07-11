@@ -360,9 +360,9 @@ por sus respectivas densidades.
 \par
 Además, en~\cite{SPEC} se observa que penalizar más las sobre-estimaciones del campo de visión vertical de la cámara
 ayuda a obtener un mejor modelo para calibración directa de cámara. Por ello, utilizan una versión asimétrica que
-penaliza más a sobre-estimaciones siguiendo la Ecuación~\ref{eq:biased-l2},
-que será la función de pérdida utilizada en esta implementación.
-\begin{equation}
+penaliza más las sobre-estimaciones siguiendo la Ecuación~\ref{eq:biased-l2},
+que será la función de pérdida utilizada en esta implementación para el módulo de calibración de cámara.
+\begin{equation}\label{eq:biased-l2}
 \mathcal{L}_{\text{calib-softargmax-biased-L2}}(\hat{\upsilon}, \upsilon)=
 \begin{cases}
 \dfrac{(\hat{\upsilon}-\upsilon)^2}
@@ -371,4 +371,4 @@ que será la función de pérdida utilizada en esta implementación.
 (\hat{\upsilon}-\upsilon)^2,
 & \text{de lo contrario.}
 \end{cases}
-\end{equation}\label{eq:biased-l2}
+\end{equation}

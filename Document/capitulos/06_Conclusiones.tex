@@ -8,7 +8,7 @@ campo podrían extenderse a entornos forenses y de seguridad, la biomecánica o 
 En primer lugar, se realizó un estudio de la literatura relativa a la metrología monocular, desde la
 estimación del tamaño de objetos en escena a su profundidad dentro de la misma.
 Se ha investigado requisitos previos para el uso de métodos clásicos de extracción de información de la escena,
-así cómo métodos que utilizan técnicas de aprendizaje profundo.
+así como métodos que utilizan técnicas de aprendizaje profundo.
 Los primeros requieren intervención humana, mediante calibración manual de cámara y conocimiento de la escena
 (altura, posición y rotación de la cámara) con respecto a los objetos. Los últimos,
 aprender a extraer dicha información de forma automática a partir de los datos.
@@ -80,16 +80,17 @@ región delimitadora del objeto de forma amodal~\cite{kar2015amodalcompletionsiz
 Así, se podría extender la aplicación de este sistema a objetos semi-ocultos.
 En~\cite{SAKINA2024765}, se observó que el uso de información adicional como raza y género podría llegar
 a mejorar resultados de la estimación. Además, incluir más restricciones en conjunto al error
-de re-proyección o utilizar más variables conocidas como la profundidad, haciendo uso de los grandes conjuntos
-de datos de estimación de profundidad, podría dar lugar a un modelo más capaz.
+de re-proyección, como utilizando más variables conocidas (por ejemplo utilizando un \emph{a priori} sobre
+la altura de la cámara para entrenar un modelo para cámaras exteriores típicas),
+podría dar lugar a un modelo con mayor precisión en determinados entornos.
 Incluso, se podría optar por utilizar los avances del campo de estimación de profundidad,
 como~\cite{yang2024depthv2} capaz de estimar la profundidad en escala métrica,
-para estimar nuestra variable $z$ en vez de intentar estimar la altura de la cámara.
-El campo de estimación de profundidad, utiliza la coherencia entre escenas en un video
+para estimar nuestra variable $z$ en lugar de intentar estimar la altura de la cámara.
+En el campo de estimación de profundidad, hay métodos que utilizan la coherencia entre escenas en un video
 (fotogramas vecinos) para entrenar sus modelos, algo que también se podría adaptar a este caso
 y disponer así de un mayor conjunto de datos, así como una regularización más sobre las predicciones.
 \par
-Por otro lado, se pueden explorar otros métodos que permitan obtener un modelo
+Por otro lado, existen alternativas que permitan obtener un modelo
 más explicable como~\cite{SAKINA2024765}, que utilizan
 modelos como regresores lineales y árbol de decisiones para estimar la estatura de las
 personas, utilizando características extraídas automáticamente de la escena como raza, género
