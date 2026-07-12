@@ -37,7 +37,7 @@ El segundo, busca relaciones directas entre el
 espacio 3D-2D como puede ser las líneas y puntos de fuga~\cite{GeometricCalibration}. No obstante, necesita de escenas estructuradas y
 llenas de información geométrica, perdiendo precisión en escenas generales de diferentes entornos.
 Por último, existe la posibilidad de utilizar múltiples perspectivas para hacer una auto-calibración de la cámara~\cite{CameraSelfCalibration}.
-Sin embargo, estos métodos dependen de los límites de los algoritmos capaces de extraer características para relacionar las múltiples escenas.
+Sin embargo, estos métodos dependen de los algoritmos capaces de extraer características para relacionar las múltiples escenas.
 \par
 Una vez obtenido los parámetros calibrados de la cámara, se pueden extraer más informaciones geométricas de la escena.
 Uno de los trabajos seminales en este ámbito son los de Criminisi \emph{et al.}~\cite{CriminisiReconstruction,CriminisiApplications},
@@ -52,7 +52,7 @@ información de la escala de un objeto de referencia en la imagen, para poder ex
 Con el avance de la visión por computador y el aumento en la disponibilidad de datos y poder computacional, comenzó a emerger una
 transición hacia enfoques más flexibles basados en aprendizaje. El aprendizaje profundo alcanza los mejores resultados en una
 multitud de subproblemas del campo de la visión por computador. En el caso de la calibración de cámara, existen diversos métodos
-que cada vez obtienen mejores resultados~\cite{CalibDataGeneration,SPEC,DeepCalib}, permitiendo disponer de un modelo capaz de estimar los parámetros para cualquier escena
+que cada vez obtienen mejores resultados~\cite{CalibDataGeneration,SPEC,DeepCalib, SVMIW}, permitiendo disponer de un modelo capaz de estimar los parámetros para cualquier escena
 sin depender del modelo de cámara. De la misma forma, el aprendizaje profundo se ha vuelto cada vez más capaz de detectar objetos
 en la escena~\cite{ObjectDetectionSurvey}. Estos avances han permitido adaptar diversos modelos para realizar tareas de detección y metrología,
 estimando la altura o profundidad de los objetos en escena~\cite{SVMIW, SPEC, yang2024depthv2, DepthFromSingleImage}.
@@ -66,7 +66,7 @@ Otro punto de inflexión fue el trabajo de \emph{Make3D}~\cite{Make3D},
 que combina principios geométricos con modelos de aprendizaje.  Estos enfoques
 híbridos marcan el inicio de un cambio de paradigma,
 los sistemas comenzaron a aprender relaciones espaciales directamente de los datos, como en el trabajo de David~\emph{et al.}~\cite{DepthMapMultiScale}.
-En él, se utiliza dos redes neuronales profundas, una para predecir información de profundidad global
+En él, se utilizan dos redes neuronales profundas, una para predecir información de profundidad global
 que se refina posteriormente a trozos por la segunda.
 La culminación de esta transición puede observarse en el trabajo de Zhu~\emph{et al.}~\cite{SVMIW}. En lugar de depender de estructuras
 geométricas visibles o calibraciones manuales, este enfoque utiliza redes profundas entrenadas con objetos

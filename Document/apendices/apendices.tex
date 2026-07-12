@@ -148,10 +148,10 @@ class CameraHead(ROIHeads):
 
 \section{Visualización del entrenamiento}\label{app:VisualizeTraining}
 Otra demostración de la extensibilidad de la implementación en \emph{Detectron2}~\cite{detectron2} es
-la posibilidad de redefinir o modificar flujos existentes por medio de la sobre-carga de
+la posibilidad de redefinir o modificar flujos existentes por medio de la sobrecarga de
 funciones y métodos, sin tener que modificar la lógica principal del código. Un ejemplo de ello
-es la sobre-carga del método \lstinline{visualize_training} de la meta-arquitectura que permite
-guardar visualizaciones de la estimaciones del modelo durante el entrenamiento. Esto permite
+es la sobrecarga del método \lstinline{visualize_training} de la meta-arquitectura que permite
+guardar visualizaciones de las estimaciones del modelo durante el entrenamiento. Esto permite
 realizar un análisis cualitativo del proceso de aprendizaje del modelo.
 En la Figura~\ref{fig:VisualizeTraining},
 se observan cómo las predicciones del módulo de estimación de parámetros de la cámara son cada vez más precisas durante el entrenamiento.
@@ -173,7 +173,7 @@ este proyecto se han creado las siguientes configuraciones:
   \item \emph{coco-scale-calib.yaml}: configuración de entrenamiento híbrida sobre Pano360~\cite{SPEC} y COCO-Scale~\cite{SVMIW}, para estimación de parámetros de la cámara y detección de humanos.
   \item \emph{coco-scale-calib-roih.yaml}: configuración de entrenamiento híbrida final, sobre Pano360~\cite{SPEC} y COCO-Scale~\cite{SVMIW}, en la que se estima la altura de los humanos.
 \end{enumerate}
-Dichas ejecuciones se pueden concatenar haciendo uso del conector de ejecuciones exítosas de Linux con ``\lstinline{&&}''. De
+Dichas ejecuciones se pueden concatenar haciendo uso del conector de ejecuciones exitosas de Linux (``\lstinline{&&}''). De
 esta forma, obtener el modelo desarrollado desde cero, con todas sus fases, consistiría en concatenar la ejecución del
 Ejemplo~\ref{lst:LaunchTrain}, utilizando solamente los argumentos ~\lstinline{--num-gpus} y~\lstinline{--config-file},
 asignando las configuraciones en el orden correspondiente: calib.yaml, coco-scale-calib.yaml y coco-scale-calib-roih.yaml.
@@ -297,7 +297,7 @@ Destaca la distribución de alabeo que utiliza dos distribuciones de Cauchy con 
 muy centrados en cero (véase la Figura~\ref{fig:AngleDistSVMIW}),
 con fin de modelar el hecho de que la mayoría de las fotos tienen ese ángulo a cero.
 De forma similar, la relación de aspecto es extraída de imágenes presentes en Flickr e ImageNet~\cite{ImageNet}, asignando
-mayor probabilidad a los tipos más comunes (por ejemplo, al ratio 4:3 se asigna un 66\%).
+mayor probabilidad a los tipos más comunes (por ejemplo, un 66\% al ratio 4:3).
 
 \begin{figure}[!htp]
   \begin{center}

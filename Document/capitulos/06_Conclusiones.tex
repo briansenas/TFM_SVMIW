@@ -40,7 +40,7 @@ en la escena al mundo 3D en escala métrica y se obtiene la estatura.
 A diferencia del método clásico, el enfoque basado en aprendizaje profundo no requiere proporcionar
 manualmente los parámetros geométricos de la escena durante la inferencia, sino que los estima
 implícitamente a partir de la imagen mediante \emph{priors} aprendidos durante el entrenamiento.
-Es entrenado en 3 fases, siendo las dos últimas utilizando 2 conjuntos de datos a
+Es entrenado en 3 fases, con las dos últimas utilizando 2 conjuntos de datos a
 la vez. Uno que permite trabajar sobre la calibración de los parámetros de la escena
 (como las rotaciones de la cámara y su campo de visión) y otro que permite aprender
 a minimizar el error de re-proyección sin saber la altura real de los sujetos o de la cámara en la escena.
@@ -51,14 +51,16 @@ de la altura de los objetos favorece una disminución significativa del error me
 método clásico en casos desfavorables (por problemas de calibración o imprecisiones en
 las mediciones de referencia). El error promedio del método clásico es de 37 centímetros
 frente a 12 centímetros del método semi-supervisado, demostrando el gran potencial de
-este método, ya que no necesita de datos etiquetados de las características de la escena.
+este método, ya que no necesita de datos adicionales de las características de la escena.
 Con este proyecto se dispone de una implementación del código de~\cite{SVMIW}, con el
 caso de estimación de pose para humanos y el caso multi-clase (en este caso, como
 en el artículo de referencia, se utiliza la clase coche y humano, pero es fácilmente
-extensible para cualquier objeto). Se realiza una exploración de datos, comparando los métodos de generación de datos sintéticos
-de~\cite{SVMIW} y~\cite{SPEC}. Incluyendo la eliminación de imágenes irrelevantes, gracias al desarrollo
-de un sistema de visualización y búsqueda de imágenes según características extraídas automáticamente,
-permitiendo encontrar imágenes redundantes para reducir el tamaño y ruido del conjunto de datos.
+extensible para cualquier objeto).
+\par
+Adicionalmente, se realiza una exploración de datos, comparando los métodos de generación
+de datos sintéticos de~\cite{SVMIW} y~\cite{SPEC}. Incluyendo la eliminación de imágenes irrelevantes,
+gracias al desarrollo de un sistema de visualización y búsqueda de imágenes según características
+extraídas automáticamente, permitiendo encontrar imágenes redundantes para reducir el tamaño y ruido del conjunto de datos.
 Además, se logra un incremento en rendimiento computacional y eficiencia de optimización del
 modelo de aprendizaje automático, logrando reducir el tiempo y número de iteraciones
 totales necesarias. Todo ello gracias a optimizaciones varias como aumentación de datos,
@@ -68,7 +70,7 @@ y vectorización del proceso de metrología.
 Por lo tanto, se concluye que se han completado satisfactoriamente los objetivos planteados, determinando la
 posibilidad de resolución del problema y permitiendo una extensión del mismo para diferentes
 objetos, conjuntos de datos, arquitecturas de redes convolucionales o métodos de entrenamiento más recientes
-(Véase el Apéndice~\ref{app:YAMLConfig}).
+(véase el Apéndice~\ref{app:YAMLConfig}).
 Abriendo así la puerta a futuras investigaciones en el campo. Todo el código disponible está
 centralizado en GitHub~\code{https://github.com/briansenas/TFM_SVMIW}, a excepción del conjunto
 de datos de validación dado que son datos confidenciales, propiedad de la empresa Panacea~\cite{panacea2026}.

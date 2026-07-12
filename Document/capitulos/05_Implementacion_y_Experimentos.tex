@@ -43,7 +43,7 @@ directamente.
 \end{enumerate}
 Con la labor de investigación, se halló la solución para los problemas descritos anteriormente.
 Como alternativa a SUN360~\cite{SUN360}, se encontró el conjunto de datos de SPEC~\cite{SPEC}. El
-procedimiento de generación de imágenes descritos en el artículo de referencia~\cite{SVMIW},
+procedimiento de generación de imágenes descrito en el artículo de referencia~\cite{SVMIW},
 se basa en~\cite{CalibDataGeneration} y es similar al que describe el repositorio de SPEC~\cite{SPEC}.
 Una vez solucionado el problema de los datos, utilizando información del artículo y los trozos de código disponible
 se obtuvo un procedimiento de entrenamiento con la librería ``maskrcnn-benchmark''~\cite{MaskRCNN}, con
@@ -54,7 +54,10 @@ imágenes a la vez).
 No obstante, el código era inestable (problemas de sincronización de entrenamiento con múltiples tarjetas),
 de difícil mantenimiento, adaptación y extensibilidad (debido al desconocimiento de las
 intenciones de integración e implementación de los autores). Además, las curvas de entrenamiento
-parecían estancarse en mínimos locales como se ve en la Figura~\ref{fig:PreviousImplLoss}. Por estos motivos, se decidió realizar
+parecían estancarse en mínimos locales como se observa en la Figura~\ref{fig:PreviousImplLoss}.
+Podría deberse a que el código fuente publicado no tiene por qué corresponder a la versión final
+utilizada por los autores, careciendo dicha versión disponible de cambios cruciales para su correcto funcionamiento.
+Por estos motivos, se decidió realizar
 la implementación en la librería sucesora de ``maskrcnn-benchmark''~\cite{MaskRCNN}, en ``Detectron2''~\cite{detectron2}.
 \par
 De esta forma, se obtuvieron diversos beneficios como la estabilidad en entrenamiento distribuido, mejor uso de la
@@ -99,20 +102,20 @@ cómo replicar las fases de entrenamiento del modelo de aprendizaje automático.
 }\label{fig:ScriptsDesign}
 \end{figure}
 \subsection*{Preprocesado de datos}
-Se utiliza preprocesados existentes en la librería ``Detectron2''~\cite{detectron2}, que incorpora
+Se utilizan métodos existentes en la librería ``Detectron2''~\cite{detectron2}, que incorpora
 tanto estabilidad durante el entrenamiento como eficiencia computacional. Incluye transformación
 de las imágenes a tensores, normalización mediante medias y desviaciones estándar por canal de color
 extraídos de ImageNet~\cite{ImageNet} (debido a que se utiliza un modelo pre-entrenado con esos datos),
 redimensionado dinámico preservando la relación de aspecto. Solamente se habilita la aumentación
 de datos por volteo horizontal, ya que se considera que se dispone de suficiente cantidad de ejemplos adecuados
-y medidas de regularización del modelo. Se habilita el agrupado de imágenes por aspecto (se considera que
+y medidas de regularización del modelo. Se habilita el agrupado de imágenes por relación de aspecto (considerando que
 una imagen es horizontal si es más ancha que larga), para no solo beneficiarse de mayor rendimiento computacional,
 sino que también para aumentar la estabilidad de las predicciones del módulo de estimación de parámetros de cámara.
 Se filtran ejemplos del conjunto de datos de calibración de cámara SPEC~\cite{SPEC} con valores inválidos para el tipo de imagen (corruptas o vacías), así como ejemplos
 considerados no válidos (véase la Figura~\ref{fig:Pano360BadSamples})
 utilizando el proyecto de apoyo para visualización y filtrado de imágenes por atributos \code{https://github.com/briansenas/py-img-query}.
 Dicho proyecto de apoyo fue desarrollado con fin de permitir filtrar imágenes por atributos calculados como nivel de contraste, luminosidad, número de líneas y
-todas aquellas características que facilitaran el filtrado de imágenes redundantes para el entrenamiento del modelo.
+todas aquellas características que facilitaran el filtrado de imágenes redundantes para el entrenamiento del modelo empleado.
 
 \begin{figure}[!ht]
   \centering
@@ -141,8 +144,8 @@ a la mitad el número de ejemplos procesados en cada iteración con respecto a l
 A pesar de esta restricción, durante la primera fase el modelo se acerca a la convergencia tras aproximadamente 30K iteraciones,
 un comportamiento consistente con el descrito por los autores, quienes indican en el material suplementario que el
 entrenamiento finaliza en torno a las 40K iteraciones.
-En la segunda fase se observa un comportamiento similar.
-la pérdida empieza a aplanarse cerca de aproximadamente 30K iteraciones,
+En la segunda fase se observa un comportamiento similar,
+aplanándose la pérdida cerca de aproximadamente 30K iteraciones y
 alcanzando valores de error de re-proyección próximos a cero.
 En contraste, los autores reportan una convergencia en torno a las 120K iteraciones para esta misma etapa.
 \par
@@ -171,7 +174,7 @@ durante el entrenamiento así como las funciones de pérdida y datos auxiliares 
 \par
 Para la ejecución se utilizaron dos sistemas distintos. En las pruebas de alta demanda de CPU, como extraer los fotogramas y filtrar las
 imágenes válidas en ambos conjuntos de datos, se utilizó un ordenador con una CPU AMD Ryzen 7 5800X, 32 GB de RAM DDR4 y una tarjeta
-NVIDIA RTX 3060 12GB de VRAM. Para el entrenamiento distribuido en múltiples GPUs, se utilizó el servidor de la
+NVIDIA RTX 3060 12GB de VRAM. Para el entrenamiento distribuido en múltiples GPU, se utilizó el servidor de la
 Universidad de Granada con 3 GTX Titan X Pascal (cuando disponible), permitiendo disponer de hasta 3 veces más capacidad de cómputo en el mismo tiempo.
 
 \section{Resultados calibración manual}
@@ -223,7 +226,8 @@ Cam3 & 182 & 0.27 & 0.16 & 0.27 & 0.37 & 0.70 \\
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam1.png}}
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam2.png}}\\
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam3.png}}
-  \caption[Visualización de las peores predicciones del método clásico.]{Se observan ejemplos con las peores mediciones para cada cámara con el método manual, donde el número en verde (superior) es el valor esperado.}\label{fig:ManualWorst}
+  \caption[Visualización de las peores predicciones del método clásico.]{
+  Se observan ejemplos con las peores mediciones para cada cámara con el método manual, donde el número superior (en color verde) es el valor esperado y el inferior (en color rojo) el estimado.}\label{fig:ManualWorst}
 \end{figure}
 
 \begin{figure}[!ht]
@@ -231,7 +235,8 @@ Cam3 & 182 & 0.27 & 0.16 & 0.27 & 0.37 & 0.70 \\
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam1.png}}
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam2.png}}\\
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam3.png}}
-  \caption[Visualización de predicciones exactas del método clásico.]{Se observan ejemplos de mediciones exactas con cada cámara con el método manual, donde el número verde (superior) es el esperado.}\label{fig:ManualBest}
+  \caption[Visualización de predicciones exactas del método clásico.]{
+  Se observan ejemplos de mediciones exactas con cada cámara con el método manual, donde el número superior (en color verde) es el valor esperado y el inferior (en color rojo) el estimado.}\label{fig:ManualBest}
 \end{figure}
 
 \begin{table}[!ht]
@@ -251,7 +256,7 @@ Cam3 & 182 & 0.13 & 0.05 & 0.17 & 0.17 & 0.17 \\
 \end{tabular}
 \caption[Tabla de errores de estimación del estimador estático de referencia, expresados en metros.]{
 Tabla de errores de estimación del estimador estático de referencia, expresados en metros.
-Se observan los errores promedios en metros del método de referencia que predice siempre la altura promedio de 1.75 metros.
+Se observan los errores promedios del método de referencia que predice siempre la altura promedio de 1.75 metros.
 }
 \label{tab:BaselineDummy}
 \end{table}
@@ -314,10 +319,11 @@ de la cámara.
   \caption[Tabla comparativa de la precisión de la estimación de los parámetros de la cámara en Pano360~\cite{SPEC}.]
   {
     Tabla comparativa de la precisión de la estimación de los parámetros de la cámara en Pano360~\cite{SPEC}.
-    Los resultados son extraídos de~\cite{SPEC}. Aunque no se tiene la partición exacta en la cuál se
-    evaluó los demás modelos, se utiliza la misma proporción de ejemplos de validación (3.6\%).
+    Los resultados de los cuatro primeros métodos son extraídos de~\cite{SPEC}. Aunque no se tiene la partición exacta en la cual se
+    evaluó los demás modelos, se utiliza la misma proporción de ejemplos de validación (3.6\%) con un total de 12.732 imágenes (ligeramente inferior a las 15K utilizadas en~\cite{SPEC}).
     La implementación actual demuestra ser capaz de igualar los resultados de las implementaciones de referencia
-    viendo en total hasta 33 veces menos ejemplos que CamCalib~\cite{SPEC}, y 1.78 veces menos que ScaleNet~\cite{SVMIW}.
+    viendo en total hasta 33 veces menos ejemplos que CamCalib~\cite{SPEC}, y 1.78 veces menos que ScaleNet~\cite{SVMIW}
+    (si nos referimos al modelo entero entrenado solo en la fase 0).
 }\label{tab:CalibResults}
 \end{table}
 
@@ -352,7 +358,8 @@ Siendo así, más representativo el hecho de haber logrado obtener un error de m
   muy cercanos a los de referencia. Todo ello con 70K iteraciones menos, utilizando la mitad de ejemplos
   por cada. La partición utilizada de Kitti-person no es exactamente igual al del artículo~\cite{SVMIW},
   incluye muchas más imágenes, con un total de 1352 frente a 298.
-  Aún así, logramos obtener un error medio de altura similar.
+  Aun así, logramos obtener un error medio de altura similar.
+
 }\label{tab:vt_losses}
 \end{table}
 
@@ -376,8 +383,8 @@ En la Tabla~\ref{tab:Results} se recogen los resultados finales
 de todos los métodos implementados.
 Se observa que el método de aprendizaje profundo evita estimaciones extremas, reduciendo así
 los errores máximos observables y, por lo tanto, su error medio.
-Obtiene un error promedio similar al estimador de referencia, que siempre predice la altura media
-de 1.75 metros, con el beneficio de acertar en múltiples escenas, de diferente sujetos, la estatura exacta.
+Se aproxima al estimador de referencia, que siempre predice la altura media
+de 1.75 metros, con el beneficio de acertar en múltiples escenas, de diferentes sujetos, la estatura exacta.
 
 \begin{table}[!ht]
   \centering
@@ -425,35 +432,6 @@ Cam3 & 182 & 0.12 & 0.06 & 0.12 & 0.16 & 0.27 \\
 \label{tab:AutoCamResults}
 \end{table}
 
-\begin{figure}[!ht]
-  \centering
-  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam1_svmiw.png}}
-  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam2_svmiw.png}}\\
-  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam3_svmiw.png}}
-  \caption[Visualización de las peores predicciones del método por aprendizaje profundo.]{Se observan ejemplos con las peores mediciones para cada cámara con el método automático, donde el número en verde (superior) es el valor esperado.
-  Destaca la restricción sobre las estimaciones que evita errores extremos como los observados en el método manual, ya que el modelo difícilmente estimará valores lejanos al \emph{a priori} estadístico impuesto de 1.75 metros. }
-\label{fig:AutoWorst}
-\end{figure}
-
-\begin{figure}[!ht]
-  \centering
-  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam1_svmiw.png}}
-  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam2_svmiw.png}}\\
-  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam3_svmiw.png}}
-  \caption[Visualización de predicciones exactas con el método por aprendizaje profundo.]{Se observan ejemplos de mediciones exactas con cada cámara con el método automático, donde el número verde (superior) es el esperado.}
-\label{fig:AutoBest}
-\end{figure}
-
-Durante las fases iniciales de experimentación se observó que el modelo as veces colapsaba al \emph{a priori},
-estimando todos los individuos en la escena la misma altura, cerca del promedio impuesto.
-Esto es posible debido a que el modelo puede ajustar tanto la altura de los sujetos en escena,
-su profundidad, como la altura de la cámara con respecto al suelo para disminuir
-el error de re-proyección. Por ello, un ajuste equilibrado de los pesos de la combinación
-lineal de pérdidas es necesario para evitar este colapso. Además, controlar el ratio de
-aprendizaje de esta capa, así como la magnitud del gradiente que le afecta, ayuda a
-regularizar este comportamiento. No obstante, la solución exacta sería encontrar
-una restricción adicional sobre la escena para ayudar a resolver esta ambigüedad.
-
 \begin{table}[!ht]
   \scriptsize
   \begin{center}
@@ -478,3 +456,32 @@ una restricción adicional sobre la escena para ayudar a resolver esta ambigüed
   más largo y buscar una ponderación más precisa de las funciones de pérdida podría mejorar los resultados.
 }\label{tab:Results}
 \end{table}
+
+Durante las fases iniciales de experimentación se observó que el modelo as veces colapsaba al \emph{a priori},
+estimando todos los individuos en la escena la misma altura, cerca del promedio impuesto.
+Esto es posible debido a que el modelo puede ajustar tanto la altura de los sujetos en escena,
+su profundidad, como la altura de la cámara con respecto al suelo para disminuir
+el error de re-proyección. Por ello, un ajuste equilibrado de los pesos de la combinación
+lineal de pérdidas es necesario para evitar este colapso. Además, controlar el ratio de
+aprendizaje de esta capa, así como la magnitud del gradiente que le afecta, ayuda a
+regularizar este comportamiento. No obstante, la solución exacta sería encontrar
+una restricción adicional sobre la escena.
+
+\begin{figure}[!ht]
+  \centering
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam1_svmiw.png}}
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam2_svmiw.png}}\\
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam3_svmiw.png}}
+  \caption[Visualización de las peores predicciones del método por aprendizaje profundo.]{Se observan ejemplos con las peores mediciones para cada cámara con el método automático, donde el número superior (en color verde) es el valor esperado.
+  Destaca la restricción sobre las estimaciones que evita errores extremos como los observados en el método manual, ya que el modelo difícilmente estimará valores lejanos al \emph{a priori} impuesto de 1.75 metros. }
+\label{fig:AutoWorst}
+\end{figure}
+
+\begin{figure}[!ht]
+  \centering
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam1_svmiw.png}}
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam2_svmiw.png}}\\
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam3_svmiw.png}}
+  \caption[Visualización de predicciones exactas con el método por aprendizaje profundo.]{Se observan ejemplos de mediciones exactas con cada cámara con el método automático, donde el número superior (en color verde) es el esperado.}
+\label{fig:AutoBest}
+\end{figure}
