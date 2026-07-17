@@ -347,17 +347,17 @@ Siendo así, más representativo el hecho de haber logrado obtener un error de m
   \cline{2-4}
                                      & Nuestro & 0.08 & - \\
   \hline
-  \multirow{2}{*}{Kitti-person*} & ScaleNet SN-L3~\cite{SVMIW} & 0.03 & 0.10 metros\\
-  \cline{2-4}
-                                & Nuestro & 0.07 & 0.10 metros\\
+  Kitti-person & ScaleNet SN-L3~\cite{SVMIW} & 0.03 & 0.10 metros\\
+  \hline
+  Kitti-person* & Nuestro & 0.07 & 0.10 metros\\
   \hline
   \end{tabular}
   \caption[Tabla comparativa de error de re-proyección obtenido.]{
   Tabla comparativa de error de re-proyección obtenido.
   Se observa que el modelo es capaz de aprender correctamente, obteniendo valores
   muy cercanos a los de referencia. Todo ello con 70K iteraciones menos, utilizando la mitad de ejemplos
-  por cada. La partición utilizada de Kitti-person no es exactamente igual al del artículo~\cite{SVMIW},
-  incluye muchas más imágenes, con un total de 1352 frente a 298.
+  por cada. La partición utilizada de Kitti-person* no es exactamente igual al del artículo~\cite{SVMIW}.
+  En este caso, se incluye muchas más imágenes, con un total de 1352 frente a 298.
   Aun así, logramos obtener un error medio de altura similar.
 
 }\label{tab:vt_losses}
