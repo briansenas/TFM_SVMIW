@@ -22,8 +22,13 @@
 
 \usepackage{csquotes}
 \usepackage{microtype}
-\usepackage[toc,page]{appendix}
+\usepackage[titletoc, toc, page]{appendix}
 \usepackage[backend=biber, defernumbers=true, citestyle=numeric-comp, bibstyle=ieee, sorting=none]{biblatex}
+
+\addto\captionsspanish{%
+  \renewcommand\appendixname{Apéndice}
+  \renewcommand\appendixpagename{Apéndice}
+}
 
 \DeclareBibliographyCategory{cited}
 \AtEveryCitekey{\addtocategory{cited}{\thefield{entrykey}}}
@@ -81,7 +86,7 @@ Telecomunicación}
 pdfauthor = {\myName (briansenas@correo.ugr.es)},
 pdftitle = {\myTitle},
 pdfsubject = {},
-pdfkeywords = {},
+pdfkeywords = {camera calibration, geometric modelling, monocular metrology, semi-supervised learning, computer-vision.},
 pdfcreator = {},
 pdfproducer = {pdflatex}
 }

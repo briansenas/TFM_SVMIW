@@ -43,7 +43,7 @@ la proyección se puede expresar acorde a la Ecuación~\ref{eq:ProyectionFormula
 Donde $K$ es la matriz intrínseca de la cámara, que contiene los parámetros internos, como la distancia focal y el
 punto principal. K se muestra en la Ecuación~\ref{eq:KMatrix}. $[R|t]$ es la concatenación de la matriz de rotación R y
 el vector de traslación t, que definen la posición y orientación de la cámara respecto al eje del mundo (parámetros extrínsecos).
-Por último, $s$ sería un factor de escala (la unidad de distancia en el espacio de píxeles puede ser distinto al de las coordenadas del mundo). Este modelo permite transformar
+Por último, $s$ sería un factor de escala (la unidad de distancia en el espacio de píxeles puede ser distinta al de las coordenadas del mundo). Este modelo permite transformar
 coordenadas 3D del mundo a píxeles de la imagen, tal y como se muestra visualmente en la Figura~\ref{fig:WorldToImageCoordinates}.
 
 \begin{figure}[!ht]
@@ -63,8 +63,8 @@ Visualización de las transformaciones necesarias, para transformar las coordena
         0 & 0 & 1 &\\
     \end{bmatrix}
 \end{equation}
-En la Ecuación~\ref{eq:KMatrix}, $f$ es la distancia focal, $s$ es la distorsión por inclinación y $(c_x, c_y)$ es la correspondencia al punto principal (central) del sensor de la imagen.
-Los parámetros $f$ y $c$ se pueden estimar a partir las características de las cámaras, si se conoce dicha información, o mediante
+En la Ecuación~\ref{eq:KMatrix}, $f$ es la distancia focal, $s$ es el sesgo entre los ejes del sensor y $(c_x, c_y)$ es la correspondencia al punto principal (central) del sensor de la imagen.
+Los parámetros $f$ y $c$ se pueden estimar a partir de las características de las cámaras, si se conoce dicha información, o mediante
 métodos de calibración. En la Figura~\ref{fig:ImageSensor} se observa que la posición de los píxeles
 depende de la distancia focal, $f$, de forma que se utiliza una constante $a$ para definir esa relación física de
 la cámara (véase la Ecuación~\ref{eq:EstimateAlpha}).
@@ -94,8 +94,8 @@ La posición en píxeles del punto depende de la distancia focal, $f$, de la cá
 
 \section{Metrología de vista única}\label{sec:SVM}
 La metrología de vista única (SVM) se refiere al conjunto de técnicas y principios que permite la extracción
-de información geométrica del espacio 3D a partir de una única imagen 2D, habitualmente captura por una
-cámara de perspectiva. En contra de los métodos tradicionales de fotometría o métodos multivista que
+de información geométrica del espacio 3D a partir de una única imagen 2D, habitualmente capturada por una
+cámara de perspectiva. En contra de los métodos tradicionales de fotogrametría, o visión estereoscópica (multivista), que
 dependen de vistas calibradas para triangular la profundidad, SVM tiene la restricción de utilizar solamente
 una imagen y, aun así, obtener la escala absoluta de los objetos detectados~\cite{SVMIW}.
 \par
@@ -123,7 +123,7 @@ Siendo $T$ la distancia entre las cámaras, $x_l$ y $x_r$ la proyección del pun
 imagen (cámara izquierda, $l$, y derecha, $r$) y $f$ la distancia focal. La diferencia entre las
 proyecciones del punto ($x_l - x_r$) se denomina disparidad, $d$.
 Con esta Ecuación~\ref{eq:StereoZ}, se puede estimar la profundidad de un objeto a partir de múltiples vistas.
-No obstante, en el caso de que solo disponemos de una cámara, es decir, eliminamos la vista
+No obstante, en el caso de que solo dispongamos de una cámara, es decir, eliminamos la vista
 adicional de la escena, el objeto puede estar en cualquier punto de la línea
 que atraviesa el plano de imagen de la cámara.
 Aunque la estimación de profundidad no sea el problema en cuestión,
@@ -150,8 +150,8 @@ clase de problemas que nos podemos encontrar en metrología de vista única.
 En consecuencia, los métodos SVM no pueden apoyarse en las mismas pistas geométricas que la visión
 estéreo y deben recurrir a información geométrica adicional. Mayoritariamente,
 se basan en principios de geometría proyectiva, utilizando información
-sobre los puntos de fuga, ortogonalidad, paralelismo y otras informaciones de la escena con fin de obtener
-los parámetros intrínsecos y extrínsecos de la cámara. Los primeros refieren a la distancia focal, tamaño
+sobre los puntos de fuga, ortogonalidad, paralelismo y otras informaciones de la escena con el fin de obtener
+los parámetros intrínsecos y extrínsecos de la cámara. Los primeros se refieren a la distancia focal, tamaño
 del sensor y otros factores de la cámara, mientras que los segundos se refieren a su posición en el mundo,
 como la altura y la distancia al objeto de referencia. La premisa subyacente de los métodos SVM es que,
 aunque generalmente se pierde información de profundidad en vista única, existen invariantes geométricas
@@ -198,11 +198,11 @@ problemas complejos, difíciles de definir, que no tengan una solución analíti
 \par
 Dentro del ámbito del aprendizaje automático, ha cobrado gran relevancia el aprendizaje profundo,
 que a diferencia de los modelos anteriores donde tenemos un conjunto de variables
-extraídas por un humano experto, las características sobre la cual inferimos
+extraídas por un humano experto, las características sobre la cuales inferimos
 son obtenidas por el propio modelo automáticamente~\cite{DeepLMITPress, DeepLearningNature, DeepLearningInNN}.
 Los modelos de aprendizaje profundo están fuertemente inspirados en la estructura y funcionamiento del cerebro humano (véase la Figura~\ref{fig:ANNVisualization}).
 En términos generales, la extracción automática de características suele
-desempeñar mejores resultados frente a las características extraídas manualmente.
+ofrecer mejores resultados frente a las características extraídas manualmente.
 \par
 \begin{figure}[!ht]
   \centering

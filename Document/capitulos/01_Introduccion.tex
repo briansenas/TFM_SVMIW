@@ -1,8 +1,7 @@
 \chapter{Introducción}
 \section{Definición del problema}
-La metrología monocular, es decir, a partir de una única imagen, conocida como \emph{Single View Metrology} (SVM) en inglés, se
-refiere a la estimación de propiedades métricas del mundo tridimensional a partir de una sola vista bidimensional~\cite{VisionBookMIT,Hartley2004}
-(véase la Figura~\ref{fig:SVM}).
+La metrología monocular, \emph{Single View Metrology} (SVM) en inglés,
+se ocupa de la estimación de propiedades métricas del mundo tridimensional a partir de una sola vista bidimensional~\cite{VisionBookMIT,Hartley2004} (véase la Figura~\ref{fig:SVM}).
 Este enfoque es especialmente útil en situaciones donde no es posible o práctico capturar múltiples imágenes desde diferentes ángulos, ya
 sea por limitaciones físicas, temporales o logísticas. El interés en este campo ha crecido en paralelo con los avances en visión
 por computador, aprendizaje profundo y la disponibilidad de grandes conjuntos de datos~\cite{GeoCalib}. Desde sus orígenes, técnicas
@@ -15,9 +14,9 @@ inferir medidas reales si se cuenta con ciertos supuestos geométricos, como lí
     \includegraphics[width=0.95\textwidth]{imagenes/chapter1/teaser.pdf}
   \end{center}
   \caption[Visualización del procedimiento de metrología monocular extraída de~\cite{SVMIW}.]{
-    Visualización del procedimiento de metrología monocular extraída de~\cite{SVMIW}. El objetivo es dada una imagen de entrada (izquierda), poder
-  establecer las relaciones geométricas necesarias para estimar correctamente las medidas métricas de mundo. En este ejemplo, de las personas en la escena (medio, derecha).
-  Una posible aplicación directa de establecer dichas relaciones, es la inserción de objetos en la escena en la escala adecuada (derecha).}\label{fig:SVM}
+    Visualización del procedimiento de metrología monocular extraída de~\cite{SVMIW}. El objetivo, dada una imagen de entrada (izquierda), es poder
+  establecer las relaciones geométricas necesarias para estimar correctamente las medidas métricas del mundo. En este ejemplo, de las personas en la escena (medio, derecha).
+  Una posible aplicación directa de establecer dichas relaciones, es la inserción de objetos en la escena empleando la escala adecuada (derecha).}\label{fig:SVM}
 \end{figure}
 
 Sin embargo, la aplicación de SVM en entornos naturales o no controlados, conocida como \emph{Single View Metrology in the Wild}~\cite{SVMIW},
@@ -49,7 +48,7 @@ un paisaje con muy poca información geométrica a simple vista.
     \subfloat{\includegraphics[width=0.2\textwidth]{imagenes/chapter2/AmesRoom}}
 \end{center}
 \caption[Ilusión óptica, la habitación de Ames~\cite{VisionBookMIT}.]{
-  Ilusión óptica que ocasiona a que un mismo objeto (en este caso, el muñeco de LEGO\textsuperscript{\textregistered}) se vea de diferente tamaño según la posición en la que se encuentre en la habitación
+  Ilusión óptica que hace que un mismo objeto (en este caso, el muñeco de LEGO\textsuperscript{\textregistered}) se vea de diferente tamaño según la posición en la que se encuentre en la habitación
 de Ames (menor en la imagen a la izquierda que en la imagen central). La habitación de Ames está construida de forma irregular, de modo que al mirar desde un punto concreto aparenta ser completamente rectangular.
 La planta de dicha habitación se muestra en el plano de la derecha.
 Ilustraciones extraídas de~\cite{VisionBookMIT}.
@@ -60,7 +59,7 @@ El auge del aprendizaje profundo~\cite{DeepLMITPress, bishop2006pattern, DeepPri
 partir de patrones visuales aprendidos en grandes conjuntos de datos~\cite{PascalVisualObjectChallenge, ImageNet, EffectivenessOfData}. Sin embargo, estas aproximaciones
 aún enfrentan desafíos importantes. Uno de ellos es la ambigüedad inherente a la escala absoluta en imágenes monoculares.
 Aunque es posible inferir relaciones métricas relativas o proporcionales, sin una referencia explícita o contexto adicional,
-la escala real sigue siendo indeterminada~\cite{DepthFromSingleImage}. Asimismo, la falta de conjuntos de datos etiquetados específicamente para
+la escala real sigue siendo indeterminada~\cite{DepthMapMultiScale}. Asimismo, la falta de conjuntos de datos etiquetados específicamente para
 tareas de metrología en imágenes reales dificulta la evaluación objetiva del desempeño de estos sistemas~\cite{SVMIW,Metric3Dv2,}.
 
 Dado este panorama, el presente trabajo busca investigar cómo se puede avanzar hacia sistemas robustos de metrología monocular en el mundo real,
@@ -69,7 +68,7 @@ combinando principios geométricos clásicos con técnicas modernas de aprendiza
 \section{Motivación}
 La metrología es una disciplina fundamental en múltiples ámbitos industriales y científicos, ya que permite realizar mediciones precisas del entorno físico.
 Sin embargo, muchas de las técnicas actuales requieren equipamiento especializado, múltiples vistas o configuraciones controladas del entorno (saber la posición y rotación de la cámara, las características de la misma, la distancia al objeto o más).
-En este contexto, la \emph{metrología monocular en entornos no controlados}, se presenta como una alternativa asequible de obtener medidas físicas a partir de una única imagen
+En este contexto, la \emph{metrología monocular en entornos no controlados}, se presenta como una alternativa asequible para obtener medidas físicas a partir de una única imagen
 sin tener información \emph{a priori}.
 \par
 Este campo emergente busca desarrollar métodos robustos y generalizables que funcionen en imágenes capturadas en condiciones reales, como pueden ser
@@ -101,7 +100,7 @@ utilizando técnicas de metrología monocular. Los objetivos específicos incluy
 En la Figura~\ref{fig:ManualVSAuto} se enseña la diferencia
 entre el procedimiento habitual de calibración de escena manual frente al método automático.
 Mientras que los métodos tradicionales requieren una preparación exhaustiva del entorno, con mediciones precisas,
-la utilización de modelos basados en aprendizaje profundo son capaces de inferir información visual relevante para la estimación
+los modelos basados en aprendizaje profundo son capaces de inferir información visual relevante para la estimación
 métrica a partir de una única imagen. La transición del primer procedimiento al segundo tiene como objetivo reducir significativamente
 la intervención humana y simplificar la puesta en marcha de los sistemas de metrología.
 Esto permite disminuir los costes y tiempos asociados a la configuración inicial, minimizar errores derivados y mejorar
@@ -141,7 +140,7 @@ diarias durante 5 días a la semana.
 
 Dada la naturaleza del proyecto, cuya complejidad en términos de requisitos y tamaño
 del equipo de trabajo no es elevada, se utilizará un ciclo de vida en cascada~\cite{ModeloEnCascada} con realimentación.
-Dicho ciclo de vida se basa en un desarrollo lineal divido en fases, en el cual, antes
+Dicho ciclo de vida se basa en un desarrollo lineal dividido en fases, en el cual, antes
 de empezar la siguiente fase, se evalúan los resultados obtenidos en la fase anterior.
 De esta forma, se pueden adaptar las fases siguientes a los posibles
 nuevos hallazgos de las fases anteriores.
@@ -180,7 +179,7 @@ Documentar & 3 - 60 &  &  &  &  &  &  &  &  &  &  &  &   & & & & & & &\cellcolor
 \end{table}
 
 La planificación del proyecto se puede visualizar en la Tabla~\ref{tab:PlanificacionTemporal},
-donde se observa las distintas fases del ciclo de vida. El desarrollo del proyecto empieza
+donde se observan las distintas fases del ciclo de vida. El desarrollo del proyecto empieza
 tras finalizar las clases lectivas debido a que el alumno estaba compaginando el trabajo con
 los estudios. No obstante, dicha planificación sufrió retrasos y modificaciones significativas.
 Entre las principales razones se encuentran dificultades técnicas, como la imposibilidad de utilizar
@@ -214,7 +213,7 @@ suscripción a \emph{Google Colab Pro}, un portátil personal de gama media, \em
 Además, se asume un salario de 24\officialeuro/hora, como para un investigador \emph{junior},
 responsable de investigación y desarrollo de una empresa tecnológica en España.
 Con el fin de garantizar la adecuada supervisión científica y técnica del proyecto,
-se contempla la realización de reuniones periódicas con los doctores \myProf y \myOtherProf.
+se contempla la realización de reuniones periódicas con los doctores \myProf~y \myOtherProf.
 En particular, se presupuestan un total de cinco reuniones, correspondientes a las principales
 etapas del proyecto, así como tres revisiones adicionales de la documentación técnica. La
 tarifa de consultoría se asume de aproximadamente 50\officialeuro/hora, en línea con los costes

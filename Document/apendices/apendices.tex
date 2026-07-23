@@ -1,12 +1,12 @@
 \chapter{}
 \section{Búsqueda en Scopus}
-Se utiliza la siguiente combinación de búsqueda por terminología, palabras claves y conceptos relacionados con metrología de vista única: \begin{lstlisting}[language=,basicstyle=\ttfamily\small,breaklines=true,frame=single,backgroundcolor=\color{gray!10}]
+Se utiliza la siguiente combinación de búsqueda por terminología, palabras clave y conceptos relacionados con metrología de vista única: \begin{lstlisting}[language=,basicstyle=\ttfamily\small,breaklines=true,frame=single,backgroundcolor=\color{gray!10}]
 (TITLE-ABS-KEY("single view metrology" OR "single-view metrology" OR "single image 3D reconstruction" OR "monocular 3D reconstruction" OR "geometry from a single image" OR "single view geometry"))
 AND (LIMIT-TO(SUBJAREA, "COMP") OR LIMIT-TO(SUBJAREA, "ENG"))
 AND (LIMIT-TO(DOCTYPE, "ar") OR LIMIT-TO(DOCTYPE, "cp"))
 \end{lstlisting}
 
-\section{Configuración por Localización}\label{app:LocationConfig}
+\section{Configuración por localización}\label{app:LocationConfig}
 \begin{table}[!ht]
 \scriptsize
 \centering
@@ -163,7 +163,7 @@ computacionales. Combinando tanto métricas cuantitativas como cualitativas en u
 Esto facilita la detección temprana de problemas, comparación entre experimentos y eficiencia del proceso
 de desarrollo de modelos de aprendizaje profundo.
 \section{Lanzar experimentos}\label{app:LaunchExperiments}
-Una vez creada las diferentes configuraciones de los experimentos, se puede lanzar el
+Una vez creadas las diferentes configuraciones de los experimentos, se puede lanzar el
 entrenamiento utilizando un único script e indicando la configuración a utilizar (véase el Ejemplo~\ref{lst:LaunchTrain}). Para
 este proyecto se han creado las siguientes configuraciones:
 \begin{enumerate}
@@ -185,9 +185,9 @@ caption={
 Ejemplo de ejecución simples del código de entrenamiento.
 Se definen el número de tarjetas gráficas a utilizar (\lstinline{--num-gpus}),
 el archivo de configuración de referencia (\lstinline{--config-file}) y algunas configuraciones manuales,
-para sobre-escribir a las de dicho archivo.
+para sobreescribir a las de dicho archivo.
 En este ejemplo, se ejecutaría el entrenamiento del módulo de estimación de parámetros de la cámara.
-Además, se sobre-escriben dónde guardar los resultados (\lstinline{OUTPUT-DIR}),
+Además, se sobreescriben dónde guardar los resultados (\lstinline{OUTPUT-DIR}),
 el ratio de aprendizaje (\lstinline{SOLVER.BASE_LR}) y el número de imágenes por iteración (\lstinline{SOLVER.IMS_PER_BATCH}).
 },
   label={lst:LaunchTrain},
@@ -225,7 +225,7 @@ SOLVER.BASE_LR 0.002343 SOLVER.IMS_PER_BATCH 12
   Se observa el sistema jerárquico de \emph{Detectron2}~\cite{detectron2},
   dado que partimos del archivo raíz (\lstinline{__BASE__}) de su modelo de
   detección de poses. Se ha configurado una meta-arquitectura (\lstinline{META_ARCHITECTURE})
-  personalizada en la que se emplea los módulos de estimación sobre regiones de interés
+  personalizada en la que se emplean los módulos de estimación sobre regiones de interés
   propuestas (\lstinline{ROI_HEADS}) que incluyen la estimación de la altura de los objetos
   (\lstinline{HeightStandardROIHeads}). Los pesos de las pérdidas son fácilmente
   ajustables (cadenas que incluyen la palabra \lstinline{LOSS}), así como elegir
@@ -263,11 +263,11 @@ DATASETS:
   TRAIN: ("COCOScale2017Calib_train", )
   TEST: ("COCOScale2017_val", "Pano360_val", )
 SOLVER:
-  IMS_PER_BATCH: 6
+  IMS_PER_BATCH: 3
   RATIO_PANO360: (3, 1)  # 3 COCO, 1 CALIB
-  BASE_LR: 0.007031
-  STEPS: (60000, 80000)
-  MAX_ITER: 90000
+  BASE_LR: 0.002343
+  STEPS: (20000, 26666)
+  MAX_ITER: 30000
   AMP:
     ENABLED: True
   CLIP_GRADIENTS:
@@ -281,7 +281,7 @@ DATALOADER:
   NUM_WORKERS: 2
   FILTER_EMPTY_ANNOTATIONS: False
   ASPECT_RATIO_GROUPING: True
-VIS_PERIOD: 500
+VIS_PERIOD: 1000
 FLOAT32_PRECISION: "medium"
 SEED: 140421
 \end{lstlisting}
@@ -292,7 +292,7 @@ En~\cite{SVMIW, CalibDataGeneration} muestrean los valores de manera controlada,
 la distancia focal y la orientación de la cámara (ángulo de alabeo, de elevación y guiñada).
 En lugar de utilizar una distribución uniforme para todos los parámetros, el muestreo se diseña
 con objetivo de cubrir de forma equilibrada el espacio de configuraciones perceptualmente relevantes,
-evitando la sobre representación de determinados rangos.
+evitando la sobrerepresentación de determinados rangos.
 Destaca la distribución de alabeo que utiliza dos distribuciones de Cauchy con valores
 muy centrados en cero (véase la Figura~\ref{fig:AngleDistSVMIW}),
 con fin de modelar el hecho de que la mayoría de las fotos tienen ese ángulo a cero.

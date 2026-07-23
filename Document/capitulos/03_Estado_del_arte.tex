@@ -14,7 +14,7 @@ soluciones más accesibles, precisas y eficientes.
     \subfloat{\includegraphics[width=0.7\textwidth]{imagenes/chapter3/Scopus-Analyze-Year}}
     % \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter3/Scopus-Analyze-Subject}}
 \end{center}
-\caption[Tendencia de búsquedas en Scopus.]{Se observa una tendencia creciente en interés al campo de metrología de vista única, dado el incremento en número de publicaciones en los últimos años.}
+\caption[Tendencia de búsquedas en Scopus.]{Se observa una tendencia creciente en interés por el campo de metrología de vista única, dado el incremento en número de publicaciones en los últimos años.}
 \label{fig:ScopusSearch}
 \end{figure}
 La metrología de vista única es un área de la visión por computador que busca extraer información métrica
@@ -55,7 +55,7 @@ multitud de subproblemas del campo de la visión por computador. En el caso de l
 que cada vez obtienen mejores resultados~\cite{CalibDataGeneration,SPEC,DeepCalib, SVMIW}, permitiendo disponer de un modelo capaz de estimar los parámetros para cualquier escena
 sin depender del modelo de cámara. De la misma forma, el aprendizaje profundo se ha vuelto cada vez más capaz de detectar objetos
 en la escena~\cite{ObjectDetectionSurvey}. Estos avances han permitido adaptar diversos modelos para realizar tareas de detección y metrología,
-estimando la altura o profundidad de los objetos en escena~\cite{SVMIW, SPEC, yang2024depthv2, DepthFromSingleImage}.
+estimando la altura o profundidad de los objetos en escena~\cite{SVMIW, SPEC, yang2024depthv2, DepthMapMultiScale}.
 En el trabajo de Günel \emph{et al.}~\cite{günel2018facebodyshapestell}, utilizan este enfoque basado en los datos para inferir la relación
 entre el contenido de la imagen y la altura de los individuos de la escena. Localizan la persona en la imagen, extraen diversas características
 de las mismas (como las características espaciales de la cara y cuerpo) y utilizan un modelo para predecir la altura con esas premisas
@@ -65,7 +65,7 @@ alturas asociadas, para crear un conjunto de datos denominado IMDB-100K, con 101
 Otro punto de inflexión fue el trabajo de \emph{Make3D}~\cite{Make3D},
 que combina principios geométricos con modelos de aprendizaje.  Estos enfoques
 híbridos marcan el inicio de un cambio de paradigma,
-los sistemas comenzaron a aprender relaciones espaciales directamente de los datos, como en el trabajo de David~\emph{et al.}~\cite{DepthMapMultiScale}.
+los sistemas comenzaron a aprender relaciones espaciales directamente de los datos, como en el trabajo de Eigen~\emph{et al.}~\cite{DepthMapMultiScale}.
 En él, se utilizan dos redes neuronales profundas, una para predecir información de profundidad global
 que se refina posteriormente a trozos por la segunda.
 La culminación de esta transición puede observarse en el trabajo de Zhu~\emph{et al.}~\cite{SVMIW}. En lugar de depender de estructuras

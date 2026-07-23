@@ -24,9 +24,8 @@ Se hizo uso de diferentes cámaras comunes, así como una cámara equipada con u
 de alta calidad para medir la profundidad del sujeto en la escena.
 Todas las cámaras fueron cuidadosamente calibradas utilizando el método descrito
 en la Sección~\ref{sec:ManualCalibration}.
-En total se obtuvo un total de
-697 imágenes válidas con etiquetas reales de la posición de la cámara, del sujeto y su altura.
-En total hay 12 sujetos diferentes, con alturas entre 1.60 y 1.92 metros.
+En total se obtuvo 697 imágenes válidas con etiquetas reales de la posición de la cámara, del sujeto y su altura.
+Entre ellas, hay 12 sujetos diferentes, con alturas entre 1.60 y 1.92 metros.
 Se reconoce que, aunque el conjunto incluya un número aparentemente suficiente de ejemplos,
 puede observarse una baja diversidad en términos de condiciones ambientales (iluminación y escenarios) y de variabilidad antropométrica
 (distribución de morfologías corporales, estatura y complexiones). En consecuencia, la validación
@@ -46,10 +45,10 @@ la vez. Uno que permite trabajar sobre la calibración de los parámetros de la 
 a minimizar el error de re-proyección sin saber la altura real de los sujetos o de la cámara en la escena.
 \par
 Tras el análisis de los resultados, resulta evidente el gran potencial de este método
-frente al método clásico. El disponer de una regularización sobre el valor promedio
+frente al método clásico. El disponer de una regularización sobre el valor medio
 de la altura de los objetos favorece una disminución significativa del error medio del
 método clásico en casos desfavorables (por problemas de calibración o imprecisiones en
-las mediciones de referencia). El error promedio del método clásico es de 37 centímetros
+las mediciones de referencia). El error medio del método clásico es de 37 centímetros
 frente a 12 centímetros del método semi-supervisado, demostrando el gran potencial de
 este método, ya que no necesita de datos adicionales de las características de la escena.
 Con este proyecto se dispone de una implementación del código de~\cite{SVMIW}, con el
@@ -81,7 +80,7 @@ Por un lado, como se menciona en~\cite{SVMIW}, una posible ampliación sería la
 región delimitadora del objeto de forma amodal~\cite{kar2015amodalcompletionsizeconstancy}.
 Así, se podría extender la aplicación de este sistema a objetos semi-ocultos.
 En~\cite{SAKINA2024765}, se observó que el uso de información adicional como raza y género podría llegar
-a mejorar resultados de la estimación. Además, incluir más restricciones en conjunto al error
+a mejorar resultados de la estimación. Además, incluir más restricciones junto al error
 de re-proyección, como utilizando más variables conocidas (por ejemplo utilizando un \emph{a priori} sobre
 la altura de la cámara para entrenar un modelo para cámaras exteriores típicas),
 podría dar lugar a un modelo con mayor precisión en determinados entornos.

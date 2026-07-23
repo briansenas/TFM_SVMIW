@@ -96,14 +96,14 @@ los métodos propuestos, facilitando el análisis de su rendimiento frente a dif
 tipos de cámaras de vigilancia. Tras filtrar los ejemplos válidos tenemos un total de 697 imágenes, con un total de 12 individuos de diferentes estaturas (véase la Tabla~\ref{tab:SubjectHeights}).
 
 \subsubsection{Kitti}
-El conjunto de datos Kitti~\cite{Kitti} de detección de objetos constituye unos de los referentes más
+El conjunto de datos Kitti~\cite{Kitti} de detección de objetos consiste en uno de los referentes más
 utilizados para la evaluación de algoritmos de detección de objetos en escenarios de conducción autónoma.
 Se ha utilizado para poder evaluar la capacidad del modelo de aprendizaje automático debido a que dispone de
 anotaciones detalladas de los objetos presentes en la escena. Entre las etiquetas disponibles se incluyen la
 clase del objeto, el nivel de truncamiento (fracción del objeto fuera de los límites de la imagen), grado de oclusión (nivel
 en el que objeto está oculto por otros elementos de la escena), las dimensiones físicas del objeto (altura, anchura y longitud),
 su posición tridimensional y parámetros de la cámara. Esta riqueza de información permite seleccionar subconjuntos específicos,
-estableciendo criterios de filtrados adaptados.
+estableciendo criterios de filtrado adaptados.
 \par
 En este trabajo se emplea la etiqueta correspondiente al tipo de objeto para seleccionar únicamente las instancias de la
 clase peatonal, aunque el mismo procedimiento podría extenderse para incluir la clase coche con
@@ -130,7 +130,7 @@ el conjunto de datos empleados en los experimentos realizados (véase la Figura~
 \subsubsection{COCO-Scale}
 COCO-Scale consiste en una modificación del conjunto de datos COCO~\cite{COCO}, obtenida durante el desarrollo de los
 experimentos de~\cite{SVMIW}. COCO~\cite{COCO} es un conjunto de datos a larga escala, creado para la detección de objetos,
-segmentación, estimación de pose y generación de texto descriptivos. Existen múltiples versiones, dado que se actualiza continuamente.
+segmentación, estimación de pose y generación de textos descriptivos. Existen múltiples versiones, dado que se actualiza continuamente.
 En concreto, COCO-Scale deriva de la versión 2017 de COCO, que contiene 118K imágenes de entrenamiento y 5K de validación. En esa versión,
 existen 80 categorías de objetos y más de 1.5 millones de instancias segmentadas.
 \par
@@ -188,7 +188,7 @@ El conjunto de datos Pano360 fue introducido en el artículo SPEC~\cite{SPEC}, f
 recurso a gran escala para el estudio de la percepción geométrica y semántica a partir de imágenes
 panorámicas. Su objetivo consistía en obtener los parámetros de cámara para poder reconstruir
 los cuerpos 3D de humanos detectados en la escena (detección de poses). El dataset está compuesto,
-originalmente, por 35K imágenes panorámicas (34K de Flicker y 1K sintéticas), cubriendo una amplia variedad de escenas interiores y exteriores
+originalmente, por 35K imágenes panorámicas (34K de Flickr y 1K sintéticas), cubriendo una amplia variedad de escenas interiores y exteriores
 (véase la Figura~\ref{fig:Pano360Sample}).
 \begin{figure}[!ht]
   \begin{center}
@@ -198,7 +198,7 @@ originalmente, por 35K imágenes panorámicas (34K de Flicker y 1K sintéticas),
   \caption{Ejemplos de escenas panorámicas de Pano360~\cite{SPEC}}\label{fig:Pano360Sample}
 \end{figure}
 Tras ejecutar el código disponible en el repositorio vinculado, se obtuvo un total de 30033 imágenes.
-Se esperaba un total de 34K imágenes de Flicker~\cite{SPEC}. La diferencia viene dada por cambios
+Se esperaba un total de 34K imágenes de Flickr~\cite{SPEC}. La diferencia viene dada por cambios
 de la política de privacidad de las fotos publicadas por los usuarios o su disponibilidad, en caso
 de que hayan sido eliminadas por los propietarios de las mismas. Este dataset, aunque es menos de la
 mitad del tamaño del dataset original SUN360~\cite{SUN360}, nos permite generar una vasta cantidad
@@ -214,7 +214,7 @@ Se generan 12 ejemplos por cada panorámica, para un total de 347.304 imágenes 
 % Explicar brevemente como funciona
 Se utiliza como método de referencia el procedimiento habitual de calibración de cámara de forma manual,
 así como la obtención de la información necesaria de la escena para realizar la estimación de metrología.
-Para ello, necesitamos obtener los parámetros intrínsecos de la cámara, que nos permita modelar la escena
+Para ello, necesitamos obtener los parámetros intrínsecos de la cámara, que nos permitan modelar la escena
 y su relación con la misma (véase Sección \ref{sec:CameraModel}), así como
 alguna información extrínseca adicional como podría ser el tamaño de algún objeto de referencia o la
 profundidad del mismo en la escena (véase Sección \ref{sec:SVM}).
@@ -242,7 +242,7 @@ Dado un punto en la imagen $\mathbf{p} = [u, v, 1]^T$, la matriz de parámetros 
     \item \textbf{Alineación con el mundo:} Se rota el rayo para alinearlo con el sistema de coordenadas universal y se calcula el centro óptico de la cámara $\mathbf{C}$:
     \[ \mathbf{r}_{world} = R^T \; \mathbf{r}_{cam} \]
     \[ \mathbf{C} = -R^T\;\mathbf{t} \]
-    \item \textbf{Intersección con el suelo:} Dado que se conoce al menos una distancia real, como la altura de la cámara o la distancia del individuo respecto a la cámara, se puede resolver el factor de escala $\lambda$ para determinar el punto 3D ($P_w$) donde el rayo interseca el plano $Z=0$ (suelo):
+    \item \textbf{Intersección con el suelo:} Dado que se conoce al menos una distancia real, como la altura de la cámara o la distancia del individuo respecto a la cámara, se puede resolver el factor de escala $\lambda$ para determinar el punto 3D ($P_w$) donde el rayo interseca el plano $Y=0$ (suelo):
     \[ \lambda = -\frac{C_z}{r_{world, z}} \]
     \[ \mathbf{P}_w = \mathbf{C} + \lambda \mathbf{r}_{world} \]
 \end{enumerate}
@@ -284,7 +284,7 @@ re-proyección dado por la Ecuación~\ref{eq:vt_loss}.
 Para restringir la estimación de la altura de los objetos se utiliza la Ecuación~\ref{eq:height_priori},
 utilizando conocimiento previo sobre la altura media de los objetos (humanos) en escena.
 \begin{equation}\label{eq:height_priori}
-  \mathcal{L}_{h_{obj}} ({h_{obj}^i}_{i=1}^N) = \frac{1}{N}\sum_{i=1}^N \mathcal{P}(h_{obj}^i;\mu,\sigma)
+  \mathcal{L}_{h_{obj}} ({h_{obj}^i}_{i=1}^N) = - \frac{1}{N}\sum_{i=1}^N \mathcal{P}(h_{obj}^i;\mu,\sigma)
 \end{equation}
 Para la estimación de altura de la cámara se utiliza un módulo de estimación capaz de
 aprender relaciones geométricas entre la altura de cámara (a predecir), las cajas delimitadoras
@@ -332,7 +332,7 @@ $\alpha_1 = \alpha_2 = 10$, frente a la de calibración, $\alpha_3 = 1$.
 En la fase dos del entrenamiento se añaden las pérdidas finales de re-proyección y el \emph{a priori} sobre las estimaciones del
 tamaño de los objetos en escena para obtener la Ecuación~\ref{eq:LossPhaseTwo}. En este caso, la pérdida de re-proyección tiene
 un peso equivalente al error de detección, $\alpha_4 = 1$, mientras que el \emph{a priori} influye muy poco para evitar que el
-modelo se reduzca a simplemente predecir el valor promedio de altura de los objetos, $\alpha_5 = 0.05$
+modelo se reduzca a simplemente predecir el valor medio de altura de los objetos, $\alpha_5 = 0.05$
 
 \begin{equation}\label{eq:LossPhaseTwo}
   \mathcal{L} = \alpha_1\mathcal{L}_{det} + \alpha_2\mathcal{L}_{kps} + \alpha_3\mathcal{L}_{calib} + \alpha_4\mathcal{L}_{vt} + \alpha_5\mathcal{L}_{h_{obj}}
@@ -360,13 +360,13 @@ La primera pérdida, KL, se utiliza como medida de asimetría estadística para 
 una distribución de probabilidad de referencia y una distribución aproximada (estimada por el modelo). La segunda, se
 consolida como una forma de hacer diferenciable la operación de obtener la posición en un vector del valor máximo (\emph{argmax}).
 El operador normaliza las estimaciones mediante una función exponencial (\emph{softmax}) para transformarlo en una distribución
-de probabilidad espacial continua. Posteriormente, calcula la esperanza matemática promediando las posiciones de ponderadas
+de probabilidad espacial continua. Posteriormente, calcula la esperanza matemática promediando las posiciones ponderadas
 por sus respectivas densidades.
 \par
 En~\cite{SPEC}, observan tener mejores resultados utilizando \emph{softargmax}.
-Además, indican que penalizar más las sobre-estimaciones del campo de visión vertical de la cámara
+Además, indican que penalizar más las sobreestimaciones del campo de visión vertical de la cámara
 ayuda a obtener un mejor modelo para calibración directa de cámara. Por ello, utilizan una versión asimétrica que
-penaliza más dichas sobre-estimaciones siguiendo la Ecuación~\ref{eq:biased-l2}.
+penaliza más dichas sobreestimaciones siguiendo la Ecuación~\ref{eq:biased-l2}.
 Esta será la función de pérdida utilizada en esta implementación para el módulo de calibración de cámara.
 \begin{equation}\label{eq:biased-l2}
 \mathcal{L}_{\text{calib-softargmax-biased-L2}}(\hat{\upsilon}, \upsilon)=

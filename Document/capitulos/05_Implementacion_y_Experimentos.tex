@@ -5,7 +5,7 @@ El procedimiento experimental consiste en entrenar
 un modelo de aprendizaje profundo capaz de estimar la
 altura de objetos y se compara sus predicciones frente al método de calibración manual de cámara y re-proyección geométrica.
 A continuación se detallan los resultados obtenidos con cada método, así como su comparación frente a un método de referencia
-sencillo que predice siempre el promedio de altura de 1.75 metros.
+sencillo que predice siempre el medio de altura de 1.75 metros.
 
 % \begin{figure}[htp]
 %   \centering
@@ -20,10 +20,10 @@ sencillo que predice siempre el promedio de altura de 1.75 metros.
 \section{Detalles técnicos de implementación}\label{app:TechnicalDetails}
 Este proyecto ha sido realizado mayoritariamente con el lenguaje de programación Python,
 haciendo uso de procedimientos en otros idiomas por medio de interfaces. Para el desarrollo
-y ejecución de los modelos fue necesario el uso de la librería de Pytorch junto con las
+y ejecución de los modelos fue necesario el uso de la librería de PyTorch junto con las
 librerías CUDA para poder ejecutar los modelos en las tarjetas gráficas de NVIDIA. Para
-la extracción de fotogramas (imágenes) de los vídeos se utilizó FFMPEG. Para algunos cálculos
-números y de manejo de datos Numpy, Pandas y OpenCV~\cite{opencv_library}. Para el control de
+la extracción de fotogramas (imágenes) de los vídeos se utilizó FFmpeg. Para algunos cálculos
+números y de manejo de datos NumPy, Pandas y OpenCV~\cite{opencv_library}. Para el control de
 versiones del proyecto se utilizó GitHub en varios repositorios, inyectados como submódulos
 en el repositorio principal: \url{https://github.com/briansenas/TFM_SVMIW}
 \par
@@ -34,9 +34,7 @@ descritas de proyecciones, se obtienen la estimación de la altura de los indivi
 \par
 No obstante, para el caso del método automático, existen varios problemas:
 \begin{enumerate}
-  \item El modelo
-pre-entrenado por Zhu \emph{et al.}~\cite{SVMIW} no está disponible en ningún lado para ser utilizado
-directamente.
+  \item El modelo pre-entrenado por Zhu \emph{et al.}~\cite{SVMIW} no se encuentra disponible públicamente.
 \item El código de entrenamiento tampoco está disponible. Solo están disponibles trozos parciales
   de algunos métodos y funciones.
 \item No se disponen de los mismos datos debido a la eliminación de SUN360~\cite{SUN360}, descrita en la Sección~\ref{sec:SUN360}
@@ -64,7 +62,7 @@ De esta forma, se obtuvieron diversos beneficios como la estabilidad en entrenam
 capacidad de cómputo y mejor legibilidad del código. Entre las razones tenemos:
 menos operaciones de copia de datos a la tarjeta gráfica, entrenamiento en precisión mixta (disminuye el uso de memoria,
 permitiendo así entrenar con más imágenes o modelos más complejos),
-ratio de aprendizaje dinámico (cambiante y diferente por módulo), con calentamiento y recocido,
+tasa de aprendizaje dinámico (cambiante y diferente por módulo), con calentamiento y recocido,
 mejor gestión de datos de visualización del entreno, con almacenado de imágenes de ejemplo,
 vectorización del proceso de estimación de la altura y más.
 \par
@@ -175,12 +173,15 @@ durante el entrenamiento así como las funciones de pérdida y datos auxiliares 
 Para la ejecución se utilizaron dos sistemas distintos. En las pruebas de alta demanda de CPU, como extraer los fotogramas y filtrar las
 imágenes válidas en ambos conjuntos de datos, se utilizó un ordenador con una CPU AMD Ryzen 7 5800X, 32 GB de RAM DDR4 y una tarjeta
 NVIDIA RTX 3060 12GB de VRAM. Para el entrenamiento distribuido en múltiples GPU, se utilizó el servidor de la
-Universidad de Granada con 3 GTX Titan X Pascal (cuando disponible), permitiendo disponer de hasta 3 veces más capacidad de cómputo en el mismo tiempo.
+Universidad de Granada con 3 GTX Titan X Pascal (cuando estaba disponible), permitiendo disponer de hasta 3 veces más capacidad de cómputo en el mismo tiempo.
 
 \section{Resultados calibración manual}
 En la Tabla~\ref{tab:ManualResults} se observan los resultados de
-aplicar el método descrito en la Sección~\ref{sec:ManualCalibration}. El error promedio
-es de 37 centímetros para todas las cámaras. Destaca la cámara 2 con el mayor error medio, 52 centímetros,
+aplicar el método descrito en la Sección~\ref{sec:ManualCalibration}.
+En ella, se expresa el error medio ($\mu$), la varianza ($\sigma$), la mediana,
+el tercer cuartil ($Q_3$) y el error máximo. El tercer cuartil es una medida estadística que indica el valor
+por debajo del cual se encuentra el 75\% de los datos ordenados de menor a mayor.
+El error medio es de 37 centímetros para todas las cámaras. Destaca la cámara 2 con el mayor error medio, 52 centímetros,
 y la mayor varianza, de 30 centímetros. En las Figuras~\ref{fig:ManualWorst}, se observan los ejemplos
 con mayor error de medición. El método clásico es susceptible a acumulación de errores por imprecisión en
 diferentes pasos del proceso, ya sea por imprecisión de los parámetros estimados de la matriz de proyección
@@ -190,12 +191,12 @@ de la estimación del recuadro delimitador (debe ser lo más acertado posible re
 y la precisión de la posición de la cámara (altura respecto al suelo, distancia al individuo y rotación).
 Por otro lado, en las Figuras~\ref{fig:ManualBest} se observan los ejemplos
 con una estimación perfecta.
-En comparativa, en la Tabla~\ref{tab:BaselineDummy} se muestran
-los errores promedios de utilizar un modelo de referencia que predice siempre la altura promedio de 1.75 metros.
-El error promedio de dicho método es de 14 centímetros, siendo así 2.6 veces más preciso que el método clásico
+A modo de comparación, en la Tabla~\ref{tab:BaselineDummy} se muestran
+los errores medios de utilizar un modelo de referencia que predice siempre la altura medio de 1.75 metros.
+El error medio de dicho método es de 10 centímetros, siendo así 3.7 veces más preciso que el método clásico
 para la distribución de los datos actuales.
 Los resultados indican que el método clásico depende de mediciones manuales exactas de la escena, así como el uso
-de un proceso de calibración de cámara extenso, para lograr errores de estimación aceptables y poder ganar, en promedio, al
+de un proceso de calibración de cámara extenso, para lograr errores de estimación aceptables y poder ganar, en medio, al
 método de referencia.
 \begin{table}[!ht]
   \centering
@@ -203,7 +204,7 @@ método de referencia.
 \begin{tabular}{|l|c|c|c|c|c|c|}
 \hline
 \rowcolor[HTML]{FFCB2F}
-\textbf{Cámara }& \textbf{Soporte }& $\bm{\mu}$ & $\bm{\sigma}$ & $\bm{Q_2}$ & $\bm{Q_3}$ & \textbf{Máximo}\\
+\textbf{Cámara }& \textbf{Soporte }& $\bm{\mu}$ & $\bm{\sigma}$ & \textbf{Mediana} & $\bm{Q_3}$ & \textbf{Máximo}\\
 \hline
 Cam1 & 222 & 0.27 & 0.16 & 0.28 & 0.39 & 0.64 \\
 \hline
@@ -214,7 +215,7 @@ Cam3 & 182 & 0.27 & 0.16 & 0.27 & 0.37 & 0.70 \\
 \end{tabular}
 \caption[Tabla de errores de estimación del método clásico, expresados en metros.]{
  Tabla de errores de estimación del método clásico, expresados en metros.
- Se observa que, incluso con la cámara calibrada manualmente, el error promedio, de estimación de la altura de los
+ Se observa que, incluso con la cámara calibrada manualmente, el error medio, de estimación de la altura de los
  individuos en escena, es significativamente alto.
  Destacando que un ejemplo con la cámara 2 obtuvo un error de 1.43 metros.
 }
@@ -245,18 +246,18 @@ Cam3 & 182 & 0.27 & 0.16 & 0.27 & 0.37 & 0.70 \\
 \begin{tabular}{|l|c|c|c|c|c|c|}
 \hline
 \rowcolor[HTML]{FFCB2F}
-\textbf{Cámara }& \textbf{Soporte }& $\bm{\mu}$ & $\bm{\sigma}$ & $\bm{Q_2}$ & $\bm{Q_3}$ & \textbf{Máximo}\\
+\textbf{Cámara }& \textbf{Soporte }& $\bm{\mu}$ & $\bm{\sigma}$ & \textbf{Mediana} & $\bm{Q_3}$ & \textbf{Máximo}\\
 \hline
-Cam1 & 222 & 0.15 & 0.02 & 0.15 & 0.15 & 0.17 \\
+Cam1 & 222 & 0.10 & 0.05 & 0.06 & 0.15 & 0.17 \\
 \hline
-Cam2 & 293 & 0.14 & 0.04 & 0.15 & 0.17 & 0.17 \\
+Cam2 & 293 & 0.10 & 0.05 & 0.07 & 0.15 & 0.17 \\
 \hline
-Cam3 & 182 & 0.13 & 0.05 & 0.17 & 0.17 & 0.17 \\
+Cam3 & 182 & 0.07 & 0.07 & 0.01 & 0.17 & 0.17 \\
 \hline
 \end{tabular}
 \caption[Tabla de errores de estimación del estimador estático de referencia, expresados en metros.]{
 Tabla de errores de estimación del estimador estático de referencia, expresados en metros.
-Se observan los errores promedios del método de referencia que predice siempre la altura promedio de 1.75 metros.
+Se observan los errores medios del método de referencia que predice siempre la altura medio de 1.75 metros.
 }
 \label{tab:BaselineDummy}
 \end{table}
@@ -277,10 +278,10 @@ La segunda, entrena conjuntamente la estimación de parámetros de la cámara y 
 modelo al tipo de persona que debemos detectar. Se debe detectar solamente personas totalmente visibles y que se
 encuentren sobre el suelo. Es decir, se debe restringir la capacidad del modelo generalista, de detección de personas,
 a este subconjunto de personas que cumplen estas restricciones geométricas para la estimación de su estatura.
-Finalmente, se añade las últimas capas y función de pérdida para la estimación de la altura del sujeto y la cámara.
+Finalmente, se añaden las últimas capas y función de pérdida para la estimación de la altura del sujeto y la cámara.
 Todas las fases se entrenan por 30K iteraciones.
 \par
-En la Tabla~\ref{tab:CalibResults} se compara los resultados obtenidos en esta implementación
+En la Tabla~\ref{tab:CalibResults} se comparan los resultados obtenidos en esta implementación
 con la tabla de resultados del artículo~\cite{SPEC}, que incluye los resultados del artículo de referencia~\cite{SVMIW},
 sobre el conjunto de datos Pano360. Se evidencia la capacidad de esta implementación de replicar, e incluso superar,
 la precisión obtenida en algunas métricas de las referencias, con un menor requisito computacional.
@@ -289,7 +290,7 @@ Se incluye también los resultados del modelo final, una vez entrenado sobre tod
 que su capacidad de estimar los parámetros de la cámara no divergen tanto del modelo entrenado solamente para
 ello. De hecho, su capacidad de estimar el ángulo de visión vertical (\emph{vfov}) y el de inclinación (\emph{pitch})
 mejora ligeramente frente al modelo entero entrenado solamente para la fase 0 (de calibración de cámara).
-Esto puede ser debido a que el modelo en la fase final tiene acumulado más iteraciones totales, así como
+Esto puede deberse a que el modelo en la fase final tiene acumulado más iteraciones totales, así como
 la presencia de la restricción proyectiva de estimación de altura que afecta a las predicciones de los ángulos
 de la cámara.
 
@@ -357,26 +358,26 @@ Siendo así, más representativo el hecho de haber logrado obtener un error de m
   Se observa que el modelo es capaz de aprender correctamente, obteniendo valores
   muy cercanos a los de referencia. Todo ello con 70K iteraciones menos, utilizando la mitad de ejemplos
   por cada. La partición utilizada de Kitti-person* no es exactamente igual al del artículo~\cite{SVMIW}.
-  En este caso, se incluye muchas más imágenes, con un total de 1352 frente a 298.
+  En este caso, se incluyen muchas más imágenes, con un total de 1352 frente a 298.
   Aun así, logramos obtener un error medio de altura similar.
 
 }\label{tab:vt_losses}
 \end{table}
 
 En la Tabla~\ref{tab:AutoResults}
-se observan los resultados de método de estimación automática. El error promedio de
+se observan los resultados de método de estimación automática. El error medio de
 las cámaras en conjunto es de 12 centímetros, 3 veces más pequeño que el método manual.
 Un error ligeramente inferior al método de referencia, pero logrando permitir la estimación de la
 altura exacta de individuos cuya altura no es 1.75 metros en diversas escenas.
 Los valores de mediana y tercer cuartil son mucho menores que el método clásico, dejando ver lo prometedor que puede llegar a ser este método.
-Destaca los valores máximos que no llegan a sobrepasar los 32 centímetros de error, mientras que el método de calibración manual ha llegado a tener
+Destacan los valores máximos que no llegan a sobrepasar los 32 centímetros de error, mientras que el método de calibración manual ha llegado a tener
 un error de 143 centímetros (valor atípico, un error extremo de re-proyección).
 
 En las Figuras~\ref{fig:AutoWorst} y~\ref{fig:AutoBest} se
 observan los peores y mejores resultados de este método.
 Dado que se conoce la altura de la cámara en las escenas,
 se pueden ver reflejados en la Tabla~\ref{tab:AutoCamResults}
-el error promedio de estimación del módulo de PointNet~\cite{PointNet} de la altura de la cámara.
+el error medio de estimación del módulo de PointNet~\cite{PointNet} de la altura de la cámara.
 Realizar un entrenamiento más largo del modelo puede que reduzca la varianza y el error obtenido,
 tanto en la estimación de la altura de la cámara como del sujeto en escena.
 En la Tabla~\ref{tab:Results} se recogen los resultados finales
@@ -392,7 +393,7 @@ de 1.75 metros, con el beneficio de acertar en múltiples escenas, de diferentes
 \begin{tabular}{|l|c|c|c|c|c|c|}
 \hline
 \rowcolor[HTML]{FFCB2F}
-\textbf{Cámara }& \textbf{Soporte }& $\bm{\mu}$ & $\bm{\sigma}$ & $\bm{Q_2}$ & $\bm{Q_3}$ & \textbf{Máximo}\\
+\textbf{Cámara }& \textbf{Soporte }& $\bm{\mu}$ & $\bm{\sigma}$ & \textbf{Mediana} & $\bm{Q_3}$ & \textbf{Máximo}\\
 \hline
 Cam1 & 222 & 0.15 & 0.10 & 0.18 & 0.21 & 0.31 \\
 \hline
@@ -415,7 +416,7 @@ Cam3 & 182 & 0.10 & 0.09 & 0.04 & 0.22 & 0.26 \\
 \begin{tabular}{|l|c|c|c|c|c|c|}
 \hline
 \rowcolor[HTML]{FFCB2F}
-\textbf{Cámara }& \textbf{Soporte }& $\bm{\mu}$ & $\bm{\sigma}$ & $\bm{Q_2}$ & $\bm{Q_3}$ & \textbf{Máximo}\\
+\textbf{Cámara }& \textbf{Soporte }& $\bm{\mu}$ & $\bm{\sigma}$ & \textbf{Mediana} & $\bm{Q_3}$ & \textbf{Máximo}\\
 \hline
 Cam1 & 222 & 0.37 & 0.10 & 0.40 & 0.44 & 0.48 \\
 \hline
@@ -438,27 +439,28 @@ Cam3 & 182 & 0.12 & 0.06 & 0.12 & 0.16 & 0.27 \\
     \begin{tabular}{|l|c|c|c|c|c|c|}
       \rowcolor[HTML]{FFCB2F}
       \hline
-      \textbf{Cámara } & $\bm{\mu}$ & $\bm{\sigma}$ & $\bm{Q_2}$ & $\bm{Q_3}$ & \textbf{Máximo}\\
+      \textbf{Cámara } & $\bm{\mu}$ & $\bm{\sigma}$ & \textbf{Mediana} & $\bm{Q_3}$ & \textbf{Máximo}\\
       \hline
-      Baseline & 0.14 & 0.04 & 0.15 & \textbf{0.17} & \textbf{0.17} \\
+      Baseline & \textbf{0.09} & \textbf{0.06} & \textbf{0.06} & \textbf{0.15} & \textbf{0.17} \\
       \hline
       Clásico & 0.37 & 0.26 & 0.33 & 0.49 & 1.42 \\
       \hline
-      Nuestro & \textbf{0.12} & \textbf{0.08} & \textbf{0.11} & 0.19 & 0.29 \\
+      Nuestro & 0.12 & 0.08 & 0.11 & 0.19 & 0.31 \\
       \hline
     \end{tabular}
   \end{center}
   \caption[Tabla resumen de comparativa final, con errores expresados en metros.]{
   Tabla resumen de comparativa final, con errores expresados en metros.
-  Se observa que incluir un \emph{a priori} sobre las estimaciones mejora el error promedio y máximo significativamente.
-  El modelo consigue un error mediano inferior al estimador baseline. No obstante, presente una mayor
-  variabilidad, con estimaciones con errores hasta casi 2 veces más grandes. Realizar un entrenamiento
-  más largo y buscar una ponderación más precisa de las funciones de pérdida podría mejorar los resultados.
+  Se observa que incluir un \emph{a priori} sobre las estimaciones mejora el error medio y máximo significativamente
+  frente al método clásico. No obstante, la baja variabilidad antropométrica de los datos
+  (distribución de estatura muy centrada en 1.75), junto
+  a errores de estimaciones elevados en algunas escenas, hace que el método baseline presente un
+  menor error medio.
 }\label{tab:Results}
 \end{table}
 
-Durante las fases iniciales de experimentación se observó que el modelo as veces colapsaba al \emph{a priori},
-estimando todos los individuos en la escena la misma altura, cerca del promedio impuesto.
+Durante las fases iniciales de experimentación se observó que el modelo a veces colapsaba al \emph{a priori},
+estimando todos los individuos en la escena la misma altura, cerca del medio impuesto.
 Esto es posible debido a que el modelo puede ajustar tanto la altura de los sujetos en escena,
 su profundidad, como la altura de la cámara con respecto al suelo para disminuir
 el error de re-proyección. Por ello, un ajuste equilibrado de los pesos de la combinación
@@ -472,16 +474,16 @@ una restricción adicional sobre la escena.
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam1_svmiw.png}}
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam2_svmiw.png}}\\
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam3_svmiw.png}}
-  \caption[Visualización de las peores predicciones del método por aprendizaje profundo.]{Se observan ejemplos con las peores mediciones para cada cámara con el método automático, donde el número superior (en color verde) es el valor esperado.
-  Destaca la restricción sobre las estimaciones que evita errores extremos como los observados en el método manual, ya que el modelo difícilmente estimará valores lejanos al \emph{a priori} impuesto de 1.75 metros. }
+  \caption[Visualización de las peores predicciones del método por aprendizaje profundo.]{
+  Se observan ejemplos con las peores mediciones para cada cámara con el método automático, donde el número superior es el valor esperado. }
 \label{fig:AutoWorst}
 \end{figure}
 
-\begin{figure}[!ht]
+\begin{figure}[H]
   \centering
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam1_svmiw.png}}
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam2_svmiw.png}}\\
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam3_svmiw.png}}
-  \caption[Visualización de predicciones exactas con el método por aprendizaje profundo.]{Se observan ejemplos de mediciones exactas con cada cámara con el método automático, donde el número superior (en color verde) es el esperado.}
+  \caption[Visualización de predicciones exactas con el método por aprendizaje profundo.]{Se observan ejemplos de mediciones exactas con cada cámara con el método automático, donde el número superior es el esperado.}
 \label{fig:AutoBest}
 \end{figure}
