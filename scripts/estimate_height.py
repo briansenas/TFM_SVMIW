@@ -38,6 +38,7 @@ def build_rotation_matrix(angle_x_deg, angle_y_deg):
     )
     # Order matters
     R = Rx @ Ry
+    # return np.eye(3)
     return R
 
 
@@ -105,18 +106,14 @@ def get_world_ray(ray_cam, R):
     return ray_world
 
 
-def estimate_height_from_bbox_v2(bbox, K, R, T, C, DC, simple: bool = True):
+def estimate_height_from_bbox(bbox, K, R, T, C, DC, simple: bool = True):
     """Estimates height of a person from a single bounding box."""
-    # Explodes sometimes although the 3D points make sense (foot_3d at Y=0).
-    # Should attempt to add the constraint that the Z scale is at C[2]?
     if simple:
         return estimate_person_height_simple(bbox, K, R, -C[2], DC)
     x_min, y_min, x_max, y_max = bbox
     x_center = (x_min + x_max) / 2
     foot_2d = np.asarray([[x_center, y_max]])[:, np.newaxis, :]
     head_2d = np.asarray([[x_center, y_min]])[:, np.newaxis, :]
-    foot_2d = cv2.undistortPoints(foot_2d, K, DC, P=K).flatten()
-    head_2d = cv2.undistortPoints(head_2d, K, DC, P=K).flatten()
     foot_2d = np.append(foot_2d, 1.0)
     head_2d = np.append(head_2d, 1.0)
     inv_K = np.linalg.inv(K)
@@ -127,38 +124,7 @@ def estimate_height_from_bbox_v2(bbox, K, R, T, C, DC, simple: bool = True):
     foot_3d = cam_center + foot_scale * foot_ray
     head_scale = (foot_3d[0] - cam_center[0]) / head_ray[0]
     head_3d = cam_center + head_scale * head_ray
-    return head_3d[1]
-
-
-def backproject_to_3d(image_point, K, R, C, T, s):
-    """Back-projects a 2D point to 3D assumes Z=0"""
-    inv_K = np.linalg.inv(K)
-    # Converts the 2D pixel coordinate (image_point) into a 3D ray in the camera's local coordinate system
-    ray_cam = inv_K @ np.array([image_point[0], image_point[1], 1.0])
-    # Rotates the camera ray using the rotation matrix to align it with the world coordinate system.
-    ray_world = R.T @ ray_cam
-    # Calculates the camera's physical position (center) in the world.
-    # cam_center = (-R.T @ T.reshape(3, 1)).flatten()
-    cam_center = C.flatten()
-    # Scaling factor
-    if s is None:
-        s = -cam_center[2] / ray_world[2]
-    # Travel from center to the object
-    point_3d = cam_center + s * ray_world
-    return point_3d, s
-
-
-def estimate_height_from_bbox(bbox, K, R, T, C, DC, simple: bool = True):
-    """Estimates height of a person from a single bounding box."""
-    if simple:
-        return estimate_person_height_simple(bbox, K, R, -C[2], DC)
-    x_min, y_min, x_max, y_max = bbox
-    x_center = (x_min + x_max) / 2
-    foot_2d = [x_center, y_max]
-    head_2d = [x_center, y_min]
-    foot_3d, s = backproject_to_3d(foot_2d, K, R, C, T, None)
-    head_3d, s = backproject_to_3d(head_2d, K, R, C, T, s)
-    return np.linalg.norm(foot_3d - head_3d)
+    return foot_3d, head_3d
 
 
 def get_camera_matrix(intrinsics_path):
@@ -203,13 +169,25 @@ def batch_detect_and_estimate(
             ]
         # Choose tallest person (bounding box with largest height in pixels)
         bbox = max(person_bboxes, key=lambda b: b[3] - b[1])
-        height = estimate_height_from_bbox(bbox, *extrinsics[i], simple=simple)
-        data[i]["pred_height"] = height
+        foot_3d, head_3d = estimate_height_from_bbox(
+            bbox,
+            *extrinsics[i],
+            simple=simple,
+        )
+        data[i]["pred_height"] = head_3d[1]
+        data[i]["foot_3d"] = foot_3d.tolist()
+        data[i]["head_3d"] = head_3d.tolist()
     else:
         for i, sample in enumerate(data):
             bbox = sample["gt_bbox"]
-            height = estimate_height_from_bbox(bbox, *extrinsics[i], simple=simple)
-            data[i]["pred_height"] = height
+            foot_3d, head_3d = estimate_height_from_bbox(
+                bbox,
+                *extrinsics[i],
+                simple=simple,
+            )
+            data[i]["pred_height"] = head_3d[1]
+            data[i]["foot_3d"] = foot_3d.tolist()
+            data[i]["head_3d"] = head_3d.tolist()
     return data
 
 

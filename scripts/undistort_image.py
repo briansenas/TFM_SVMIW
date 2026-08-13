@@ -18,6 +18,7 @@ def undistort_image(
     intrinsics_path: str,
     output_path: str | None = None,
     fisheye: bool = False,
+    borders: float = 0.0,
 ) -> None:
     """
     Undistorts an image using camera intrinsics.
@@ -52,7 +53,7 @@ def undistort_image(
             camera_matrix,
             dist_coeffs,
             (w, h),
-            0,
+            borders,
         )[0]
         undistorted = cv2.undistort(
             image,

@@ -59,6 +59,7 @@ def load_camera_parameters(yaml_path: str):
 
 
 def load_yaml_defaults(parser: argparse.ArgumentParser, config_file: str):
+
     if config_file:
         with open(config_file) as f:
             config = yaml.safe_load(f)
