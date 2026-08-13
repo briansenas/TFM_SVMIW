@@ -23,7 +23,7 @@
 \noindent{\textbf{Resumen}}\\
 La metrología monocular constituye una línea de investigación de gran relevancia debido a su potencial
 para obtener mediciones precisas a partir de una única imagen, es decir, una sola vista de la escena.
-Es especialmente útil en situaciones donde no es posible, o práctico, capturar múltiples imágenes,
+Es especialmente útil en situaciones donde no es posible o práctico capturar múltiples imágenes,
 desde diferentes ángulos. El auge del aprendizaje profundo ha abierto nuevas oportunidades para abordar
 este problema, permitiendo inferir información a partir de patrones visuales aprendidos. Este Trabajo de Fin de Máster
 presenta una implementación del método de aprendizaje semi-supervisado descrito por Zhu \emph{et al.}
@@ -43,9 +43,9 @@ como conjunto de validación experimental del método implementado.
 El rendimiento del sistema se evalúa frente al procedimiento tradicional basado en la calibración manual de
 la cámara y la obtención de mediciones adicionales de referencia en la escena para estimar la altura de los objetos.
 Si bien los resultados presentados en este trabajo son de carácter preliminar,
-se obtuvo un error medio de $12\pm8$ cm. Este resultado es superior al método
-tradicional, que presenta un error medio de $37\pm26$ cm, con la ventaja adicional de no
-requerir información complementaria ni mediciones previas de la escena
+se obtuvo un error medio de $9.8\pm6.9$ cm. Este resultado es muy cercano al método
+tradicional, que presenta un error medio de $6.7\pm5.6$ cm, con la ventaja adicional de no
+requerir información complementaria ni mediciones previas de la escena.
 
 \cleardoublepage
 
@@ -61,7 +61,7 @@ requerir información complementaria ni mediciones previas de la escena
 \end{center}
 
 %\vspace{0.7cm}
-\noindent{\textbf{Keywords}: camera calibration, geometric modelling, monocular metrology, semi-supervised learning, computer-vision.}\\
+\noindent{\textbf{Keywords}: camera calibration, geometric modelling, monocular metrology, semi-supervised learning, computer vision.}\\
 
 %\vspace{0.7cm}
 \noindent{\textbf{Abstract}}\\
@@ -73,18 +73,18 @@ This Master's Thesis presents an implementation of the semi-supervised learning 
 \emph{Single View Metrology in the Wild}, presented at the European Conference on Computer Vision in 2020.
 \smallskip
 
-The method is implemented using the recent object detection framework Detectron2,
+The method is implemented using the Detectron2 object detection framework,
 enabling the use of more recent architectures, greater modularity, improved optimization mechanisms and distributed training capabilities,
 as well as superior computational performance. Regarding the data, a training dataset collected from the Flickr social network
 is employed for the camera calibration module, as a replacement for the original SUN360 dataset, which is no longer available.
-In addition, multiple frames from surveillance cameras are used to serve as an experimental validation dataset for this implementation.
+In addition, multiple frames from surveillance cameras are used as an experimental validation dataset for this implementation.
 \smallskip
 
 The performance of the system is evaluated against the traditional procedure based on manual camera calibration and the
 acquisition of additional reference measurements within the scene to estimate object heights.
 Although the results presented in this work are preliminary, the proposed method achieved a
-mean error of $12\pm8$ cm. This result is superior to the traditional approach,
-which exhibits a mean error of $37\pm26$ cm, while offering the additional advantage of
+mean error of $9.8\pm6.9$ cm. This result is very close to the traditional approach,
+which exhibits a mean error of $6.7\pm5.6$ cm, while offering the additional advantage of
 not requiring supplementary information or prior measurements of the scene.
 
 \chapter*{}

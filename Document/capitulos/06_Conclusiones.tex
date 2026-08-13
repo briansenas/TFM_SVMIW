@@ -10,12 +10,12 @@ estimación del tamaño de objetos en escena a su profundidad dentro de la misma
 Se ha investigado requisitos previos para el uso de métodos clásicos de extracción de información de la escena,
 así como métodos que utilizan técnicas de aprendizaje profundo.
 Los primeros requieren intervención humana, mediante calibración manual de cámara y conocimiento de la escena
-(altura, posición y rotación de la cámara) con respecto a los objetos. Los últimos,
-aprender a extraer dicha información de forma automática a partir de los datos.
+(altura, posición y rotación de la cámara) con respecto a los objetos. Los últimos
+aprenden a extraer dicha información de forma automática a partir de los datos.
 Durante el análisis del estado del arte, se observa el salto en complejidad teórica al tratar de
 utilizar imágenes únicas, con una sola cámara, en lugar de escenas con múltiples puntos de vista
-o información adicional de la misma. Ante el bajo número de publicaciones relacionadas, se concluye
-que no existe actualmente una implementación disponible que ayude en el avance de la estimación
+o información adicional de la misma. Ante el bajo número de publicaciones relacionadas,
+no se ha identificado una implementación pública disponible que ayude en el avance de la estimación
 monocular en entornos no controlados, invitándonos a extender el trabajo de~\cite{SVMIW}.
 \par
 Para la validación y comparación entre los métodos, se ha utilizado un conjunto de
@@ -24,12 +24,14 @@ Se hizo uso de diferentes cámaras comunes, así como una cámara equipada con u
 de alta calidad para medir la profundidad del sujeto en la escena.
 Todas las cámaras fueron cuidadosamente calibradas utilizando el método descrito
 en la Sección~\ref{sec:ManualCalibration}.
-En total se obtuvo 697 imágenes válidas con etiquetas reales de la posición de la cámara, del sujeto y su altura.
-Entre ellas, hay 12 sujetos diferentes, con alturas entre 1.60 y 1.92 metros.
+En total se obtuvo 652 fotogramas válidos con etiquetas reales de la posición de la cámara, del sujeto y su altura.
+Entre ellos, hay 12 sujetos diferentes, con alturas entre 1.60 y 1.92 metros.
 Se reconoce que, aunque el conjunto incluya un número aparentemente suficiente de ejemplos,
 puede observarse una baja diversidad en términos de condiciones ambientales (iluminación y escenarios) y de variabilidad antropométrica
-(distribución de morfologías corporales, estatura y complexiones). En consecuencia, la validación
-queda condicionada y puede inducir a estimaciones optimistas.
+(distribución de morfologías corporales, estatura y complexiones).
+Asimismo, las estaturas corresponden a valores autodeclarados por los participantes y no a mediciones realizadas durante
+las sesiones de grabación, lo que puede introducir discrepancias entre los valores reportados y las estaturas reales.
+En consecuencia, la validación queda condicionada y puede inducir a estimaciones optimistas o pesimistas.
 \par
 El método clásico hace uso de toda la información disponible de la escena.
 Principalmente, la matriz de calibración de la cámara y su orientación, así
@@ -42,46 +44,38 @@ implícitamente a partir de la imagen mediante \emph{priors} aprendidos durante 
 Es entrenado en 3 fases, con las dos últimas utilizando 2 conjuntos de datos a
 la vez. Uno que permite trabajar sobre la calibración de los parámetros de la escena
 (como las rotaciones de la cámara y su campo de visión) y otro que permite aprender
-a minimizar el error de re-proyección sin saber la altura real de los sujetos o de la cámara en la escena.
+a minimizar el error de reproyección sin saber la altura real de los sujetos o de la cámara en la escena.
 \par
-Tras el análisis de los resultados, resulta evidente el gran potencial de este método
-frente al método clásico. El disponer de una regularización sobre el valor medio
-de la altura de los objetos favorece una disminución significativa del error medio del
+Tras el análisis de los resultados, se observa el potencial significativo de este método
+de automatizar tareas de metrología. El disponer de una regularización sobre el valor medio
+de la altura de los objetos favorece una disminución significativa del error máximo del
 método clásico en casos desfavorables (por problemas de calibración o imprecisiones en
-las mediciones de referencia). El error medio del método clásico es de 37 centímetros
-frente a 12 centímetros del método semi-supervisado, demostrando el gran potencial de
-este método, ya que no necesita de datos adicionales de las características de la escena.
-Con este proyecto se dispone de una implementación del código de~\cite{SVMIW}, con el
-caso de estimación de pose para humanos y el caso multi-clase (en este caso, como
-en el artículo de referencia, se utiliza la clase coche y humano, pero es fácilmente
-extensible para cualquier objeto).
+las mediciones de referencia de la escena). El error medio del método clásico es de 6.7 centímetros
+frente a 9.8 centímetros del método semi-supervisado. El método automático no supera
+al clásico en precisión, sino que obtiene un rendimiento razonablemente cercano sin requerir
+calibración manual de la escena. Es decir, el método implementado no
+necesita de intervención manual (como realizar la calibración de la cámara o obtener datos
+adicionales de la escena) para realizar las estimaciones.
 \par
-Adicionalmente, se realiza una exploración de datos, comparando los métodos de generación
-de datos sintéticos de~\cite{SVMIW} y~\cite{SPEC}. Incluyendo la eliminación de imágenes irrelevantes,
-gracias al desarrollo de un sistema de visualización y búsqueda de imágenes según características
-extraídas automáticamente, permitiendo encontrar imágenes redundantes para reducir el tamaño y ruido del conjunto de datos.
-Además, se logra un incremento en rendimiento computacional y eficiencia de optimización del
-modelo de aprendizaje automático, logrando reducir el tiempo y número de iteraciones
-totales necesarias. Todo ello gracias a optimizaciones varias como aumentación de datos,
-ratio de aprendizaje dinámico y por módulo, regularización por recorte del gradiente
-y vectorización del proceso de metrología.
-\par
-Por lo tanto, se concluye que se han completado satisfactoriamente los objetivos planteados, determinando la
-posibilidad de resolución del problema y permitiendo una extensión del mismo para diferentes
-objetos, conjuntos de datos, arquitecturas de redes convolucionales o métodos de entrenamiento más recientes
-(véase el Apéndice~\ref{app:YAMLConfig}).
-Abriendo así la puerta a futuras investigaciones en el campo. Todo el código disponible está
-centralizado en GitHub~\code{https://github.com/briansenas/TFM_SVMIW}, a excepción del conjunto
-de datos de validación dado que son datos confidenciales, propiedad de la empresa Panacea~\cite{panacea2026}.
+No obstante, se observa que el modelo tiene un efecto de retroceso hacia el~\emph{a priori} de 1.75 metros,
+de forma que tiende a realizar subestimaciones para personas de gran estatura y sobreestimaciones para personas de baja estatura.
+Además, el error medio de estimación de la altura de la cámara es de 17.9 centímetros.
+Este valor es un indicativo de que, aunque el modelo sea capaz de disminuir la pérdida de
+reproyección de la escena, los parámetros geométricos estimados no están garantizados de ser
+físicamente correctos. Esto podría deberse a que distintas combinaciones de profundidad,
+de altura de la cámara y ángulos de rotación de la misma pueden generar un
+bajo error de reproyección. Estas son algunas de las limitaciones identificadas del modelo
+implementado que abren puertas a posibles futuras investigaciones.
 \par
 Durante el desarrollo y comprensión de la literatura, se recogió un conjunto de ampliaciones
-lógicas que se pueden realizar sobre el proyecto. La única limitación fuerte está en la necesidad de los sujetos de estar sobre el suelo.
-Por un lado, como se menciona en~\cite{SVMIW}, una posible ampliación sería la estimación de la
+lógicas adicionales que se pueden realizar sobre el proyecto.
+En~\cite{SVMIW} mencionan que una de las principales limitaciones es la necesidad de los objetos de estar situados sobre el suelo.
+Además, indican que una posible ampliación sería la estimación de la
 región delimitadora del objeto de forma amodal~\cite{kar2015amodalcompletionsizeconstancy}.
 Así, se podría extender la aplicación de este sistema a objetos semi-ocultos.
-En~\cite{SAKINA2024765}, se observó que el uso de información adicional como raza y género podría llegar
+Por otro lado, en~\cite{SAKINA2024765}, se observó que el uso de información adicional como raza y género podría llegar
 a mejorar resultados de la estimación. Además, incluir más restricciones junto al error
-de re-proyección, como utilizando más variables conocidas (por ejemplo utilizando un \emph{a priori} sobre
+de reproyección, como utilizando más variables conocidas (por ejemplo utilizando un \emph{a priori} sobre
 la altura de la cámara para entrenar un modelo para cámaras exteriores típicas),
 podría dar lugar a un modelo con mayor precisión en determinados entornos.
 Incluso, se podría optar por utilizar los avances del campo de estimación de profundidad,
@@ -90,9 +84,30 @@ para estimar nuestra variable $z$ en lugar de intentar estimar la altura de la c
 En el campo de estimación de profundidad, hay métodos que utilizan la coherencia entre escenas en un video
 (fotogramas vecinos) para entrenar sus modelos, algo que también se podría adaptar a este caso
 y disponer así de un mayor conjunto de datos, así como una regularización más sobre las predicciones.
-\par
 Por otro lado, existen alternativas que permitan obtener un modelo
 más explicable como~\cite{SAKINA2024765}, que utilizan
 modelos como regresores lineales y árbol de decisiones para estimar la estatura de las
 personas, utilizando características extraídas automáticamente de la escena como raza, género
 y pose (distancia entre miembros del cuerpo y características faciales).
+\par
+Con este proyecto se dispone de una implementación del código de~\cite{SVMIW}, con el
+caso de estimación de pose para humanos y el caso multiclase (en este caso, como
+en el artículo de referencia, se utiliza la clase coche y humano, pero es fácilmente
+extensible para cualquier objeto).
+Adicionalmente, se realiza una exploración de datos, comparando los métodos de generación
+de datos sintéticos de~\cite{SVMIW} y~\cite{SPEC}. Incluyendo la eliminación de imágenes irrelevantes,
+gracias al desarrollo de un sistema de visualización y búsqueda de imágenes según características
+extraídas automáticamente, permitiendo encontrar imágenes redundantes para reducir el tamaño y ruido del conjunto de datos.
+Además, se logra un incremento en rendimiento computacional y eficiencia de optimización del
+modelo de aprendizaje automático, lo que permite reducir el tiempo y número de iteraciones
+totales necesarias. Todo ello gracias a optimizaciones varias como aumentación de datos,
+tasa de aprendizaje dinámica y por módulo, regularización por recorte del gradiente
+y vectorización del proceso de metrología.
+\par
+Por lo tanto, se concluye que se han completado satisfactoriamente los objetivos planteados, determinando la
+posibilidad de resolución del problema y permitiendo una extensión del mismo para diferentes
+objetos, conjuntos de datos, arquitecturas de redes convolucionales o métodos de entrenamiento más recientes
+(véase el Apéndice~\ref{app:YAMLConfig}),
+abriendo así la puerta a futuras investigaciones en el campo. Todo el código disponible está
+centralizado en GitHub~\code{https://github.com/briansenas/TFM_SVMIW}, a excepción del conjunto
+de datos de validación dado que son datos confidenciales.

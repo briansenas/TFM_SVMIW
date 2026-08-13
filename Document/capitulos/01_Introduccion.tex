@@ -15,16 +15,18 @@ inferir medidas reales si se cuenta con ciertos supuestos geométricos, como lí
   \end{center}
   \caption[Visualización del procedimiento de metrología monocular extraída de~\cite{SVMIW}.]{
     Visualización del procedimiento de metrología monocular extraída de~\cite{SVMIW}. El objetivo, dada una imagen de entrada (izquierda), es poder
-  establecer las relaciones geométricas necesarias para estimar correctamente las medidas métricas del mundo. En este ejemplo, de las personas en la escena (medio, derecha).
-  Una posible aplicación directa de establecer dichas relaciones, es la inserción de objetos en la escena empleando la escala adecuada (derecha).}\label{fig:SVM}
+  establecer las relaciones geométricas necesarias para estimar correctamente las medidas métricas del mundo.
+  En este ejemplo, el objetivo consiste en estimar las medidas de las personas en la escena (medio, derecha).
+  Una posible aplicación directa de establecer dichas relaciones es la inserción de objetos en la escena empleando la escala adecuada (derecha).}\label{fig:SVM}
 \end{figure}
 
 Sin embargo, la aplicación de SVM en entornos naturales o no controlados, conocida como \emph{Single View Metrology in the Wild}~\cite{SVMIW},
 plantea una serie de dificultades. En primer lugar, los métodos clásicos dependen fuertemente de la existencia de
 estructuras geométricas visibles y bien definidas~\cite{VisionBookMIT}, lo que limita su aplicabilidad a imágenes reales
 donde estas condiciones raramente se cumplen (véase la Figura~\ref{fig:GeometricFeatures}). Además, factores como la iluminación variable, la distorsión de la lente, la oclusión,
-la falta de información de calibración de cámara, y la diversidad de escalas y perspectivas complican aún más la estimación precisa
+la falta de información de calibración de cámara, la diversidad de escalas y de perspectivas complican aún más la estimación precisa
 de medidas métricas~\cite{VisionBookMIT} (véase la Figura~\ref{fig:PerspectiveIlusion}).
+
 \begin{figure}[!ht]
 \begin{center}
     \subfloat{\includegraphics[width=.4\textwidth]{imagenes/chapter1/low_horizon_vp.jpg}}
@@ -68,8 +70,8 @@ combinando principios geométricos clásicos con técnicas modernas de aprendiza
 \section{Motivación}
 La metrología es una disciplina fundamental en múltiples ámbitos industriales y científicos, ya que permite realizar mediciones precisas del entorno físico.
 Sin embargo, muchas de las técnicas actuales requieren equipamiento especializado, múltiples vistas o configuraciones controladas del entorno (saber la posición y rotación de la cámara, las características de la misma, la distancia al objeto o más).
-En este contexto, la \emph{metrología monocular en entornos no controlados}, se presenta como una alternativa asequible para obtener medidas físicas a partir de una única imagen
-sin tener información \emph{a priori}.
+En este contexto, la \emph{metrología monocular en entornos no controlados} se presenta como una alternativa asequible para obtener medidas físicas a partir de una única imagen
+sin disponer de información \emph{a priori}.
 \par
 Este campo emergente busca desarrollar métodos robustos y generalizables que funcionen en imágenes capturadas en condiciones reales, como pueden ser
 fotografías de redes sociales, grabaciones de seguridad o vídeos deportivos. Esto plantea retos técnicos significativos.
@@ -97,7 +99,7 @@ utilizando técnicas de metrología monocular. Los objetivos específicos incluy
     \item Implementar un algoritmo basado en principios de metrología visual que estime con precisión la estatura de una persona.
     \item Validar y analizar el rendimiento del sistema en diferentes contextos y con variabilidad en las condiciones de iluminación, perspectiva y posición de las personas.
 \end{enumerate}
-En la Figura~\ref{fig:ManualVSAuto} se enseña la diferencia
+En la Figura~\ref{fig:ManualVSAuto} se muestra la diferencia
 entre el procedimiento habitual de calibración de escena manual frente al método automático.
 Mientras que los métodos tradicionales requieren una preparación exhaustiva del entorno, con mediciones precisas,
 los modelos basados en aprendizaje profundo son capaces de inferir información visual relevante para la estimación
@@ -116,7 +118,7 @@ Se realizará una comparativa entre ambos métodos en las secciones posteriores.
   Ejemplo visual de calibración manual de escena~\cite{VisionBookMIT} frente a método automático~\cite{SVMIW}.
   La imagen superior ilustra, con un ejemplo sencillo, el procedimiento habitual de calibración de escena.
   En dicho ejemplo, se utiliza un patrón (tablero de ajedrez) para calibrar los parámetros de la cámara
-  a la vez que se recogen informaciones adicionales de la escena, como la distancia y el ángulo de visión de la cámara respecto
+  a la vez que se recoge información adicional de la escena, como la distancia y el ángulo de visión de la cámara respecto
   al plano de referencia (en este caso, la mesa). Con esta información, se puede
   realizar la medición de objetos que se coloquen sobre la mesa.
   Por otro lado, en la imagen inferior se observa el objetivo de esta implementación:
@@ -153,7 +155,7 @@ Las fases del ciclo de vida son:
     al análisis anterior, tanto para la resolución como la validación de la solución.
     Así como pruebas preliminares y diseño del software de experimentación.
   \item Implementación: Consiste en la adaptación de las técnicas encontradas,
-      búsqueda de puntos de mejoría y desarrollo del producto mínimo viable.
+      identificación de puntos de mejora y desarrollo del producto mínimo viable.
   \item Pruebas: Realización de diversos experimentos de validación,
       comparando desde la metrología con parámetros estimados con una técnica de calibración manual estándar,
       calibración basada en características de las cámaras y las estimadas por el algoritmo final.

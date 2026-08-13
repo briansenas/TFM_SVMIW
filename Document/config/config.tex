@@ -20,12 +20,16 @@
 
 \newcommand{\code}{\lstinline}
 
+\usepackage{tabularx}
+
 \usepackage{csquotes}
 \usepackage{microtype}
-\usepackage[titletoc, toc, page]{appendix}
+\usepackage[titletoc, page]{appendix}
 \usepackage[backend=biber, defernumbers=true, citestyle=numeric-comp, bibstyle=ieee, sorting=none]{biblatex}
 
+\appendixpageoff
 \addto\captionsspanish{%
+  \renewcommand\appendixtocname{Apéndices}
   \renewcommand\appendixname{Apéndice}
   \renewcommand\appendixpagename{Apéndice}
 }
@@ -86,7 +90,7 @@ Telecomunicación}
 pdfauthor = {\myName (briansenas@correo.ugr.es)},
 pdftitle = {\myTitle},
 pdfsubject = {},
-pdfkeywords = {camera calibration, geometric modelling, monocular metrology, semi-supervised learning, computer-vision.},
+pdfkeywords = {camera calibration, geometric modelling, monocular metrology, semi-supervised learning, computer vision.},
 pdfcreator = {},
 pdfproducer = {pdflatex}
 }
