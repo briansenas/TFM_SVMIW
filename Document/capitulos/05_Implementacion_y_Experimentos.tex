@@ -205,7 +205,7 @@ A modo de comparación, en la Tabla~\ref{tab:BaselineDummy} se muestran
 los errores medios de utilizar otro modelo de referencia. Se trata del método estático, que predice siempre la altura media de 1.75 metros.
 El error medio de dicho método es de 8.8 centímetros. Por lo tanto, el método de estimación por calibración de la escena
 permite obtener estimaciones más precisas que simplemente utilizar el valor medio de altura.
-No obstante, el método de calibración manual depende de mediciones rigurosas de la escena, así como el uso
+No obstante, el método de calibración manual depende de mediciones rigurosas de la escena, así como del uso
 de un proceso de calibración de cámara extenso, para lograr errores de estimación aceptables. Escenas posiblemente mal calibradas
 o cuyas medidas de referencia no sean precisas pueden dar lugar a valores extremos de estimación, como el error máximo de 41.6 centímetros.
 
@@ -328,9 +328,8 @@ presenta un comportamiento competitivo bajo la partición utilizada.
   \end{tabular}
   \caption[Tabla comparativa de error de reproyección obtenido.]{
   Tabla comparativa de error de reproyección obtenido.
-  Se observa que el modelo muestra un comportamiento comparable al de referencia, obteniendo valores
-  muy cercanos en las particiones utilizadas. Todo ello con 70K iteraciones menos, utilizando la mitad de ejemplos
-  por cada. La partición utilizada de KITTI-person* no es exactamente igual al del artículo~\cite{SVMIW}.
+  Se observa que el modelo muestra un comportamiento comparable al de referencia. Todo ello con 70K iteraciones de entrenamiento
+  menos, utilizando la mitad de ejemplos por cada iteración. La partición de evaluación utilizada de KITTI-person* no es exactamente igual a la del artículo~\cite{SVMIW}.
   En este caso, se incluyen muchas más imágenes, con un total de 1352 frente a 298.
   Aun así, se logra obtener un error medio de altura ligeramente inferior.
 
@@ -338,7 +337,7 @@ presenta un comportamiento competitivo bajo la partición utilizada.
 \end{table}
 En la Tabla~\ref{tab:AutoResults}
 se observan los resultados del método de estimación automática en IdentAI~\cite{panacea2026}. El error medio de
-las cámaras en conjunto es de 9.8 centímetros, se encuentra en el mismo orden de magnitud que método de calibración manual de escena.
+las cámaras en conjunto es de 9.8 centímetros, se encuentra en el mismo orden de magnitud que el método de calibración manual de escena.
 Un error cercano al método de estimación estática de altura media, pero logrando permitir la estimación de la
 altura exacta de individuos cuya altura no es 1.75 metros en diversas escenas.
 Los valores de mediana y tercer cuartil también son cercanos al método de calibración manual, dejando ver lo prometedor que podría llegar a ser este método.
