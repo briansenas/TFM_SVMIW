@@ -34,7 +34,7 @@ Estimador estático (1.75 metros). & Método de referencia. & Ninguno. & Estable
 \hline
 Método de calibración manual. & Método de metrología clásica, por geometría de escena. & Calibración de la cámara y toma de medidas de la escena. & Evaluar frente a un método tradicional. \\
 \hline
-Método automático. & Método por aprendizaje profundo. & Datos de entrenamiento etiquetados con la caja delimitadora de la persona en la escena. & Evaluar un método de estimación sin referencias de la escena.\\
+Método automático. & Método por aprendizaje profundo. & Datos de entrenamiento etiquetados & Evaluar un método de estimación sin referencias de la escena.\\
 \hline
 \end{tabularx}
 \caption[Tabla resumen del diseño experimental.]{
@@ -56,8 +56,8 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
 \section{Resultados método clásico}
 En la Tabla~\ref{tab:ManualResults} se observan los resultados de
 aplicar el método descrito en la Sección~\ref{sec:ManualCalibration},
-de calibración manual de escena.
-En ella, se expresa el error medio ($\mu$), la desviación típica ($\sigma$), la varianza ($\sigma^2$), la mediana,
+de calibración manual de escena en IdentAI~\cite{panacea2026}.
+En dicha tabla, se expresa el error medio ($\mu$), la desviación típica ($\sigma$), la varianza ($\sigma^2$), la mediana,
 el tercer cuartil ($Q_3$) y el error máximo. El tercer cuartil es una medida estadística que indica el valor
 por debajo del cual se encuentra el 75\% de los datos ordenados de menor a mayor.
 El error medio es de 6.7 centímetros para todas las cámaras.
@@ -67,7 +67,7 @@ el individuo se encontraba en el borde de la imagen, región en la que los efect
 de la distorsión óptica de la cámara son más pronunciados (véase la Figura~\ref{fig:ManualWorst}).
 Esta circunstancia podría explicar, al menos parcialmente, el carácter extremo de la estimación obtenida.
 Por otro lado, en la Figura~\ref{fig:ManualBest} se observan los ejemplos
-con una estimación perfecta.
+con una estimación coincidente.
 \begin{table}[!ht]
   \centering
   \scriptsize
@@ -122,19 +122,19 @@ Cam3 & 166 & 0.062 & 0.035 & 0.001 &0.063 & 0.087 & 0.149 \\
 
 El método de calibración manual es susceptible a acumulación de errores por imprecisión en
 diferentes pasos del proceso, ya sea por imprecisión de los parámetros estimados de la matriz de proyección
-de la cámara, de su posición con relación al sujeto en escena o sus ángulos de rotación. Las imágenes
-rectificadas no presentan anomalías evidentes, por lo cual el peso del error recae sobre la calidad
+de la cámara, de su posición con relación al sujeto en escena o sus ángulos de rotación. En este caso, las imágenes
+rectificadas no presentan anomalías evidentes. Por lo tanto, el peso del error recae sobre la calidad
 de la estimación del recuadro delimitador (debe ser lo más acertado posible respecto a los pies y cabeza de los individuos),
 y la precisión de la posición de la cámara (altura respecto al suelo, distancia al individuo y rotación).
 
-Dado que los fotogramas están altamente relacionados entre sí en una misma grabación, en la Tabla~\ref{tab:ManualResultsBySubject} se
-recogen los valores medios de estimación por individuo.
-No se observa un patrón evidente de error asociado a una altura concreta.
+Dado que los fotogramas están altamente relacionados, en una misma grabación, con el siguiente y, por lo tanto, el anterior, en la Tabla~\ref{tab:ManualResultsBySubject} se
+recogen los valores medios de estimación por individuo y su error asociado.
+No se observa un patrón evidente en el error correspondiente a una altura concreta.
 El error absoluto promedio por individuo es de 5.8 centímetros, ligeramente inferior al error absoluto a nivel de fotograma de 6.7 centímetros.
-Dado que las estimaciones presentan baja varianza debido a la naturaleza del algoritmo y de los fotogramas obtenidos de las grabaciones,
-es de esperar que errores elevados en sujetos con mayor cantidad de fotogramas puedan llevar el promedio a ser más pesimista (al agrupar por fotogramas)
-que al agrupar por individuos. De la misma forma, en la Tabla~\ref{tab:ManualResultsByScene}
-se recogen los errores de las estimaciones agrupadas por escena.
+Dado que las estimaciones presentan una baja varianza debido a la naturaleza del algoritmo y de los fotogramas obtenidos de las grabaciones,
+es de esperar que errores elevados en sujetos con mayor cantidad de fotogramas lleven el promedio por fotograma a ser más pesimista
+que al agrupar por individuo. Por otro lado, en la Tabla~\ref{tab:ManualResultsByScene}
+se recogen los errores de las estimaciones agrupadas por tipo de escena.
 
 \begin{table}[!ht]
   \scriptsize
@@ -202,11 +202,12 @@ Acera & 41 & 0.032 & 0.028 & 0.001 &0.021 & 0.046 & 0.127 \\
 \end{table}
 
 A modo de comparación, en la Tabla~\ref{tab:BaselineDummy} se muestran
-los errores medios de utilizar otro modelo de referencia estático que predice siempre la altura media de 1.75 metros.
+los errores medios de utilizar otro modelo de referencia. Se trata del método estático, que predice siempre la altura media de 1.75 metros.
 El error medio de dicho método es de 8.8 centímetros. Por lo tanto, el método de estimación por calibración de la escena
 permite obtener estimaciones más precisas que simplemente utilizar el valor medio de altura.
-No obstante, los resultados indican que el método de calibración manual depende de mediciones manuales precisas de la escena, así como el uso
-de un proceso de calibración de cámara extenso, para lograr errores de estimación aceptables.
+No obstante, el método de calibración manual depende de mediciones rigurosas de la escena, así como el uso
+de un proceso de calibración de cámara extenso, para lograr errores de estimación aceptables. Escenas posiblemente mal calibradas
+o cuyas medidas de referencia no sean precisas pueden dar lugar a valores extremos de estimación, como el error máximo de 41.6 centímetros.
 
 \begin{table}[!ht]
   \centering
@@ -248,7 +249,7 @@ La segunda, entrena conjuntamente la estimación de parámetros de la cámara y 
 modelo al tipo de persona que se debe detectar. En concreto, se debe detectar solamente personas totalmente visibles y que se
 encuentren con los pies en el suelo. Es decir, se debe restringir la capacidad del modelo generalista, de detección de personas,
 a este subconjunto de personas que cumplen estas restricciones geométricas para la estimación de su estatura.
-Finalmente, se añaden las últimas capas y función de pérdida para la estimación de la altura del sujeto y de la cámara.
+Finalmente, se añaden las últimas capas y la función de pérdida para la estimación de la altura del sujeto y de la cámara.
 Todas las fases se entrenan por 30K iteraciones.
 \par
 En la Tabla~\ref{tab:CalibResults} se comparan los resultados obtenidos en esta implementación
@@ -259,9 +260,10 @@ En términos de número total de ejemplos de calibración vistos, se observan 33
 Se incluyen también los resultados del modelo final, una vez entrenado sobre todas las fases, y se observa
 que su capacidad de estimar los parámetros de la cámara no diverge tanto del modelo entrenado solamente para
 ello. De hecho, su capacidad de estimar el ángulo de visión vertical (\emph{vfov}) y el de inclinación (\emph{pitch})
-mejora ligeramente frente al modelo completo evaluado tras únicamente el entrenamiento de la fase 0 (de calibración de cámara).
+mejora ligeramente frente a dicho modelo.
 Esto podría deberse a que el modelo en la fase final tiene acumulado más iteraciones totales, así como
-la presencia de la restricción proyectiva de la estimación de la altura que afecta a dichas predicciones.
+la presencia de la restricción proyectiva de la estimación de la altura del sujeto que afecta a las predicciones
+de los ángulos de la cámara.
 
 \begin{table}[!ht]
   \centering
@@ -292,8 +294,8 @@ la presencia de la restricción proyectiva de la estimación de la altura que af
     Los resultados de los cuatro primeros métodos son extraídos de~\cite{SPEC}. Aunque no se tiene la partición exacta en la que se
     evaluaron los demás modelos, se utiliza la misma proporción de ejemplos de validación (3.6\%) con un total de 12.732 imágenes (ligeramente inferior a las 15K utilizadas en~\cite{SPEC}),
     obtenidas mediante el mismo código de generación de las particiones de entrenamiento y validación de~\cite{SPEC}.
-    La implementación actual demuestra ser capaz de igualar los resultados de las implementaciones de referencia,
-    con el modelo entero entrenado (entrenado solo en la fase 0)
+    La implementación actual demuestra ser capaz de competir contra los resultados de las implementaciones de referencia,
+    con el modelo entero entrenado (solo en la fase 0)
     viendo en total hasta 33 veces menos ejemplos que CamCalib~\cite{SPEC}, y 1.78 veces menos que ScaleNet~\cite{SVMIW}
 }\label{tab:CalibResults}
 \end{table}
@@ -335,7 +337,7 @@ presenta un comportamiento competitivo bajo la partición utilizada.
 }\label{tab:vt_losses}
 \end{table}
 En la Tabla~\ref{tab:AutoResults}
-se observan los resultados de método de estimación automática. El error medio de
+se observan los resultados del método de estimación automática en IdentAI~\cite{panacea2026}. El error medio de
 las cámaras en conjunto es de 9.8 centímetros, se encuentra en el mismo orden de magnitud que método de calibración manual de escena.
 Un error cercano al método de estimación estática de altura media, pero logrando permitir la estimación de la
 altura exacta de individuos cuya altura no es 1.75 metros en diversas escenas.
@@ -345,12 +347,16 @@ un error de 41.6 centímetros (valor atípico, un error extremo de estimación d
 Por otro lado, en la Tabla~\ref{tab:ResultsBySubject} se observa cómo se
 comporta el método por cada sujeto del estudio y se destaca que el modelo parece tener dificultades
 para estimar valores lejanos al ~\emph{a priori} de 1.75 metros para las escenas estudiadas.
-El modelo parece subestimar las alturas para sujetos con altura superior a 1.75, mientras
+El error promedio agrupado por individuo es de 7.4 centímetros, cercano a los 5.8 centímetros del método
+de calibración manual y los 6.8 centímetros del método de predicción estática.
+No obstante, el modelo parece subestimar las alturas para sujetos con altura superior a 1.75, mientras
 que realiza sobreestimaciones sobre sujetos con estatura inferior a dicho valor. En otras palabras,
 el modelo presenta un efecto de regresión hacia la media, consistente con la presencia del prior
 antropométrico introducido durante el entrenamiento (véase la Figura~\ref{fig:AutoHeightDist}).
-El error promedio agrupado por individuo es de 7.4 centímetros, cercano a los 5.8 centímetros del método
-de calibración manual y los 6.8 centímetros del método de predicción estática.
+Un ajuste equilibrado de los pesos de la combinación
+lineal de pérdidas podría ayudar a evitar este efecto. De otra forma, controlar la tasa de
+aprendizaje de la capa de estimación de altura, así como la magnitud del gradiente que le afecta, podría ayudar a
+regularizar este comportamiento.
 
 \begin{figure}[!ht]
   \begin{center}
@@ -390,7 +396,7 @@ Cam3 & 166 & 0.074 & 0.068 & 0.005 &0.038 & 0.147 & 0.203 \\
 \label{tab:AutoResults}
 \end{table}
 
-\begin{table}[!ht]
+\begin{table}[H]
   \scriptsize
   \centering
 \begin{tabular}{|l|c|c|c|c|c|c|}
@@ -437,17 +443,14 @@ Realizar un entrenamiento más largo del modelo puede que reduzca la varianza y 
 tanto en la estimación de la altura de la cámara como del sujeto en escena.
 El error medio agrupado por escena de la estimación de la altura de la cámara es de 10.5 centímetros.
 En la Tabla~\ref{tab:AutoCamResultsByScene} se observa que el modelo parece tener dificultades para
-realizar estimaciones acertadas en entornos cerrados como una zona interior de aparcamiento.
+realizar estimaciones acertadas en la escena del aparcamiento.
 Aún así, incluso con el error de estimación de la altura de la cámara en dicha escena, se observan
 ejemplos en la misma con predicciones coincidentes. Esto podría deberse a que existen diversas soluciones de la
 combinación de las estimaciones (rotación de la cámara, distancia al objeto, altura del objeto y de la cámara)
 que podrían llevar a un mismo error de reproyección. Por lo tanto, un error bajo de reproyección
 no garantiza que los parámetros geométricos estimados sean físicamente correctos. Esta es una
-limitación identificada del modelo. Un ajuste equilibrado de los pesos de la combinación
-lineal de pérdidas podría ayudar a evitar este colapso. De otra forma, controlar la tasa de
-aprendizaje de esta capa, así como la magnitud del gradiente que le afecta, ayuda a
-regularizar este comportamiento. No obstante, la solución exacta sería encontrar
-una restricción adicional sobre la escena.
+limitación identificada del modelo y, para poder resolverla, sería necesario
+encontrar una restricción adicional sobre la escena.
 
 \begin{table}[!ht]
   \centering
@@ -500,9 +503,9 @@ obteniendo un error medio en la estimación de la altura de cámara de 24.2 cent
 En la Tabla~\ref{tab:Results} se recogen los resultados finales
 de todos los métodos implementados.
 Se observa que el método de aprendizaje profundo evita estimaciones extremas, reduciendo así
-los errores máximos observables. Se aproxima al método de estimación estática de altura media de 1.75 metros, con el beneficio de acertar en múltiples escenas, de diferentes sujetos,
-la estatura exacta. En las Figuras~\ref{fig:AutoWorst} y~\ref{fig:AutoBest} se
-observan los peores y mejores resultados de este método.
+los errores máximos observables. Se aproxima al método de estimación estática (de 1.75 metros), con el beneficio de acertar en múltiples escenas
+la estatura de diferentes sujetos. En las Figuras~\ref{fig:AutoWorst} y~\ref{fig:AutoBest} se
+observan las peores y mejores estimaciones.
 
 \begin{table}[H]
   \scriptsize

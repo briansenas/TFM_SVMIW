@@ -108,7 +108,7 @@ En la Tabla~\ref{tab:CaptureSystem} se recogen las características técnicas de
 empleadas para la obtención del conjunto de datos IdentAI.
 Cada una de ellas se monta en su respectivo trípode. Se utiliza la cámara ``Intel RealSense D455'' (RS) como principal y
 se calcula la posición relativa de las demás cámaras (véase información adicional en el Apéndice~\ref{app:LocationConfig}).
-Esto es debido a que se utilizará el sensor de profundidad, ``CMOS 1/4'' OV9782'', de la cámara RS para realizar los cálculos necesarios para estimar el
+Esto es debido a que se utilizará el sensor de profundidad de la cámara RS para realizar los cálculos necesarios para estimar el
 tamaño de los objetos en escena utilizando el método clásico. Las cámaras empiezan a grabar simultáneamente, almacenando
 la información tanto en memoria como a través de la red. Se obtienen grabaciones en cuatro ubicaciones diferentes: una sala de seminarios,
 una rampa de entrada, un aparcamiento y una acera (véase la Figura~\ref{fig:DataExamples}).
@@ -215,9 +215,9 @@ Dahua IPC-HDBW2831 (Cam2) & 277 \\
 Hikvision DS-2CD2046 (Cam3)& 166 \\
 \hline
 \end{tabular}
-\caption[Número de fotogramas por cámara del conjunto de datos IdentAI~\cite{panacea2026}.]
+\caption[Número de fotogramas por tipo de cámara del conjunto de datos IdentAI~\cite{panacea2026}.]
 {
-  Número de fotogramas por cámara del conjunto de datos IdentAI~\cite{panacea2026}.
+  Número de fotogramas por tipo de cámara del conjunto de datos IdentAI~\cite{panacea2026}.
 }\label{tab:FramesPerCamera}
 \end{table}
 
@@ -309,7 +309,7 @@ profundidad del mismo en la escena (véase Sección \ref{sec:SVM}).
 Para estimar la correspondencia geométrica entre el mundo real y el plano de imagen se utiliza la metodología
 de \cite{ManualCameraCalib}, utilizando un patrón planar desde múltiples orientaciones (véase Figura~\ref{fig:CameraPattern}), lo que permite modelar
 la distancia focal, el punto principal y los coeficientes de distorsión. Este enfoque es crítico, pues
-como señalan~\cite{heikkila1997four}, la corrección de la distorsión radial y tangencial es un requisito previo
+como señalan en~\cite{heikkila1997four} la corrección de la distorsión radial y tangencial es un requisito previo
 indispensable para garantizar que las mediciones posteriores no hereden errores sistemáticos (véase Figura~\ref{fig:Undistort}).
 
 \begin{figure}[!ht]
@@ -335,9 +335,10 @@ indispensable para garantizar que las mediciones posteriores no hereden errores 
   \label{fig:Undistort}
 \end{figure}
 
-Una vez calibrada la cámara, dado que para los datos de evaluación de nuestro sistema se dispone
-tanto de la información de profundidad del individuo con respecto a la cámara como las rotaciones de las mismas (véase Sección~\ref{sec:EvaluationData}),
-se puede hacer una retroproyección de su altura 2D a 3D y estimar la altura del individuo.
+Una vez calibrada la cámara, se puede hacer una retroproyección de su altura 2D a 3D y estimar la altura del individuo.
+Esto es posible debido a que, para los datos de evaluación de este método, se dispone
+tanto de la información de profundidad del individuo con respecto a la cámara como las rotaciones de la misma (véase Sección~\ref{sec:EvaluationData}),
+
 \subsubsection*{Retroproyección a 3D}
 Dado un punto en la imagen $\mathbf{p} = [u, v, 1]^T$, la matriz de parámetros intrínsecos $K$, los parámetros extrínsecos de la cámara $R$ (rotación) y $\mathbf{t}$ (traslación), el punto 3D $\mathbf{P}_w$ se calcula de la siguiente manera:
 \begin{enumerate}
@@ -352,7 +353,7 @@ Dado un punto en la imagen $\mathbf{p} = [u, v, 1]^T$, la matriz de parámetros 
 \end{enumerate}
 
 \subsubsection*{Estimación de la altura}
-Para calcular la altura $H$, se realiza la retroproyección del punto en la imagen correspondiente a los pies ($p_{pies}$) y se determina el
+Para calcular la altura $H$, se realiza la retroproyección del punto en la imagen correspondiente a los pies ($p_{pies}$) y se determina su
 factor de escala ($\lambda_p$) para obtener la intersección con el suelo utilizando alguna distancia conocida (como la altura de cámara o la distancia al sujeto).
 Una vez determinada la posición 3D de los pies en la escena, se asume que la persona se encuentra en posición erguida para restringir
 la posición 3D de la cabeza a la recta vertical que pasa por los pies y es perpendicular al plano del suelo.
@@ -382,8 +383,8 @@ retroproyección y estimación de la altura descrito.
     Procedimiento de retroproyección 3D para estimación de altura~\cite{VisionBookMIT}.
   A partir de una referencia conocida, como la altura de la cámara respecto al plano del suelo ($Y_w$) o la
   distancia al sujeto en el eje de profundidad ($Z_w$), junto con la orientación de la cámara descrita por sus ángulos
-  de rotación (por ejemplo el de inclinación, $\theta$), es posible transformar el rayo de visión asociado a
-  un punto de la imagen desde el sistema de coordenadas de la cámara al sistema de coordenadas del mundo.
+  de rotación (por ejemplo el de inclinación, $\theta$), es posible calcular el rayo de visión asociado a
+  un punto de la imagen, por ejemplo el de los pies, desde el sistema de coordenadas de la cámara al sistema de coordenadas del mundo.
   Posteriormente, se utiliza la referencia conocida para calcular el factor de escala que permite situar
   el punto de intersección del rayo que parte del centro óptico de la cámara ($Z_c$) sobre el plano del suelo
   en los pies del individuo. Una vez localizado este punto de referencia, la retroproyección del punto asociado
@@ -410,23 +411,24 @@ tiene sus delimitaciones superiores ($v_t$) e inferiores ($v_b$) determinados po
 Donde $v_c$ es el centro óptico de la cámara que se asume conocer. Tras despejar
 $z$ de la Ecuación~\ref{eq:vb}, se deriva el límite superior del
 cuadro delimitador de la persona $v_t$. De esta forma, dado que se conoce el valor de $v_t$
-por parte del modelo de detección de objetos, se puede estimar de forma semi-supervisada
-la altura de los objetos ($h_{obj}$) y de la cámara ($h_{cam}$) utilizando un error de
+por parte del modelo de detección de objetos, se puede entrenar de forma semi-supervisada
+un módulo que estime la altura de los objetos ($h_{obj}$) y de la cámara ($h_{cam}$) utilizando un error de
 reproyección dado por la Ecuación~\ref{eq:vt_loss}.
 \begin{equation}\label{eq:vt_loss}
   \mathcal{L}_{vt} ({v_t^i}_{i=1}^N) = \frac{1}{N}\sum_{i=1}^N ||v_{t_{det}}^i - v_t^i||
 \end{equation}
 Para restringir la estimación de la altura de los objetos se utiliza la Ecuación~\ref{eq:height_priori},
-utilizando conocimiento previo sobre la altura media de los objetos (humanos) en escena.
+utilizando conocimiento previo sobre la altura media de los objetos en la escena. En este caso,
+al tratarse de seres humanos, se utilizará un valor medio de $1.75\pm0.2$ metros de altura.
 \begin{equation}\label{eq:height_priori}
   \mathcal{L}_{h_{obj}} ({h_{obj}^i}_{i=1}^N) = - \frac{1}{N}\sum_{i=1}^N \mathcal{P}(h_{obj}^i;\mu,\sigma)
 \end{equation}
 Para la estimación de altura de la cámara se utiliza un módulo de estimación capaz de
-aprender relaciones geométricas entre la altura de cámara (a predecir), las cajas delimitadoras
+aprender relaciones geométricas entre la altura de cámara (valor a predecir), las cajas delimitadoras
 de los objetos en escena y el horizonte estimado. Se utiliza una variante de \emph{PointNet}~\cite{PointNet}.
 Además, utilizando una combinación en cascada de adaptaciones de \emph{PointNet} se logra
-refinar las predicciones utilizando la información de la escena completa junto al error de reproyección obtenido
-en el paso anterior.
+refinar las predicciones utilizando la misma información anterior junto al error de reproyección obtenido
+de las predicciones ya realizadas.
 
 \begin{figure}[!ht]
   \begin{center}
@@ -437,7 +439,7 @@ en el paso anterior.
   {
     Pipeline propuesta por Zhu \emph{et al.}~\cite{SVMIW}.
     Dado el modelo de escena definido por la imagen superior, se puede recuperar la información necesaria
-    para la estimación de metrología utilizando la secuencia de acciones definidas por la imagen inferior.
+    para la estimación de medidas utilizando la secuencia de acciones definidas por la imagen inferior.
   Para ello, primeramente se estiman los parámetros de la cámara, ($\theta$, $h_\theta$), se detecta el objeto y
   el recuadro que lo delimita, $(v_t, v_b, u_l, u_r)$, y se estima la altura del objeto, $h_{obj}$.
   Con la información anterior, se estima la altura de la cámara, $h_{cam}$, aprendiendo
@@ -455,7 +457,7 @@ en el paso anterior.
 En~\cite{SVMIW}, el entrenamiento se realiza en dos grandes fases, utilizando una combinación líneal de las pérdidas de detección,
 de estimación de los parámetros de la cámara, de la altura de los objetos y de su pose (para la variante enfocada
 solamente para la clase persona), y del error de reproyección de la suposición sobre la escena 3D al plano de imagen.
-Dichas pérdidas se muestran en la Figura~\ref{fig:SVMIWPipe} en rojo.
+Dichas pérdidas se muestran en la Figura~\ref{fig:SVMIWPipe} en color rojo.
 La primera fase consiste en alinear el modelo de detección de objetos con el módulo de estimación de parámetros de la
 escena, utilizando la Ecuación~\ref{eq:LossPhaseOne} que combina la pérdida de detección $\mathcal{L}_{det}$, de estimación de
 pose $\mathcal{L}_{kps}$, con la de calibración $\mathcal{L}_{calib}$. Las dos primeras tienen un mayor peso, con
@@ -467,8 +469,8 @@ $\alpha_1 = \alpha_2 = 10$, frente a la de calibración, $\alpha_3 = 1$.
 
 En la fase dos del entrenamiento se añaden las pérdidas finales de reproyección y el \emph{a priori} sobre las estimaciones del
 tamaño de los objetos en escena para obtener la Ecuación~\ref{eq:LossPhaseTwo}. En este caso, la pérdida de reproyección tiene
-un peso equivalente al error de detección, $\alpha_4 = 1$, mientras que el \emph{a priori} influye muy poco para evitar que el
-modelo se reduzca a simplemente predecir el valor medio de altura de los objetos, $\alpha_5 = 0.05$
+un peso equivalente al error de detección ($\alpha_4 = 1$), mientras que el \emph{a priori} influye levemente con un valor $\alpha_5 = 0.05$, para evitar que el
+modelo se reduzca a simplemente predecir el valor medio de altura de los objetos.
 
 \begin{equation}\label{eq:LossPhaseTwo}
   \mathcal{L} = \alpha_1\mathcal{L}_{det} + \alpha_2\mathcal{L}_{kps} + \alpha_3\mathcal{L}_{calib} + \alpha_4\mathcal{L}_{vt} + \alpha_5\mathcal{L}_{h_{obj}}
@@ -502,8 +504,9 @@ por sus respectivas densidades.
 En~\cite{SPEC}, observan tener mejores resultados utilizando \emph{softargmax}.
 Además, indican que penalizar más las sobreestimaciones del campo de visión vertical de la cámara
 ayuda a obtener un mejor modelo para calibración directa de cámara. Por ello, utilizan una versión asimétrica que
-penaliza más dichas sobreestimaciones siguiendo la Ecuación~\ref{eq:biased-l2}.
+penaliza más dichas sobreestimaciones siguiendo la Ecuación~\ref{eq:biased-l2} (\emph{softargmax-biased}).
 Esta será la función de pérdida utilizada en esta implementación para el módulo de calibración de cámara.
+No obstante, el código desarrollado permite la elección entre las funciones de pérdida KL, \emph{softargmax} y \emph{softargmax-biased}.
 \begin{equation}\label{eq:biased-l2}
 \mathcal{L}_{\text{calib-softargmax-biased-L2}}(\hat{\upsilon}, \upsilon)=
 \begin{cases}
@@ -535,7 +538,7 @@ No obstante, para el caso del método automático, existen varios problemas:
 \item El modelo pre-entrenado por Zhu \emph{et al.}~\cite{SVMIW} no se encuentra disponible públicamente.
 \item El código de entrenamiento tampoco está disponible. Solo están disponibles fragmentos parciales
   de algunos métodos y funciones.
-\item No se dispone de los mismos datos debido a la eliminación de SUN360~\cite{SUN360}, descrita en la Sección~\ref{sec:SUN360}
+\item No se dispone de los mismos datos de entrenamiento debido a la retirada del acceso público a SUN360~\cite{SUN360} (véase la Sección~\ref{sec:SUN360}).
 \end{enumerate}
 Con la labor de investigación, se halló la solución para los problemas descritos anteriormente.
 Como alternativa a SUN360~\cite{SUN360}, se encontró el conjunto de datos de SPEC~\cite{SPEC}. El
@@ -544,14 +547,14 @@ se basa en~\cite{CalibDataGeneration} y es similar al que describe el repositori
 Una vez solucionado el problema de los datos, utilizando información del artículo y los fragmentos de código disponibles
 se obtuvo un procedimiento de entrenamiento con la librería ``maskrcnn-benchmark''~\cite{MaskRCNN}, con
 entrenamiento en múltiples tarjetas gráficas y servidores (por necesidades de escalabilidad,
-permitiendo distribuir la carga y solventar problemas como la necesidad de memoria para entrenar con muchas
+permitiendo distribuir la carga y solventar problemas como la necesidad de memoria para entrenar con varias
 imágenes a la vez).
 \par
 No obstante, el código era inestable (debido a problemas de sincronización durante el entrenamiento con múltiples tarjetas),
 de difícil mantenimiento, adaptación y extensibilidad (debido al desconocimiento de las
 intenciones de integración e implementación de los autores). Además, las curvas de entrenamiento
 parecían estancarse en mínimos locales como se observa en la Figura~\ref{fig:PreviousImplLoss}.
-Podría deberse a que el código fuente publicado no tiene por qué corresponder a la versión final
+Podría deberse a que el código fuente publicado no tiene porque corresponder a la versión final
 utilizada por los autores, careciendo dicha versión disponible de cambios cruciales para su correcto funcionamiento.
 Por estos motivos, se decidió realizar
 la implementación en el framework sucesor de ``maskrcnn-benchmark''~\cite{MaskRCNN}, en ``Detectron2''~\cite{detectron2}.
@@ -568,8 +571,14 @@ Además de beneficios en implementación, al utilizar ``Detectron2''~\cite{detec
 de modelos y arquitecturas nuevas con mejores rendimientos en detección. Siguiendo las
 directrices de implementación, se desarrolló un modelo con intención de
 obtener resultados similares a los de Zhu \emph{et al.}~\cite{SVMIW}.
+\par
+Para la gestión de los diferentes pasos a realizar, como la calibración manual de las cámaras o el filtrado de datos válidos,
+se diseñó un sistema basado en comandos para la ejecución de cada tarea de forma individual, pero permitiendo conexiones sencillas
+entre los pasos de manera secuencial (véase la Figura~\ref{fig:ScriptsDesign}).
+Por otro lado, en el Apéndice~\ref{app:LaunchExperiments} se detalla
+cómo replicar las fases de entrenamiento del modelo de aprendizaje automático.
 
-\begin{figure}[!ht]
+\begin{figure}[H]
   \centering
   \small
   \includegraphics[width=0.6\textwidth]{imagenes/appendix/loss_plot.pdf}
@@ -583,13 +592,7 @@ obtener resultados similares a los de Zhu \emph{et al.}~\cite{SVMIW}.
   \label{fig:PreviousImplLoss}
 \end{figure}
 
-Para la gestión de los diferentes pasos a realizar, como la calibración manual de las cámaras o el filtrado de datos válidos,
-se diseñó un sistema basado en comandos para la ejecución de cada tarea de forma individual, pero permitiendo conexiones sencillas
-entre los pasos de manera secuencial (véase la Figura~\ref{fig:ScriptsDesign}).
-Por otro lado, en el Apéndice~\ref{app:LaunchExperiments} se detalla
-cómo replicar las fases de entrenamiento del modelo de aprendizaje automático.
-
-\begin{figure}[!ht]
+\begin{figure}[H]
   \begin{center}
     \includegraphics[width=0.9\textwidth]{imagenes/ScriptsDesign.png}
   \end{center}
@@ -608,7 +611,7 @@ Además, dado el ratio diferenciado entre imágenes para cada componente del ent
 función que inicializa el optimizador para ponderar dinámicamente cada componente según dicho ratio y el tamaño total
 de imágenes por cada iteración (siguiendo la fórmula $\frac{0.1*n_{gpu}*n_{img}}{256}$ de~\cite{goyal2018accuratelargeminibatchsgd}).
 \par
-Tanto en la primera como en la segunda fase de entrenamiento, las limitaciones de memoria obligan a reducir
+Tanto en la primera como en la segunda fase de entrenamiento, las limitaciones de memoria (por utilizar solamente 1 tarjeta gráfica de 12 GB de VRAM) obligan a reducir
 a la mitad el número de ejemplos procesados en cada iteración con respecto a la configuración empleada en el trabajo original~\cite{SVMIW}.
 A pesar de esta restricción, durante la primera fase el modelo se acerca a la convergencia tras aproximadamente 30K iteraciones,
 un comportamiento consistente con el descrito por los autores, quienes indican en el material suplementario que el
@@ -624,7 +627,14 @@ comparable al método original con un número sustancialmente menor de iteracion
 incluso cuando en cada una de ellas se procesa la mitad de ejemplos por iteración
 frente al trabajo de referencia~\cite{SVMIW}.
 
-\begin{figure}[!ht]
+Para modificar características del entrenamiento se puede modificar el archivo de configuración en \code{configs/COCO-SCALE}.
+Dicho archivo permite activar o desactivar recorte del gradiente, calentamiento y recocido del entrenamiento, así como muchas
+funcionalidades adicionales. Para lanzar el entrenamiento, se debe hacer uso del script \code{train_calib.py}.
+Dicho script permite replicar los experimentos descritos (véase Apéndice~\ref{app:LaunchExperiments}). Tras lanzar una sesión
+de entrenamiento se guardan los resultados utilizando Tensorboard~\cite{Tensorflow}, en la carpeta \code{output}, permitiendo visualizar imágenes
+durante el entrenamiento así como las funciones de pérdida y datos auxiliares (véase Apéndice~\ref{app:VisualizeTraining}).
+
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.8\textwidth]{imagenes/chapter5/d2_det_only_losses.pdf}
   \caption[Valor de pérdida total en las diferentes fases del entrenamiento del modelo sin estimación de poses.]{
@@ -633,14 +643,6 @@ frente al trabajo de referencia~\cite{SVMIW}.
   }
   \label{fig:DetOnlyLosses}
 \end{figure}
-
-Para modificar características del entrenamiento se puede modificar el archivo de configuración en \code{configs/COCO-SCALE}.
-Dicho archivo permite activar o desactivar recorte del gradiente, calentamiento y recocido del entrenamiento, así como muchas
-funcionalidades adicionales. Para lanzar el entrenamiento, se debe hacer uso del script \code{train_calib.py}.
-Dicho script permite replicar los experimentos descritos (véase Apéndice~\ref{app:LaunchExperiments}). Tras lanzar una sesión
-de entrenamiento se guardarán resultados utilizando Tensorboard~\cite{Tensorflow}, en la carpeta \code{output}, permitiendo visualizar imágenes
-durante el entrenamiento así como las funciones de pérdida y datos auxiliares (véase Apéndice~\ref{app:VisualizeTraining}).
-\par
 Para la ejecución se utilizaron dos sistemas distintos. En las pruebas de alta demanda de CPU, como extraer los fotogramas y filtrar las
 imágenes válidas en ambos conjuntos de datos, se utilizó un ordenador con una CPU AMD Ryzen 7 5800X, 32 GB de RAM DDR4 y una tarjeta
 NVIDIA RTX 3060 12GB de VRAM. Para el entrenamiento distribuido en múltiples GPU, se utilizó el servidor de la
