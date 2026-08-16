@@ -18,7 +18,7 @@ Adicionalmente, se evalúa la capacidad del modelo de estimar los parámetros de
 Con el fin de mantener un protocolo experimental equivalente al descrito en~\cite{SPEC}, se emplea una partición de evaluación del mismo tamaño
 generada mediante el código fuente publicado por los autores.
 \par
-Finalmente, se detallan los resultados obtenidos con cada uno de los métodos, así como una comparación frente a un método de
+Finalmente, se detallan los errores absolutos obtenidos con cada uno de los métodos, así como una comparación frente a un método de
 referencia sencillo que predice siempre el valor medio de altura de 1.75 metros, en el conjunto de datos IdentAI, que consiste en
 múltiples escenas grabadas con cámaras de seguridad para investigaciones en el ámbito de la identificación humana.
 
@@ -326,8 +326,8 @@ presenta un comportamiento competitivo bajo la partición utilizada.
   KITTI-person* & Nuestro & 0.04 & 0.09 metros\\
   \hline
   \end{tabular}
-  \caption[Tabla comparativa de error de reproyección obtenido.]{
-  Tabla comparativa de error de reproyección obtenido.
+  \caption[Tabla comparativa de los errores de reproyección obtenidos.]{
+  Tabla comparativa de los errores de reproyección obtenidos.
   Se observa que el modelo muestra un comportamiento comparable al de referencia. Todo ello con 70K iteraciones de entrenamiento
   menos, utilizando la mitad de ejemplos por cada iteración. La partición de evaluación utilizada de KITTI-person* no es exactamente igual a la del artículo~\cite{SVMIW}.
   En este caso, se incluyen muchas más imágenes, con un total de 1352 frente a 298.
@@ -518,12 +518,12 @@ observan las peores y mejores estimaciones.
       \hline
       Calibración Manual & \textbf{0.067} & \textbf{0.056} & \textbf{0.003} & \textbf{0.055} & \textbf{0.091} & 0.416 \\
       \hline
-      Nuestro & \textbf{0.098} & \textbf{0.069} & \textbf{0.005} & \textbf{0.081} & \textbf{0.152} & \textbf{0.328} \\
+      Nuestro & 0.098 & 0.069 & 0.005 & 0.081 & 0.152 & 0.328 \\
       \hline
     \end{tabular}
   \end{center}
-  \caption[Tabla resumen de comparativa final, con errores expresados en metros.]{
-  Tabla resumen de comparativa final, con errores expresados en metros.
+  \caption[Tabla resumen de la comparativa final, con errores expresados en metros.]{
+  Tabla resumen de la comparativa final, con errores expresados en metros.
   Se observa que incluir un \emph{a priori} sobre las estimaciones mejora el error máximo
   frente al método de calibración manual.
   No obstante, la baja variabilidad antropométrica de los datos (distribución de estatura muy centrada en 1.75), junto
