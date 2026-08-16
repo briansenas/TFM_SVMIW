@@ -70,7 +70,7 @@ que nos dará la información de la altura de los objetos en escala absoluta.
   \mathcal{L}_{h_{obj}} ({h_{obj}^i}_{i=1}^N) = \frac{1}{N}\sum_{i=1}^N \mathcal{P}(h_{obj}^i;\mu,\sigma)
 \end{equation}
         \begin{itemize}
-          \item Donde $\mathcal{L}_{v_t}$ es el error de reproyección y $\mathcal{L}_{h_{obj}}$ es el a-priori ($175cm\pm0.2cm$)
+          \item Donde $\mathcal{L}_{v_t}$ es el error de reproyección y $\mathcal{L}_{h_{obj}}$ es el a-priori ($175cm\pm20cm$).
         \end{itemize}
     \footcitetext{SVMIW}
 \end{frame}
@@ -79,9 +79,9 @@ que nos dará la información de la altura de los objetos en escala absoluta.
 \begin{frame}
     \frametitle{Problemas encontrados}
     \begin{enumerate}
-      \item No disponemos del modelo pre-entrenado por ellos.
-      \item No disponemos de código de entrenamiento.
-      \item El dataset de calibración de cámara SUN360\footnotemark ya no está disponible.
+      \item No está disponible el modelo pre-entrenado por los autores.
+      \item No está disponible el código de entrenamiento.
+      \item El dataset de calibración de cámara SUN360\footnotemark ya no está disponible públicamente.
     \end{enumerate}
     \footcitetext{SUN360}
 \end{frame}
@@ -93,63 +93,215 @@ que nos dará la información de la altura de los objetos en escala absoluta.
   \begin{enumerate}
     \item Se ha encontrado un sustituto de SUN360\footcite{SUN360}, PANO360\footcite{SPEC}
       \begin{itemize}
-        \item Se obtiene un total de 187.206 imágenes para estimación de parámetros de cámara.
+        \item Se obtiene un total de 347.304 imágenes de entrenamiento para estimación de parámetros de cámara.
+        \item Para validación se tiene 12.732 imágenes.
       \end{itemize}
-    \item Se ha replicado el artículo utilizando ``detectron2''\footcite{detectron2}.
+    \item Se ha replicado la implementación del artículo utilizando ``detectron2''\footcite{detectron2}.
       \begin{itemize}
-        \item Introduciendo mejoras de rendimiento y eficiencia a nivel de hardware
-        \item Simplificando el mantenimiento y extensibilidad del código
+        \item Se introduce mejoras de rendimiento y eficiencia a nivel de hardware:
+        \item Se simplifica el mantenimiento y extensibilidad del código.
+        \item Permite el uso de nuevas arquitecturas y la aplicación de varios avances del campo de visión por computador.
       \end{itemize}
   \end{enumerate}
 \end{frame}
 
+\subsection{Datos de entrenamiento}
+\begin{frame}
+  \frametitle{Datos de entrenamiento: COCO-Scale}
+  \begin{itemize}
+    \item Subconjunto de imágenes extraídas de COCO~\footcite{COCO}.
+    \item 10.547 imágenes de entrenamiento, 2.648 de validación y 584 de test.
+    \end{itemize}
+\begin{figure}[!ht]
+  \begin{center}
+    \subfloat{\includegraphics[width=0.25\textwidth]{imagenes/chapter3/COCOScale/sample-000000_reproj.jpg}}
+    \subfloat{\includegraphics[width=0.12\textwidth]{imagenes/chapter3/COCOScale/sample-000002_reproj.jpg}}
+    \subfloat{\includegraphics[width=0.25\textwidth ]{imagenes/chapter3/COCOScale/sample-000006_reproj.jpg}}
+    \subfloat{\includegraphics[width=0.25\textwidth]{imagenes/chapter3/COCOScale/sample-000009_reproj.jpg}}
+  \end{center}
+  \caption[Ejemplos de imágenes extraídas de COCO-Scale~\footcite{SVMIW}.]{
+  Ejemplos de imágenes extraídas de COCO-Scale~\footcite{SVMIW}.
+  Se observan diferentes tamaños de imagen, rango de colores y las personas detectadas.}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Datos de entrenamiento: Pano360}
+\begin{figure}[!ht]
+  \begin{itemize}
+    \item Se obtiene un total de 30033 imágenes de la red social Flickr.
+    \item 347.304 imágenes de entrenamiento y 12.732 de validación.
+  \end{itemize}
+  \begin{center}
+    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter3/Pano360/stripped-46549510}}
+    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter3/Pano360/stripped-50535259}}
+  \end{center}
+  \caption{Ejemplos de escenas panorámicas de Pano360~\footcite{SPEC}}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Generación de datos a partir de panorámicas}
+\begin{figure}[!ht]
+  \begin{center}
+    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter3/Calib/pano_acizdacpcaveub.jpg}}\hfil
+    \subfloat{\includegraphics[width=0.25\textwidth]{imagenes/chapter3/Calib/pano_acizdacpcaveub.jpg-4.jpg}}
+    \subfloat{\includegraphics[width=0.15\textwidth]{imagenes/chapter3/Calib/pano_acizdacpcaveub.jpg-5.jpg}}
+    \subfloat{\includegraphics[width=0.15\textwidth]{imagenes/chapter3/Calib/pano_acizdacpcaveub.jpg-6.jpg}}
+  \end{center}
+  \caption[Ejemplo de imágenes obtenidas de una escena panorámica utilizando el algoritmo de~\footcite{CalibDataGeneration}.]{
+  Ejemplo de imágenes obtenidas de una escena panorámica utilizando el algoritmo de~\footcite{CalibDataGeneration}.
+  En este caso, dada una imagen panorámica de SUN360~\footcite{SUN360}, se extraen 3 recortes con parámetros de cámara diferentes.
+}
+\end{figure}
+\end{frame}
+
 \subsection{Datos de validación}
 \begin{frame}
-  \frametitle{Datos de validación}
+  \frametitle{Datos de validación: IdentAI}
+\begin{figure}[!ht]
+  \begin{itemize}
+    \item Un total de 652 fotogramas válidos, con un total de 12 sujetos de diferentes estaturas en 4 escenas diferentes.
+  \end{itemize}
+\begin{center}
+    \subfloat{\includegraphics[width=0.35\textwidth]{imagenes/chapter3/ParkingLot.jpg}}
+    \subfloat{\includegraphics[width=0.35\textwidth]{imagenes/chapter3/EntranceRamp.jpg}}
+    \subfloat{\includegraphics[width=0.35\textwidth]{imagenes/chapter3/SeminarRoom.jpg}}\\
+\end{center}
+\caption{Ejemplo de grabaciones del conjunto de datos IdentAI~\footcite{panacea2026}, realizadas en diferentes ubicaciones.}
+\end{figure}
 \end{frame}
+
+\begin{frame}
+\begin{itemize}
+\item Se han seleccionado únicamente aquellas imágenes en las que la persona aparece completamente visible y en posición erguida.
+\end{itemize}
+\begin{table}[!htp]
+  \scriptsize
+  \centering
+\begin{tabular}{|c|c|c|}
+\hline
+\rowcolor[HTML]{FFCB2F}
+\textbf{Sujeto} & \textbf{Altura (cm)} & \textbf{Fotogramas} \\
+\hline
+idai001 & 162 & 56 \\
+\hline
+idai002 & 160 & 77 \\
+\hline
+idai003 & 184 & 4 \\
+\hline
+idai006 & 180 & 90 \\
+\hline
+idai007 & 169 & 65 \\
+\hline
+idai008 & 175 & 51 \\
+\hline
+idai009 & 178 & 4 \\
+\hline
+idai010 & 192 & 131 \\
+\hline
+idai011 & 174 & 6 \\
+\hline
+idai012 & 170 & 78 \\
+\hline
+idai014 & 174 & 49 \\
+\hline
+idai015 & 168 & 41 \\
+\hline
+\end{tabular}
+\caption[Características descriptivas de los individuos del conjunto de datos IdentAI~\footcite{panacea2026}.]{
+  Características descriptivas de los individuos del conjunto de datos IdentAI~\footcite{panacea2026}.
+}
+\end{table}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Datos de validación: KITTI}
+  \begin{itemize}
+    \item Se filtra el conjunto de imágenes por aquellas que contengan al menos una persona completamente visible.
+  \end{itemize}
+\begin{figure}[!ht]
+  \begin{center}
+    \subfloat{\includegraphics[width=0.7\textwidth]{imagenes/chapter3/Kitti/000073.png}}
+    %\subfloat{\includegraphics[width=0.6\textwidth]{imagenes/chapter4/Kitti/000074.png}}
+  \end{center}
+  \caption[Ejemplo de escena etiquetada de KITTI~\footcite{Kitti}.]{
+    Ejemplo de escena etiquetada de KITTI~\footcite{Kitti}.
+}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Método clásico: retroproyección 2D a 3D.}
+  \begin{itemize}
+    \item Se utiliza la matriz de proyección de la cámara y una referencia conocida
+      para estimar la posición 3D de los puntos de la imagen.
+    \item Tras posicionar en la escena los pies y la cabeza, se estima la altura del objeto.
+  \end{itemize}
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=0.6\textwidth]{imagenes/chapter3/camera-backprojection.png}
+  \end{center}
+  \caption[Procedimiento de retroproyección 3D para estimación de altura~\footcite{VisionBookMIT}.]{
+    Procedimiento de retroproyección 3D para estimación de altura~\footcite{VisionBookMIT}.
+}
+\end{figure}
+\end{frame}
+
+\note{
+  A partir de una referencia conocida, como la altura de la cámara respecto al plano del suelo ($Y_w$) o la
+  distancia al sujeto en el eje de profundidad ($Z_w$), junto con la orientación de la cámara descrita por sus ángulos
+  de rotación (por ejemplo el de inclinación, $\theta$), es posible calcular el rayo de visión asociado a
+  un punto de la imagen, por ejemplo el de los pies, desde el sistema de coordenadas de la cámara al sistema de coordenadas del mundo.
+  Posteriormente, se utiliza la referencia conocida para calcular el factor de escala que permite situar
+  el punto de intersección del rayo que parte del centro óptico de la cámara ($Z_c$) sobre el plano del suelo
+  en los pies del individuo. Una vez localizado este punto de referencia, la retroproyección del punto asociado
+  a la cabeza permite estimar la altura del sujeto.
+}
 
 \subsection{Entorno}
 \begin{frame}
   \frametitle{Tecnologías utilizadas}
   \begin{table}[htp]
-    \vspace{-.5cm}
       \begin{tabular}{cccc}
         \begin{minipage}{.2\textwidth}
-          \includegraphics[width=\textwidth]{imagenes/chapter3/Python}
+          \includegraphics[width=\textwidth]{imagenes/chapter3/tech/Python}
         \end{minipage}
                                   &
         \begin{minipage}{.2\textwidth}
-          \includegraphics[width=.9\textwidth]{imagenes/chapter3/FastAI}
+          \includegraphics[width=.65\textwidth]{imagenes/chapter3/tech/d2}
         \end{minipage}
                                   &
         \begin{minipage}{.2\textwidth}
-          \includegraphics[width=\textwidth]{imagenes/chapter3/Pytorch}
+          \includegraphics[width=\textwidth]{imagenes/chapter3/tech/Pytorch}
         \end{minipage}
                                   &
         \begin{minipage}{.2\textwidth}
-          \includegraphics[width=.9\textwidth]{imagenes/chapter3/Open3D}
+          \includegraphics[width=.6\textwidth]{imagenes/chapter3/tech/OpenCV}
         \end{minipage}
                                   \\
         \begin{minipage}{.2\textwidth}
-          \includegraphics[width=\textwidth]{imagenes/chapter3/Numpy}
+          \includegraphics[width=\textwidth]{imagenes/chapter3/tech/Numpy}
         \end{minipage}
                                                         &
         \begin{minipage}{.2\textwidth}
-          \includegraphics[width=.9\textwidth]{imagenes/chapter3/Scikit}
+          \includegraphics[width=.9\textwidth]{imagenes/chapter3/tech/Scikit}
         \end{minipage}
                                                         &
         \begin{minipage}{.2\textwidth}
-          \includegraphics[width=.9\textwidth]{imagenes/chapter3/Polars}
+          \includegraphics[width=.9\textwidth]{imagenes/chapter3/tech/Polars}
         \end{minipage}
         &
-                                                        \\
+        \begin{minipage}{.2\textwidth}
+          \includegraphics[width=.55\textwidth]{imagenes/chapter3/tech/pandas}
+        \end{minipage} \\
                                                         &
         \begin{minipage}{.2\textwidth}
-          \includegraphics[width=.9\textwidth]{imagenes/chapter3/Nvidia}
+          \includegraphics[width=.9\textwidth]{imagenes/chapter3/tech/Nvidia}
         \end{minipage}
                                                         &
         \begin{minipage}{.2\textwidth}
-          \includegraphics[width=.9\textwidth]{imagenes/chapter3/Colab}
+          \includegraphics[width=.9\textwidth]{imagenes/chapter3/tech/Colab}
         \end{minipage}
                                                         &
                                                         \\

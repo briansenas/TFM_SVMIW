@@ -2,14 +2,191 @@
 \subsection{Introducción}
 \begin{frame}
   \frametitle{Introducción}
+\begin{table}[!ht]
+  \centering
+  \scriptsize
+  \begin{tabularx}{\linewidth}{|X|X|X|X|}
+\hline
+\rowcolor[HTML]{FFCB2F}
+\textbf{Método} & \textbf{Enfoque} & \textbf{Requisitos previos} & \textbf{Propósito} \\
+\hline
+Estimador estático (1.75 metros). & Método de referencia. & Ninguno. & Establecer una referencia mínima.\\
+\hline
+Método de calibración manual. & Método de metrología clásica, por geometría de escena. & Calibración de la cámara y toma de medidas de la escena. & Evaluar frente a un método tradicional. \\
+\hline
+Método automático. & Método por aprendizaje profundo. & Datos de entrenamiento etiquetados & Evaluar un método de estimación sin referencias de la escena.\\
+\hline
+\end{tabularx}
+\caption[Tabla resumen del diseño experimental.]{
+  Tabla resumen del diseño experimental.
+}
+\end{table}
 \end{frame}
 
 \subsection{Método clásico}
+
 \begin{frame}
   \frametitle{Método clásico}
+  \begin{table}
+    \centering
+    \scriptsize
+  \begin{tabular}{|l|c|c|c|c|c|c|c|}
+  \hline
+  \rowcolor[HTML]{FFCB2F}
+  \textbf{Cámara} & \textbf{Soporte} & $\mu$ & $\sigma$ & $\sigma^2$ & \textbf{Mediana} & $Q_3$ & \textbf{Máximo} \\
+  \hline
+  Cam1 & 209 & 0.092 & 0.078 & 0.006 &0.070 & 0.134 & 0.416 \\
+  \hline
+  Cam2 & 277 & 0.052 & 0.038 & 0.001 &0.046 & 0.073 & 0.194 \\
+  \hline
+  Cam3 & 166 & 0.062 & 0.035 & 0.001 &0.063 & 0.087 & 0.149 \\
+  \hline
+  \textbf{Total} & \textbf{652} & \textbf{0.067} & \textbf{0.056} & \textbf{0.003} & \textbf{0.055} & \textbf{0.091} & \textbf{0.416} \\
+  \hline
+  \end{tabular}
+  \caption{
+  Tabla de errores de estimación del método de calibración manual, expresados en metros.
+  }
+  \end{table}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Visualización de predicciones.}
+\begin{figure}[!ht]
+  \centering
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/worst_fail_cam1.png}}
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/worst_fail_cam2.png}}\\
+\caption{Se observan las peores predicciones de las cámaras 1 y 2 con el método clásico.}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Visualización de predicciones.}
+\begin{figure}[!ht]
+  \centering
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/perfect_cam1.png}}
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/perfect_cam2.png}}\\
+\caption{Se observan las mejores predicciones de las cámaras 1 y 2 con el método clásico.}
+\end{figure}
 \end{frame}
 
 \subsection{Método semi-supervisado}
 \begin{frame}
   \frametitle{Método semi-supervisado: SVMIW}
+\begin{table}
+  \scriptsize
+  \begin{center}
+    \begin{tabular}{|l|c|c|c|c|c|c|c|}
+      \rowcolor[HTML]{FFCB2F}
+      \hline
+      \textbf{Método} & $\mu$ & $\sigma$ & $\sigma^2$ & \textbf{Mediana} & $Q_3$ & \textbf{Máximo}\\
+      \hline
+      Estático (1.75 metros) & 0.088 & 0.060 & 0.004 & 0.060 & 0.150 & \textbf{0.170} \\
+      \hline
+      Calibración Manual & \textbf{0.067} & \textbf{0.056} & \textbf{0.003} & \textbf{0.055} & \textbf{0.091} & 0.416 \\
+      \hline
+      Nuestro & 0.098 & 0.069 & 0.005 & 0.081 & 0.152 & 0.328 \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \caption[Tabla resumen de comparativa final, con errores expresados en metros.]{
+  Tabla resumen de comparativa final, con errores expresados en metros.
+  }
+\end{table}
+\end{frame}
+
+\begin{frame}
+\begin{table}[ht]
+  \scriptsize
+  \centering
+\begin{tabular}{|l|c|c|c|c|c|c|}
+\hline
+\rowcolor[HTML]{FFCB2F}
+\textbf{Sujeto}&\textbf{ Soporte }&\textbf{ Altura }&\textbf{ Estimación media }&$\sigma$&$\sigma^2$ &\textbf{ Error medio }\\
+\hline
+idai001 & 56 & 1.620 & 1.771 & 0.045 & 0.002 & 0.151 \\
+\hline
+idai002 & 77 & 1.600 & 1.788 & 0.051 & 0.003 & 0.188 \\
+\hline
+idai003 & 4 & 1.840 & 1.852 & 0.036 & 0.001 & 0.031 \\
+\hline
+idai006 & 90 & 1.800 & 1.829 & 0.074 & 0.005 & 0.066 \\
+\hline
+idai007 & 65 & 1.690 & 1.786 & 0.049 & 0.002 & 0.096 \\
+\hline
+idai008 & 51 & 1.750 & 1.750 & 0.025 & 0.001 & 0.021 \\
+\hline
+idai009 & 4 & 1.780 & 1.767 & 0.010 & 0.000 & 0.013 \\
+\hline
+idai010 & 131 & 1.920 & 1.801 & 0.069 & 0.005 & 0.123 \\
+\hline
+idai011 & 6 & 1.740 & 1.756 & 0.006 & 0.000 & 0.016 \\
+\hline
+idai012 & 78 & 1.700 & 1.794 & 0.061 & 0.004 & 0.094 \\
+\hline
+idai014 & 49 & 1.740 & 1.704 & 0.024 & 0.001 & 0.036 \\
+\hline
+idai015 & 41 & 1.680 & 1.724 & 0.029 & 0.001 & 0.049 \\
+\hline
+\end{tabular}
+\caption[Tabla de errores de estimación del método por aprendizaje profundo por individuo, expresados en metros.]{
+Tabla de errores de estimación del método por aprendizaje profundo por individuo, expresados en metros.
+}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\begin{table}[!ht]
+  \centering
+  \scriptsize
+\begin{tabular}{|l|c|c|c|c|c|c|c|}
+\hline
+\rowcolor[HTML]{FFCB2F}
+\textbf{Cámara} & \textbf{Soporte} & $\mu$ & $\sigma$ & $\sigma^2$ & \textbf{Mediana} & $Q_3$ & \textbf{Máximo} \\
+\hline
+Cam1 & 209 & 0.295 & 0.102 & 0.010 &0.323 & 0.361 & 0.421 \\
+\hline
+Cam2 & 277 & 0.161 & 0.077 & 0.006 &0.172 & 0.212 & 0.399 \\
+\hline
+Cam3 & 166 & 0.065 & 0.041 & 0.002 &0.059 & 0.091 & 0.183 \\
+\hline
+\textbf{Total} & \textbf{652} & \textbf{0.179} & \textbf{0.118} & \textbf{0.014} & \textbf{0.169} & \textbf{0.285} & \textbf{0.421} \\
+\hline
+\end{tabular}
+\caption[Tabla de errores de estimación de la altura de la cámara con aprendizaje automático, expresados en metros.]{
+  Tabla de errores de estimación de la altura de la cámara con aprendizaje automático, expresados en metros.
+}
+\end{table}
+\end{frame}
+
+\begin{frame}
+\begin{figure}[!ht]
+  \begin{center}
+    \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/svimw_height_dist.png}}
+    \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/svimw_pred_height_dist.png}}
+  \end{center}
+  \caption[Distribución de predicciones de altura del modelo por aprendizaje profundo.]{
+  Distribución de predicciones de altura del modelo por aprendizaje profundo.
+}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Visualización de predicciones.}
+\begin{figure}[!ht]
+  \centering
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/worst_fail_cam1_svmiw.png}}
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/worst_fail_cam2_svmiw.png}}\\
+\caption{Se observan las peores predicciones de las cámaras 1 y 2 con el método por aprendizaje.}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Visualización de predicciones.}
+\begin{figure}[!ht]
+  \centering
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/perfect_cam1_svmiw.png}}
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/perfect_cam2_svmiw.png}}\\
+\caption{Se observan las mejores predicciones de las cámaras 1 y 2 con el método por aprendizaje.}
+\end{figure}
 \end{frame}
