@@ -160,6 +160,17 @@ Las fases del ciclo de vida son:
       comparando desde la metrología con parámetros estimados con una técnica de calibración manual estándar,
       calibración basada en características de las cámaras y las estimadas por el algoritmo final.
 \end{itemize}
+
+La planificación del proyecto se puede visualizar en la Tabla~\ref{tab:PlanificacionTemporal},
+donde se observan las distintas fases del ciclo de vida. El desarrollo del proyecto empieza
+tras finalizar las clases lectivas. No obstante, dicha planificación sufrió retrasos y modificaciones significativas.
+Entre las principales razones se encuentran dificultades técnicas, como la imposibilidad de utilizar
+directamente algunas implementaciones relevantes del campo (código no disponible, incompleto o inconsistente),
+la falta de disponibilidad de los pesos de modelos preentrenados y ausencia de los datos de entrenamiento
+necesarios. Adicionalmente, el alumno estaba compaginando el trabajo con los estudios.
+Como consecuencia, se tuvo que adaptar la planificación de proyecto, cuya versión definitiva
+se presenta en la Tabla~\ref{tab:PlanificacionFinal}.
+
 \begin{table}[ht]
 \centering
 \resizebox{\textwidth}{!}{%
@@ -173,22 +184,12 @@ Análisis de Requisitos & 4 - 80 & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9
 Diseño & 5 - 100  &  &  &  & & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B}  & \cellcolor[HTML]{9B9B9B} &  &  & &  &   &  &  & &  &  &  &  \\ \cline{1-1}
 Implementación & 5 - 100 &  &  &  &  &  &  &  &  & & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B}  & &  &  &  &  &  &  \\ \cline{1-1}
 Pruebas & 4 - 80 &  &  &  &  &  &  &  &  &  &  &  &   &  & & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & \cellcolor[HTML]{9B9B9B} & &  & \\ \cline{1-1}
-Documentar & 3 - 60 &  &  &  &  &  &  &  &  &  &  &  &   & & & & & & &\cellcolor[HTML]{9B9B9B}  &\cellcolor[HTML]{9B9B9B}   &\cellcolor[HTML]{9B9B9B}  \\ \hline
+Documentar & 3 - 80 &  &  &  &  &  &  &  &  &  &  &  &   & & & & & & &\cellcolor[HTML]{9B9B9B}  &\cellcolor[HTML]{9B9B9B}   &\cellcolor[HTML]{9B9B9B}  \\ \hline
 \end{tabular}%
 }
 \caption{Planificación temporal inicial del proyecto.}
 \label{tab:PlanificacionTemporal}
 \end{table}
-
-La planificación del proyecto se puede visualizar en la Tabla~\ref{tab:PlanificacionTemporal},
-donde se observan las distintas fases del ciclo de vida. El desarrollo del proyecto empieza
-tras finalizar las clases lectivas debido a que el alumno estaba compaginando el trabajo con
-los estudios. No obstante, dicha planificación sufrió retrasos y modificaciones significativas.
-Entre las principales razones se encuentran dificultades técnicas, como la imposibilidad de utilizar
-directamente algunas implementaciones relevantes del campo (código no disponible, incompleto o inconsistente),
-la falta de disponibilidad de los pesos de modelos preentrenados y ausencia de los datos de entrenamiento
-necesarios. Como consecuencia, se tuvo que adaptar la planificación de proyecto, cuya versión definitiva
-se presenta en la Tabla~\ref{tab:PlanificacionFinal}.
 
 \begin{table}[ht]
 \centering
@@ -196,12 +197,12 @@ se presenta en la Tabla~\ref{tab:PlanificacionFinal}.
 \begin{tabular}{|c|c|l|l|l|l|l|l|l|l|l|l|l|l|l|l|}
 \hline
 \rowcolor[HTML]{FFC702}
-\textbf{Tarea} & \textbf{Semanas - Horas} & \textbf{May} & \textbf{Jun} & \textbf{Jul} & \textbf{Ago} & \textbf{Sept} & \textbf{Oct} & \textbf{Nov} & \textbf{Dic} & \textbf{Ene} & \textbf{Feb} & \textbf{Mar} & \textbf{Abr} & \textbf{May} & Jun \\
+\textbf{Tarea} & \textbf{Semanas - Horas} & \textbf{May} & \textbf{Jun} & \textbf{Jul} & \textbf{Ago} & \textbf{Sept} & \textbf{Oct} & \textbf{Nov} & \textbf{Dic} & \textbf{Ene} & \textbf{Feb} & \textbf{Mar} & \textbf{Abr} & \textbf{May} & \textbf{Jun} \\
 \hline
 Análisis Requisitos & 3 - 60 &\cellcolor[HTML]{9B9B9B}& & &\cellcolor[HTML]{9B9B9B} & & &\cellcolor[HTML]{9B9B9B} & & & & & & &   \\ \cline{1-1}
 Diseño & 3 - 60              & &\cellcolor[HTML]{9B9B9B}& & & & & & & & & & & &  \\ \cline{1-1}
-Implementación & 5 - 100     & & &\cellcolor[HTML]{9B9B9B}& & & & &\cellcolor[HTML]{9B9B9B} &\cellcolor[HTML]{9B9B9B} &\cellcolor[HTML]{9B9B9B} & & & &   \\ \cline{1-1}
-Pruebas & 5 - 120            & & & & &\cellcolor[HTML]{9B9B9B} & & & & & &\cellcolor[HTML]{9B9B9B} &\cellcolor[HTML]{9B9B9B} & &   \\ \cline{1-1}
+Implementación & 5 - 120     & & &\cellcolor[HTML]{9B9B9B}& & & & &\cellcolor[HTML]{9B9B9B} &\cellcolor[HTML]{9B9B9B} &\cellcolor[HTML]{9B9B9B} & & & &   \\ \cline{1-1}
+Pruebas & 5 - 100            & & & & &\cellcolor[HTML]{9B9B9B} & & & & & &\cellcolor[HTML]{9B9B9B} &\cellcolor[HTML]{9B9B9B} & &   \\ \cline{1-1}
 Documentar & 5 - 100         & & & & & &\cellcolor[HTML]{9B9B9B} & & & & & & &\cellcolor[HTML]{9B9B9B} &\cellcolor[HTML]{9B9B9B}   \\
 \hline
 \end{tabular}%
@@ -220,18 +221,9 @@ En particular, se presupuestan un total de cinco reuniones, correspondientes a l
 etapas del proyecto, así como tres revisiones adicionales de la documentación técnica. La
 tarifa de consultoría se asume de aproximadamente 50\officialeuro/hora, en línea con los costes
 habituales de personal investigador altamente cualificado.
-\par
-Respecto al servidor GPU, con las especificaciones actuales de \emph{Google},
-se estima un coste aproximado de 10.000\officialeuro. Se asume una amortización de 2 años,
-lo que implica un pago diario de 13.70\officialeuro.
-Por último, se ha hecho uso de parte del servidor NGPU de la Universidad de Granada.
-Los componentes accesibles en conjunto, se estiman que valdrían aproximadamente 20.000\officialeuro\;
-y, por lo tanto, un coste diario de 27.39\officialeuro.
-El desglose total de los costes se puede ver en la siguiente Tabla \ref{tab:TotalGastos}.
-Para los cálculos, se estima un total de 147 días, 105 laborables y 440 horas, de duración.
 
 % NOTE: revisar tras terminar el proyecto.
-\begin{table}[H]
+\begin{table}[ht]
   \centering
   \scriptsize
   \begin{tabular}{ll}
@@ -251,3 +243,12 @@ Para los cálculos, se estima un total de 147 días, 105 laborables y 440 horas,
 \caption{Estimación final de coste del proyecto.}
 \label{tab:TotalGastos}
 \end{table}
+
+Respecto al servidor GPU, con las especificaciones actuales de \emph{Google},
+se estima un coste aproximado de 10.000\officialeuro. Se asume una amortización de 2 años,
+lo que implica un pago diario de 13.70\officialeuro.
+Por último, se ha hecho uso de parte del servidor NGPU de la Universidad de Granada.
+Los componentes accesibles en conjunto, se estiman que valdrían aproximadamente 20.000\officialeuro\;
+y, por lo tanto, un coste diario de 27.39\officialeuro.
+El desglose total de los costes se puede ver en la Tabla \ref{tab:TotalGastos}.
+Para los cálculos, se estima un total de 147 días, 105 laborables y 440 horas, de duración.
