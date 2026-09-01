@@ -396,9 +396,17 @@ retroproyección y estimación de la altura descrito.
 \subsection{Calibración y estimación automática}\label{sec:AutoMethod}
 % Explicar brevemente como funciona, incluir diagrama DDP
 El procedimiento utilizado para la estimación automática es el descrito por Zhu \emph{et al.}~\cite{SVMIW},
-que emplea un marco de aprendizaje profundo, denominado \emph{ScaleNet}. La arquitectura propuesta, véase
-la Figura~\ref{fig:SVMIWPipe}, interpreta
-la interacción entre parámetros de cámara, los objetos de la escena 2D y suposiciones sobre su tamaño en 3D.
+que emplea un marco de aprendizaje profundo semi-supervisado, denominado \emph{ScaleNet}.
+El entrenamiento sigue un enfoque semi-supervisado debido a que combina módulos
+entrenados mediante datos etiquetados con los valores reales, como el detector de objetos
+y el estimador de parámetros de la cámara, con módulos de estimación de escala que
+no requieren conocer directamente la altura real de los objetos ni de la cámara.
+Estos últimos se entrenan mediante las restricciones geométricas formuladas a partir del
+error de reproyección entre la posición del objeto observada y la estimada.
+De este modo, la geometría proyectiva proporciona una señal de aprendizaje que permite
+estimar las variables de escala sin necesidad de disponer de sus correspondientes
+anotaciones reales. La arquitectura propuesta, véase la Figura~\ref{fig:SVMIWPipe},
+interpreta la interacción entre los parámetros de la cámara, los objetos de la escena 2D y suposiciones sobre su tamaño en 3D.
 \par
 Un objeto detectado en la escena 2D, siguiendo el modelo de cámara definido en la Sección~\ref{sec:CameraModel},
 tiene sus delimitaciones superiores ($v_t$) e inferiores ($v_b$) determinados por las Ecuaciones~\ref{eq:vt} y~\ref{eq:vb}.
@@ -578,7 +586,7 @@ entre los pasos de manera secuencial (véase la Figura~\ref{fig:ScriptsDesign}).
 Por otro lado, en el Apéndice~\ref{app:LaunchExperiments} se detalla
 cómo replicar las fases de entrenamiento del modelo de aprendizaje automático.
 
-\begin{figure}[H]
+\begin{figure}[ht]
   \centering
   \small
   \includegraphics[width=0.6\textwidth]{imagenes/appendix/loss_plot.pdf}
@@ -592,7 +600,7 @@ cómo replicar las fases de entrenamiento del modelo de aprendizaje automático.
   \label{fig:PreviousImplLoss}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[ht]
   \begin{center}
     \includegraphics[width=0.9\textwidth]{imagenes/ScriptsDesign.png}
   \end{center}

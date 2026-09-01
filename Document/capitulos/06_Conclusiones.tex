@@ -5,6 +5,15 @@ capaz de estimar la altura de individuos en escena para entornos no controlados 
 haciendo más accesible el uso de herramientas de metrología para cámaras convencionales. Avances en este
 campo podrían extenderse a entornos forenses y de seguridad, la biomecánica o la arquitectura y reconstrucción de escenas~\cite{HoiemPopUp,HoiemObjectsInPerspective,CriminisiApplications, CriminisiReconstruction, CriminisiPaintings, SingleViewExerciseQuantification, ObjectsIntoPhotos}.
 \par
+En términos prácticos, el objetivo de este TFM ha sido reimplementar y adaptar \emph{ScaleNet} ante la
+ausencia de una implementación y pesos preentrenados del modelo disponibles públicamente,
+empleando el framework~\emph{Detectron2}~\cite{detectron2}. Asimismo, se ha sustituido
+el conjunto de datos SUN360~\cite{SUN360}, actualmente no disponible, por Pano360~\cite{SPEC} y se ha diseñado
+una pipeline reproducible para entrenamiento y evaluación.
+De esta forma, se ha realizado un análisis del método sobre un conjunto de datos
+independiente. En este contexto, la principal contribución del trabajo consiste en proporcionar
+una implementación reproducible y realizar una evaluación crítica de un método existente de metrología monocular.
+\par
 En primer lugar, se realizó un estudio de la literatura relativa a la metrología monocular, desde la
 estimación del tamaño de objetos en escena a su profundidad dentro de la misma.
 Se ha investigado requisitos previos para el uso de métodos clásicos de extracción de información de la escena,
@@ -52,7 +61,7 @@ de la altura de los objetos favorece una disminución significativa del error m�
 método clásico en casos desfavorables (por problemas de calibración o imprecisiones en
 las mediciones de referencia de la escena). El error medio del método clásico es de 6.7 centímetros
 frente a 9.8 centímetros del método semi-supervisado. El método automático no supera
-al clásico en precisión, sino que obtiene un rendimiento razonablemente cercano sin requerir
+al clásico en precisión, sino que obtiene un rendimiento en el mismo orden de magnitud sin requerir
 calibración manual de la escena. Es decir, el método implementado no
 necesita de intervención manual (como realizar la calibración de la cámara o obtener datos
 adicionales de la escena) para realizar las estimaciones.
@@ -98,9 +107,8 @@ Adicionalmente, se realiza una exploración de datos, comparando los métodos de
 de datos sintéticos de~\cite{SVMIW} y~\cite{SPEC}. Incluyendo la eliminación de imágenes irrelevantes,
 gracias al desarrollo de un sistema de visualización y búsqueda de imágenes según características
 extraídas automáticamente, permitiendo encontrar imágenes redundantes para reducir el tamaño y ruido del conjunto de datos.
-Además, se logra un incremento en rendimiento computacional y eficiencia de optimización del
-modelo de aprendizaje automático, lo que permite reducir el tiempo y número de iteraciones
-totales necesarias. Todo ello gracias a optimizaciones varias como aumentación de datos,
+Además, el modelo alcanza la convergencia observada con un menor número de iteraciones bajo la configuración
+experimental empleada. Todo ello gracias a optimizaciones varias como aumentación de datos,
 tasa de aprendizaje dinámica y por módulo, regularización por recorte del gradiente
 y vectorización del proceso de metrología.
 \par

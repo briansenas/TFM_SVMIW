@@ -254,9 +254,11 @@ Todas las fases se entrenan por 30K iteraciones.
 \par
 En la Tabla~\ref{tab:CalibResults} se comparan los resultados obtenidos en esta implementación
 con la tabla de resultados del artículo~\cite{SPEC}, que incluye los resultados del artículo de referencia~\cite{SVMIW},
-sobre el conjunto de datos Pano360. Se evidencia la capacidad de esta implementación de replicar, e incluso superar,
-la precisión obtenida en algunas métricas de las referencias, con un menor número de ejemplos procesados.
-En términos de número total de ejemplos de calibración vistos, se observan 33 veces menos ejemplos que~\cite{SPEC} y 1.78 veces menos que~\cite{SVMIW}.
+sobre el conjunto de datos Pano360.
+Los valores obtenidos son del mismo orden de magnitud y sugieren que la
+implementación reproduce razonablemente el comportamiento descrito, procesando un número inferior de ejemplos durante el entrenamiento.
+En términos de número total de ejemplos de calibración vistos durante el entrenamiento, se observan 33 veces menos ejemplos que~\cite{SPEC} y 1.78 veces menos que~\cite{SVMIW}.
+No obstante, la comparación no es estrictamente directa debido a las diferencias entre las particiones utilizadas.
 Se incluyen también los resultados del modelo final, una vez entrenado sobre todas las fases, y se observa
 que su capacidad de estimar los parámetros de la cámara no diverge tanto del modelo entrenado solamente para
 ello. De hecho, su capacidad de estimar el ángulo de visión vertical (\emph{vfov}) y el de inclinación (\emph{pitch})
@@ -307,7 +309,7 @@ el error de medición en KITTI-person es inferior.
 En este último, aunque no se disponga de la misma partición de datos que los autores de referencia~\cite{SVMIW},
 la partición utilizada contiene 1352 imágenes frente a las 298 imágenes utilizadas por los mismos.
 Aunque las particiones no son directamente comparables, los resultados obtenidos muestran que la implementación
-presenta un comportamiento competitivo bajo la partición utilizada.
+presenta un comportamiento consistente en la partición utilizada.
 
 \begin{table}[!ht]
   \centering
@@ -339,13 +341,13 @@ En la Tabla~\ref{tab:AutoResults}
 se observan los resultados del método de estimación automática en IdentAI~\cite{panacea2026}. El error medio de
 las cámaras en conjunto es de 9.8 centímetros, se encuentra en el mismo orden de magnitud que el método de calibración manual de escena.
 Un error cercano al método de estimación estática de altura media, pero logrando permitir la estimación de la
-altura exacta de individuos cuya altura no es 1.75 metros en diversas escenas.
+altura de individuos cuya estatura no es 1.75 metros en diversas escenas.
 Los valores de mediana y tercer cuartil también son cercanos al método de calibración manual, dejando ver lo prometedor que podría llegar a ser este método.
 Destacan los valores máximos que no llegan a sobrepasar los 33 centímetros de error, mientras que el método de calibración manual ha llegado a tener
 un error de 41.6 centímetros (valor atípico, un error extremo de estimación de altura por retroproyección).
 Por otro lado, en la Tabla~\ref{tab:ResultsBySubject} se observa cómo se
 comporta el método por cada sujeto del estudio y se destaca que el modelo parece tener dificultades
-para estimar valores lejanos al ~\emph{a priori} de 1.75 metros para las escenas estudiadas.
+para estimar valores lejanos al~\emph{a priori} de 1.75 metros para las escenas estudiadas.
 El error promedio agrupado por individuo es de 7.4 centímetros, cercano a los 5.8 centímetros del método
 de calibración manual y los 6.8 centímetros del método de predicción estática.
 No obstante, el modelo parece subestimar las alturas para sujetos con altura superior a 1.75, mientras
@@ -395,7 +397,7 @@ Cam3 & 166 & 0.074 & 0.068 & 0.005 &0.038 & 0.147 & 0.203 \\
 \label{tab:AutoResults}
 \end{table}
 
-\begin{table}[H]
+\begin{table}[ht]
   \scriptsize
   \centering
 \begin{tabular}{|l|c|c|c|c|c|c|}
@@ -440,7 +442,6 @@ se pueden ver reflejados en la Tabla~\ref{tab:AutoCamResults}
 el error medio de estimación del módulo de PointNet~\cite{PointNet} de la altura de la cámara.
 Realizar un entrenamiento más largo del modelo puede que reduzca la varianza y el error obtenido,
 tanto en la estimación de la altura de la cámara como del sujeto en escena.
-El error medio agrupado por escena de la estimación de la altura de la cámara es de 10.5 centímetros.
 En la Tabla~\ref{tab:AutoCamResultsByScene} se observa que el modelo parece tener dificultades para
 realizar estimaciones acertadas en la escena del aparcamiento.
 Aún así, incluso con el error de estimación de la altura de la cámara en dicha escena, se observan
@@ -503,10 +504,10 @@ En la Tabla~\ref{tab:Results} se recogen los resultados finales
 de todos los métodos implementados.
 Se observa que el método de aprendizaje profundo evita estimaciones extremas, reduciendo así
 los errores máximos observables. Se aproxima al método de estimación estática (de 1.75 metros), con el beneficio de acertar en múltiples escenas
-la estatura de diferentes sujetos. En las Figuras~\ref{fig:AutoWorst} y~\ref{fig:AutoBest} se
-observan las peores y mejores estimaciones.
+la estatura de diferentes sujetos. En las Figuras~\ref{fig:AutoBest} y~\ref{fig:AutoWorst} se
+observan las mejores y peores estimaciones.
 
-\begin{table}[H]
+\begin{table}[ht]
   \scriptsize
   \begin{center}
     \begin{tabular}{|l|c|c|c|c|c|c|c|}
@@ -535,20 +536,6 @@ observan las peores y mejores estimaciones.
 
 \begin{figure}[H]
   \centering
-  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam1_svmiw.png}}
-  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam2_svmiw.png}}\\
-  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam3_svmiw.png}}
-  \caption[Visualización de las peores predicciones del método por aprendizaje profundo.]{
-  Se observan ejemplos con las peores mediciones para cada cámara con el método automático, donde el número en color verde es el valor esperado y el de color rojo el estimado.
-  En el ejemplo superior izquierdo, se obtiene un error absoluto de 33 centímetros tras estimar 1.93 metros de altura cuando el sujeto mide 1.60 metros.
-  En el ejemplo superior derecho, el error absoluto es de 21 centímetros, con una estimación de 1.91 metros frente al valor real de 1.70 metros.
-  Finalmente, el ejemplo inferior presenta un error absoluto de 20 centímetros, con una estimación de 1.72 metros frente al valor real de 1.92 metros.
-}
-\label{fig:AutoWorst}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam1_svmiw.png}}
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam2_svmiw.png}}\\
   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/perfect_cam3_svmiw.png}}
@@ -559,4 +546,18 @@ observan las peores y mejores estimaciones.
   Finalmente, en el ejemplo inferior, la altura real y estimada es de 1.75 metros.
   }
 \label{fig:AutoBest}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam1_svmiw.png}}
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam2_svmiw.png}}\\
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter5/worst_fail_cam3_svmiw.png}}
+  \caption[Visualización de las peores predicciones del método por aprendizaje profundo.]{
+  Se observan ejemplos con las peores mediciones para cada cámara con el método automático, donde el número en color verde es el valor esperado y el de color rojo el estimado.
+  En el ejemplo superior izquierdo, se obtiene un error absoluto de 33 centímetros tras estimar 1.93 metros de altura cuando el sujeto mide 1.60 metros.
+  En el ejemplo superior derecho, el error absoluto es de 21 centímetros, con una estimación de 1.91 metros frente al valor real de 1.70 metros.
+  Finalmente, el ejemplo inferior presenta un error absoluto de 20 centímetros, con una estimación de 1.72 metros frente al valor real de 1.92 metros.
+}
+\label{fig:AutoWorst}
 \end{figure}
