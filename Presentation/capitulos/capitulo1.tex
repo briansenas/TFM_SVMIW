@@ -6,18 +6,17 @@
   \begin{center}
       \includegraphics[width=\textwidth]{imagenes/chapter1/teaser.pdf}
   \end{center}
-  \caption{Descripción del procedimiento de metrología monocular sacada de\footnotemark}
+  \caption{Descripción del procedimiento de metrología monocular sacada de\footcite{SVMIW}}
   \end{figure}
-  \footcitetext{SVMIW}
 \end{frame}
 
 \note{
-Para ilustrar visualmente lo que buscamos conseguir con este proyecto, tenemos la siguiente figura
-sacada del artículo de referencia de metrología monocular en entornos no controlados. La idea
-principal es dada una imagen de entrada -- una sola vista de la escena -- poder, como en la imagen central derecha, realizar una
-medición en escala absoluta -- es decir, en metros -- de los objetos en escena. Esto nos abre
-puerta a un multitud de aplicaciones que discutiremos a continuación, como lo por ejemplo la
-inserción, en escala real,  de objetos en escena. Fíjense en la silla insertada al lado de la mujer.
+Para ilustrar visualmente lo que se busca conseguir con este proyecto, se tiene la siguiente figura
+sacada del artículo de referencia de Zhu et al. La idea
+principal es dada una imagen de entrada -- una sola vista de la escena -- poder, como en la parte central derecha, realizar una
+medición en escala absoluta -- es decir, en metros -- de los objetos en escena. Esto abre
+puertas a varias aplicaciones que se discutirán a continuación; como por ejemplo la
+inserción, en escala real, de objetos en la escena. Fíjense en la silla insertada al lado de la mujer.
 }
 
 \begin{frame}
@@ -36,25 +35,26 @@ inserción, en escala real,  de objetos en escena. Fíjense en la silla insertad
     \vspace{-.8cm}
     \begin{figure}[!ht]
     \begin{center}
-        \subfloat{\includegraphics[width=0.3\textwidth, angle=90]{imagenes/chapter1/AmesRoom}}\\
-        \subfloat{\includegraphics[width=0.425\textwidth]{imagenes/chapter1/LegoLeftSmall}}
-        \subfloat{\includegraphics[width=0.43\textwidth]{imagenes/chapter1/LegoRightBig}}
+        %\subfloat{\includegraphics[width=0.3\textwidth, angle=90]{imagenes/chapter1/AmesRoom}}\\
+        \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter1/LegoLeftSmall}}
+        \subfloat{\includegraphics[width=0.505\textwidth]{imagenes/chapter1/LegoRightBig}}
     \end{center}
-    \caption{Ilusión óptica, un mismo objeto se percibe de tamaño diferente\footnotemark[2].}
+    \caption{Ilusión óptica, un mismo objeto se percibe de tamaño diferente\footnotemark.}
     \end{figure}
     \end{columns}
+    \addtocounter{footnote}{-1}
+    \footcitetext{CriminisiApplications}
+    \stepcounter{footnote}
     \footcitetext{VisionBookMIT}
 \end{frame}
 
 \note{
-  Es especialmente útil en situaciones donde no es práctico capturar múltiples imágenes, desde diferentes ángulos.
-  Sin embargo la aplicación de mediciones monoculares en entornos naturales -- no controlados -- plantea diversas dificultades.
+  Esto es especialmente útil en situaciones donde no es práctico capturar múltiples imágenes, desde diferentes ángulos.
+  Sin embargo la aplicación de mediciones monoculares en entornos no controlados plantea diversas dificultades.
   Como se observa en la Figura, es muy fácil provocar ilusiones ópticas de profundidad y tamaño, haciendo esta tarea realmente compleja.
   No obstante, el interés en el campo ha crecido en paralelo con los grandes avances en visión por computador y aprendizaje profundo.
-  Conceptualmente, lo que buscamos es extraer propiedades geométricas visibles y bien definidas en la imagen,
-  como el paralelismo, ortogonalidad, colinealidad, coplanaridad, así como información sobre la escena.
-  Todo mientras luchamos contra los problemas clásicos de la visión por computador, como la pérdida de información proyectiva,
-  iluminación, contraste y diversas distorsiones de imagen.
+  El objetivo de este trabajo es automatizar y facilitar dicho procedimiento.
+  Ya que, en el caso de los métodos clásicos la metrología se hace mediante labores manuales extensas de calibración de la escena.
 }
 
 \begin{frame}
@@ -62,28 +62,29 @@ inserción, en escala real,  de objetos en escena. Fíjense en la silla insertad
   \begin{columns}
     \column{0.5\textwidth}
     \begin{enumerate}
-      \item \textbf{Entornos forenses}: Estimación de sospechosos y víctimas a partir de grabaciones.
-      \item \textbf{Biomecánica}: Análisis postural o del movimiento en atletas.
-      \item \textbf{Reconstrucción de escenas}: Cálculo de medidas reales de estructuras.
-      \item \textbf{Geometría en pinturas}: Comparación de alturas, formas geométricas o patrones.
+      \item \textbf{Entornos forenses}~\footnotemark: Estimación de sospechosos y víctimas a partir de grabaciones.
+      \item \textbf{Biomecánica}~\footnotemark[\value{footnote}]: Análisis postural o del movimiento en atletas.
+      \item \textbf{Reconstrucción de escenas}~\footnotemark[\value{footnote}]: Cálculo de medidas reales de estructuras.
+      \item \textbf{Geometría en pinturas}~\footnotemark[\value{footnote}]: Comparación de alturas, formas geométricas o patrones.
     \end{enumerate}
     \column{0.5\textwidth}
     \begin{figure}[!ht]
       \begin{center}
-        \includegraphics[width=0.85\textwidth]{imagenes/chapter1/office-measurements.jpg}
+        \includegraphics[width=0.80\textwidth]{imagenes/chapter1/office-measurements.jpg}
       \end{center}
-      \caption{Ejemplo visual de información extraíble a partir de una sola imagen\footnotemark.}\label{fig:}
+      \caption{Ejemplo visual de información extraíble a partir de una sola imagen\footnotemark.}
     \end{figure}
   \end{columns}
+  \addtocounter{footnote}{-1}
+  \footcitetext{CriminisiApplications}
+  \stepcounter{footnote}
   \footcitetext{VisionBookMIT}
 \end{frame}
 
 \note{
-  (Leer lista de aplicaciones)
-  (Recordar la primera diapositiva donde se hizo una inserción de objeto en escena)
-  En el ámbito de la visión por computador se requieren herramientas más accesibles y confiables.
   Contribuir al desarrollo de soluciones para extraer medidas de una sola imagen puede tener un impacto significativo
-  en diversos ámbitos como la justicia, la salud o ingeniería.
+  en diversos ámbitos. Desde entornos forenses y la biomecánica, hasta la reconstrucción y análisis de geometrías de las escenas.
+  Recordad la primera diapositiva, donde se hizo una inserción de un objeto en escala real en la escena.
 }
 
 \subsection{Objetivos}
@@ -97,3 +98,10 @@ inserción, en escala real,  de objetos en escena. Fíjense en la silla insertad
   \end{figure}
   \footnotetext{Ilustración generada por inteligencia artificial (IA).}
 \end{frame}
+
+\note{
+  Por lo tanto, estos serán los objetivos de este proyecto.
+  Realizar un estudio del estado del arte. Obtener una implementación que permita automatizar el proceso para cualquier cámara y escena.
+  En este caso, se hará mediante aprendizaje profundo.
+  Realizar una comparativa frente a los métodos clásicos y obtener conclusiones y posibles líneas de investigación.
+}

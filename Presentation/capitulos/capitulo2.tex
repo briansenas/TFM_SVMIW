@@ -5,11 +5,11 @@
     \begin{columns}
       \column{0.6\textwidth}
     \begin{enumerate}
-      \item \textbf{No hay muchas publicaciones}, aunque si una tendencia positiva.
+      \item \textbf{No hay muchas publicaciones}, aunque sí una tendencia positiva.
         \begin{itemize}
-          \item Tampoco hay muchos datasets con tamaños (altura) etiquetados.
+          \item Tampoco hay muchos datasets con altura de las personas etiquetados.
         \end{itemize}
-      \item La tarea consisten en intentar medir la escala absoluta.
+      \item La tarea consiste en intentar medir en escala absoluta (en metros).
         \begin{itemize}
           \item Factores importantes: \textbf{contenido, contraste y distorsiones}.
           \item Objetivo: explotar ciertas invariantes geométricas.
@@ -26,10 +26,10 @@
   \vspace{-.2cm}
 \end{frame}
 \note{
-  La metrología de vista única, como decíamos anteriormente, está captando cada vez más atención dentro de la
-  comunidad debido a su potencial, véase la figura. Aún así, son pocos los números de artículos publicados.
-  Probablemente relacionado con las dificultades del campo y poca disponibilidad de datos.
-  Buscamos lidiar con los problemas mencionados anteriormente explotando invariantes geométricas.
+  La metrología de vista única, como se mencionaba anteriormente, está captando cada vez más atención, véase la Figura de publicaciones relacionadas sacada de Scopus.
+  La tendencia es positiva, aunque sean pocos los números de artículos publicados.
+  Esto puede que esté relacionado con las dificultades del campo y la poca disponibilidad de datos etiquetados con alturas reales.
+  Hay varios factores que afectan a las estimaciones: problemas lumínicos, escenas con poca información geométrica o las distorsiones en la escena.
 }
 \subsection{Estado del arte}
 \begin{frame}
@@ -59,13 +59,13 @@
 \end{frame}
 
 \note{
-  Una parte fundamental del procedimiento significa entender cómo funciona la proyección 2D-3D.
-  Para ello, es necesario conocer ciertos parámetros proyectivos de nuestra cámara, un proceso llamado calibración.
-  Como sería conocer la distancia focal, las distorsiones radiales de la lente y el tamaño del sensor.
-  Hay varias formas para realizar la calibración, la mayoría procesos tediosos y manuales, requiriendo tipos de
-  imágenes concretos, como utilizando un patrón de ajedrez cuya geometría conocemos y procuramos preservar durante la
-  proyección, aprendiendo así homografías -- conjunto de operaciones -- que aplicar para distorsionar imágenes.
-  La limitación es que depende de la precisión de los algoritmos y los tipos de escenas, siendo no siempre generalizable.
+  Por eso, una parte fundamental del procedimiento significa entender cómo funciona la proyección 2D-3D.
+  Para ello, es necesario conocer ciertos parámetros proyectivos de nuestra cámara. Se pueden obtener mediante un proceso llamado calibración.
+  Al calibrar, se conoce la distancia focal, las distorsiones radiales de la lente y el punto principal.
+  Hay varias formas para realizar la calibración, la mayoría de procesos son tediosos y manuales, como moverse por la escena con un patrón de ajedrez cuya geometría se conoce y
+  se procura conservar durante la proyección.
+  Para preserva dichas características, los parámetros estimados permiten rectificar la imagen, eliminando posibles distorsiones de lente.
+  La limitación es que depende de la precisión de los algoritmos que obtienen dichos parámetros y los tipos de escenas, siendo no siempre generalizables.
 }
 
 \begin{frame}
@@ -83,14 +83,24 @@
     \column{0.5\textwidth}
     \begin{figure}
       \begin{center}
-        \includegraphics[width=\textwidth]{imagenes/chapter2/palma_horizon.png}
+        \includegraphics[width=1.1\textwidth]{imagenes/chapter2/palma_horizon.png}
       \end{center}
       \caption{Ejemplo de extracción de información geométrica~\footnotemark}
     \end{figure}
   \end{columns}
+  \addtocounter{footnote}{-1}
   \footcitetext{CriminisiApplications, CriminisiPaintings, CriminisiReconstruction}
+  \stepcounter{footnote}
   \footcitetext{VisionBookMIT}
 \end{frame}
+
+\note{
+  Una vez entendido el modelo proyectivo, con los trabajos seminales de Criminisi et al. se tiene las bases metodológicas para metrología monocular.
+  Sus trabajos han sido extendidos por diversos autores.
+  Un ejemplo sería la imagen a la derecha, donde se observa cómo se utiliza las líneas paralelas para estimar el horizonte
+  a partir de sus puntos de fuga. O por ejemplo utilizando el ratio cruzado entre puntos colineales para la estimación de la altura utilizando un objeto de referencia.
+  No obstante, requiere saber alguna medida métrica de referencia de la escena.
+}
 
 \begin{frame}
   \frametitle{Aprendizaje profundo}
@@ -102,9 +112,12 @@
   \footcitetext{SVMIW}
 \end{frame}
 \note{
-  Ahí es donde brilla los métodos de aprendizaje profundo, aprenden a comprimir la información y características de
+  Aquí es donde destacan los métodos de aprendizaje profundo. Estos aprenden a comprimir la información y características de
   grandes conjuntos de datos, para extrapolar e inferir sobre datos no vistos.
-  Hemos visto increíbles avances en clasificación, recuperación de información, estimación de profundidad
-  y ahora en metrología monocular. Mediante la combinación de estos métodos de extracción
-  automática de información y principios geométricos se consiguen métodos como el que veremos a continuación.
+  Se han observado grandes avances en clasificación, estimación de profundidad y ahora en metrología monocular.
+  Mediante la combinación de estos métodos de extracción automática de información y principios geométricos se consiguen métodos como el se verá a continuación.
+  Por ello, el enfoque implementado será el mismo que en el artículo de Zhu et al.
+  Aunque fue propuesto en 2020, resulta de especial interés al abordar
+  específicamente la estimación métrica de objetos y de forma semi-supervisada,
+  combinando aprendizaje con restricciones geométricas interpretables.
 }

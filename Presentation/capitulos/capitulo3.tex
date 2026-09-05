@@ -11,39 +11,69 @@
 \end{frame}
 
 \note{
-No obstante, nuestro enfoque será en el que más encaja con nuestro título
-``Single View Metrology in the Wild'' de Zhu et al.
 En él, argumentan poder estimar la escala absoluta de la imagen entrenando
-en datos no supervisado que nos permita modelar ciertas variables del modelo de escena que se
-dibuja en pantalla. Es el modelo típico proyectivo de una cámara estenopeica.
-La idea es simple en teoría, si logramos estimar ciertos parámetros sencillos de la escena,
+en datos semi-supervisados a partir del modelo de escena que se ve en pantalla.
+Es el modelo típico proyectivo de una cámara estenopeica.
+La idea es, si logramos estimar ciertos parámetros de la escena,
 como el ángulo de rotación de la cámara con respecto al horizonte, así como detectar las personas
-y la caja que las encierra, podremos jugar a hacer re-proyecciones entre las escenas
-que nos dará la información de la altura de los objetos en escala absoluta.
+y el recuadro que las encierra, podremos jugar a hacer reproyecciones entre las escenas 3D y 2D
+para obtener la información de la altura de los objetos en escala absoluta.
 }
+
+% \begin{frame}
+%     \frametitle{Single View Metrology in the Wild}
+%     \begin{enumerate}
+%       \item Utilizando geometría perspectiva obtenemos las siguientes ecuaciones:
+%     \end{enumerate}
+%     \vspace{.5cm}
+%       \begin{equation}
+%           v_t = \frac{(f\, cos\theta + v_c\, sin\theta)\,h_{obj} + (-f\, sin\theta + v_c\, cos\theta)z - f\,h_{cam}}{h_{obj}tan\theta + z\,cos\theta}
+%       \end{equation}
+%       \begin{equation}
+%         v_b = \frac{-f\,sin\theta z + v_c cos\theta z - f\,h_{cam}}{z\, cos\theta}
+%       \end{equation}
+%     \begin{enumerate}
+%       \item Donde ``$v_t$'' y ``$v_b$'' son la parte superior e inferior de la persona en la imagen.
+%     \end{enumerate}
+%     \footcitetext{SVMIW}
+% \end{frame}
+%
+% \note{
+%   Más formalmente, utilizando geométrica perspectiva obtenemos las siguientes ecuaciones.
+%   Donde vt y vb son la parte inferior y superior de la persona en la imagen.
+%   A partir de suposiciones de la escena 3D (como el ángulo de rotación theta, la distancia focal,
+%   la altura del objeto y de la cámara), utilizando geometría proyectiva obtenemos el tamaño
+%   del objeto en el plano de imagen.
+%   Si utilizamos un módulo de detección de personas, ya podemos obtener nuestra primera pérdida de entrenamiento:
+% }
 
 \begin{frame}
     \frametitle{Single View Metrology in the Wild}
     \begin{enumerate}
-      \item Utilizando geometría perspectiva obtenemos las siguientes ecuaciones:
+      \item Las pérdidas introducidas por el artículo son:
     \end{enumerate}
-    \vspace{.5cm}
-      \begin{equation}
-          v_t = \frac{(f\, cos\theta + v_c\, sin\theta)\,h_{obj} + (-f\, sin\theta + v_c\, cos\theta)z - f\,h_{cam}}{h_{obj}tan\theta + z\,cos\theta}
-      \end{equation}
-      \begin{equation}
-        v_b = \frac{-f\,sin\theta z + v_c cos\theta z - f\,h_{cam}}{z\, cos\theta}
-      \end{equation}
-    \begin{enumerate}
-      \item Donde ``$v_t$'' y ``$v_b$'' son la parte superior e inferior de la persona en la imagen.
-    \end{enumerate}
+    \vspace{.3cm}
+\begin{equation}
+  \mathcal{L}_{vt} ({v_t^i}_{i=1}^N) = \frac{1}{N}\sum_{i=1}^N ||v_{t_{det}}^i - v_t^i||
+\end{equation}
+\begin{equation}
+  \mathcal{L}_{h_{obj}} ({h_{obj}^i}_{i=1}^N) = \frac{1}{N}\sum_{i=1}^N \mathcal{P}(h_{obj}^i;\mu,\sigma)
+\end{equation}
+        \begin{itemize}
+          \item Donde $\mathcal{L}_{v_t}$ es el error de reproyección y $\mathcal{L}_{h_{obj}}$ es el \emph{a priori} ($175cm\pm20cm$).
+        \item Siendo $v_t$ la posición superior del recuadro delimitador del objeto.
+        \end{itemize}
     \footcitetext{SVMIW}
 \end{frame}
 
 \note{
-  -Explicar un poco la ecuación y volver hacia a atrás en la imagen y enseñar "vt" y "vb"
+  La principal ecuación es la superior, la 1. En la cual se mide el error de reproyección de la escena. Dada nuestras suposiciones,
+  por medio de geometría proyectiva obtenemos un Vt, es decir, la posición superior del recuadro que delimita la persona en la imagen,
+  que debería corresponder al mismo Vt que indica el módulo de detección de personas.
+  De esta forma, el módulo aprende a realizar estimaciones sobre la escena 3D que permita minimizar las discrepancias al proyectarla otra vez al plano de imagen.
+  La ecuación inferior, es una regularización sobre las estimaciones para indicar al modelo que una persona habitualmente
+  mide 1.75 metros, facilitando y restringiendo así el proceso de búsqueda en el espacio de soluciones a valores físicamente coherentes.
 }
-
 
 \begin{frame}
     \frametitle{Single View Metrology in the Wild}
@@ -55,25 +85,13 @@ que nos dará la información de la altura de los objetos en escala absoluta.
     \footcitetext{SVMIW}
 \end{frame}
 
-\note{}
-
-\begin{frame}
-    \frametitle{Single View Metrology in the Wild}
-    \begin{enumerate}
-      \item Las pérdidas adicionales introducidas por el artículo son:
-    \end{enumerate}
-    \vspace{.3cm}
-\begin{equation}
-  \mathcal{L}_{vt} ({v_t^i}_{i=1}^N) = \frac{1}{N}\sum_{i=1}^N ||v_{t_{det}}^i - v_t^i||
-\end{equation}
-\begin{equation}
-  \mathcal{L}_{h_{obj}} ({h_{obj}^i}_{i=1}^N) = \frac{1}{N}\sum_{i=1}^N \mathcal{P}(h_{obj}^i;\mu,\sigma)
-\end{equation}
-        \begin{itemize}
-          \item Donde $\mathcal{L}_{v_t}$ es el error de reproyección y $\mathcal{L}_{h_{obj}}$ es el a-priori ($175cm\pm20cm$).
-        \end{itemize}
-    \footcitetext{SVMIW}
-\end{frame}
+\note{
+Por resumir visualmente, esta es la pipeline propuesta.
+Dada la detección de la persona en la imagen, se realizan suposiciones de la escena 3D.
+Se introduce una regularización sobre dichas suposiciones indicando al modelo el tamaño medio de los objetos en la escena.
+Y se realiza la reproyección. Incluso múltiples veces para ir refinando las predicciones.
+Cada etapa o estimación tiene su pérdida asociada que se combinan en una única de forma ponderada.
+}
 
 \subsection{Problemas encontrados}
 \begin{frame}
@@ -81,29 +99,51 @@ que nos dará la información de la altura de los objetos en escala absoluta.
     \begin{enumerate}
       \item No está disponible el modelo pre-entrenado por los autores.
       \item No está disponible el código de entrenamiento.
-      \item El dataset de calibración de cámara SUN360\footnotemark ya no está disponible públicamente.
+        \begin{itemize}
+          \item Se ha replicado la implementación del artículo utilizando ``detectron2''\footcite{detectron2}.
+        \end{itemize}
+      \item El dataset de calibración de cámara SUN360\footcite{SUN360} ya no está disponible públicamente.
+        \begin{itemize}
+          \item Se ha encontrado un sustituto de SUN360\footnotemark[\value{footnote}], PANO360\footcite{SPEC}
+        \end{itemize}
     \end{enumerate}
-    \footcitetext{SUN360}
 \end{frame}
 
-\note{}
+\note{
+  ¿Problemas? No se encuentra disponible ninguna implementación ni todos los datos de entrenamiento.
+  No obstante, aquí se encuentra la contribución principal:
+  Se ha replicado el artículo de referencia en el framework de visión por computador denominado detectron2,
+  utilizando el dataset PANO360 en lugar del ya no disponible SUN360.
+}
 
 \begin{frame}
-  \frametitle{Soluciones propuestas}
-  \begin{enumerate}
-    \item Se ha encontrado un sustituto de SUN360\footcite{SUN360}, PANO360\footcite{SPEC}
-      \begin{itemize}
-        \item Se obtiene un total de 347.304 imágenes de entrenamiento para estimación de parámetros de cámara.
-        \item Para validación se tiene 12.732 imágenes.
-      \end{itemize}
-    \item Se ha replicado la implementación del artículo utilizando ``detectron2''\footcite{detectron2}.
-      \begin{itemize}
-        \item Se introduce mejoras de rendimiento y eficiencia a nivel de hardware:
-        \item Se simplifica el mantenimiento y extensibilidad del código.
-        \item Permite el uso de nuevas arquitecturas y la aplicación de varios avances del campo de visión por computador.
-      \end{itemize}
-  \end{enumerate}
+  \frametitle{Método clásico: retroproyección 2D a 3D.}
+  \begin{itemize}
+    \item Se utiliza la matriz de proyección de la cámara y una referencia conocida
+      para estimar la posición 3D de los puntos de la imagen.
+    \item Tras posicionar en la escena los pies y la cabeza, se estima la altura del objeto.
+  \end{itemize}
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=0.6\textwidth]{imagenes/chapter3/camera-backprojection.png}
+  \end{center}
+  \caption[Procedimiento de retroproyección 3D para estimación de altura~\footcite{VisionBookMIT}.]{
+    Procedimiento de retroproyección 3D para estimación de altura~\footcite{VisionBookMIT}.
+}
+\end{figure}
 \end{frame}
+
+\note{
+  Por otro lado, la comparativa se hará frente a un método clásico. La idea es,
+  en concreto, a partir de una referencia conocida, como la altura de la cámara
+  respecto al plano del suelo ($Y_w$),
+  junto con la orientación de la cámara descrita por sus ángulos de rotación (por ejemplo el
+  de inclinación, $\theta$), se puede calcular el rayo de visión asociado a
+  un punto de la imagen, por ejemplo el de los pies, desde el sistema de coordenadas de la cámara al sistema de coordenadas del mundo.
+  Posteriormente, se utiliza la referencia conocida (p.ej. la altura de la cámara) para calcular el factor de escala que permite situar
+  el punto de intersección del rayo que parte del centro óptico de la cámara ($Z_c$) sobre el plano de referencia (en nuestro caso el suelo)
+  Una vez localizado este punto de referencia, el procedimiento similar para el punto asociado a la cabeza permite estimar la altura del sujeto.
+}
 
 \subsection{Datos de entrenamiento}
 \begin{frame}
@@ -125,6 +165,14 @@ que nos dará la información de la altura de los objetos en escala absoluta.
 \end{figure}
 \end{frame}
 
+\note{
+  Ahora sobre los materiales utilizados.
+  Para entrenar el modelo de aprendizaje profundo, se dispone de 2 grandes conjuntos de datos.
+  El primero es un subconjunto del dataset COCO, que consiste en un conjunto de imágenes etiquetadas de múltiples objetos
+  en varias escenas. En nuestro caso, se filtra por aquellas escenas que tengan al menos una persona etiquetada
+  sobre el suelo, como se puede ver en las figuras.
+}
+
 \begin{frame}
   \frametitle{Datos de entrenamiento: Pano360}
 \begin{figure}[!ht]
@@ -139,6 +187,12 @@ que nos dará la información de la altura de los objetos en escala absoluta.
   \caption{Ejemplos de escenas panorámicas de Pano360~\footcite{SPEC}}
 \end{figure}
 \end{frame}
+
+\note{
+  Por otro lado, se utiliza el conjunto de datos PANO360, que consiste en 30033 imágenes panorámicas de la red social de Flickr.
+  De las cuales se filtran aquellas que son ruidosas, corruptas, con poca información o distorsiones muy visibles.
+  De las restantes, se generan múltiples recortes simulando diferente configuraciones de cámaras.
+}
 
 \begin{frame}
   \frametitle{Generación de datos a partir de panorámicas}
@@ -156,68 +210,82 @@ que nos dará la información de la altura de los objetos en escala absoluta.
 \end{figure}
 \end{frame}
 
+\note{
+  En esta diapositiva se observa cómo a partir de una sola imagen panorámica se generan múltiples fotografías con diferentes
+  configuraciones de cámara. En total se generan 12 recortes por imagen panorámica a la hora de entrenar el modelo.
+}
+
 \subsection{Datos de validación}
 \begin{frame}
   \frametitle{Datos de validación: IdentAI}
-\begin{figure}[!ht]
   \begin{itemize}
-    \item Un total de 652 fotogramas válidos, con un total de 12 sujetos de diferentes estaturas en 4 escenas diferentes.
+    \item Conjunto de datos obtenido por Panacea~\footcite{panacea2026} en colaboración con UGR.
+    \item Un total de 652 fotogramas válidos, con 12 sujetos de diferentes estaturas, 4 escenas y 3 cámaras diferentes.
   \end{itemize}
+\begin{figure}[!ht]
 \begin{center}
+\hspace{-.3cm}
     \subfloat{\includegraphics[width=0.35\textwidth]{imagenes/chapter3/ParkingLot.jpg}}
     \subfloat{\includegraphics[width=0.35\textwidth]{imagenes/chapter3/EntranceRamp.jpg}}
     \subfloat{\includegraphics[width=0.35\textwidth]{imagenes/chapter3/SeminarRoom.jpg}}\\
 \end{center}
-\caption{Ejemplo de grabaciones del conjunto de datos IdentAI~\footcite{panacea2026}, realizadas en diferentes ubicaciones.}
+\caption{Ejemplo de grabaciones del conjunto de datos IdentAI~\footnotemark[\value{footnote}], realizadas en diferentes ubicaciones.}
 \end{figure}
 \end{frame}
 
-\begin{frame}
-\begin{itemize}
-\item Se han seleccionado únicamente aquellas imágenes en las que la persona aparece completamente visible y en posición erguida.
-\end{itemize}
-\begin{table}[!htp]
-  \scriptsize
-  \centering
-\begin{tabular}{|c|c|c|}
-\hline
-\rowcolor[HTML]{FFCB2F}
-\textbf{Sujeto} & \textbf{Altura (cm)} & \textbf{Fotogramas} \\
-\hline
-idai001 & 162 & 56 \\
-\hline
-idai002 & 160 & 77 \\
-\hline
-idai003 & 184 & 4 \\
-\hline
-idai006 & 180 & 90 \\
-\hline
-idai007 & 169 & 65 \\
-\hline
-idai008 & 175 & 51 \\
-\hline
-idai009 & 178 & 4 \\
-\hline
-idai010 & 192 & 131 \\
-\hline
-idai011 & 174 & 6 \\
-\hline
-idai012 & 170 & 78 \\
-\hline
-idai014 & 174 & 49 \\
-\hline
-idai015 & 168 & 41 \\
-\hline
-\end{tabular}
-\caption[Características descriptivas de los individuos del conjunto de datos IdentAI~\footcite{panacea2026}.]{
-  Características descriptivas de los individuos del conjunto de datos IdentAI~\footcite{panacea2026}.
+\note{
+Para la validación final. Se dispone del conjunto que se denomina IdentAI, fue recogido en diversas localizaciones del entorno urbano mediante un sistema multicámara,
+en colaboración con la Universidad de Granada, con el objetivo de realizar investigaciones en el ámbito de la identificación humana.
+En total hay 652 fotogramas, con 12 sujetos de diferente estatura, 4 tipo de escenas y 3 cámaras diferentes.
 }
-\end{table}
-\end{frame}
+
+% \begin{frame}
+% \begin{itemize}
+% \item Se han seleccionado únicamente aquellas imágenes en las que la persona aparece completamente visible y en posición erguida.
+% \end{itemize}
+% \begin{table}[!htp]
+%   \scriptsize
+%   \centering
+% \begin{tabular}{|c|c|c|}
+% \hline
+% \rowcolor[HTML]{FFCB2F}
+% \textbf{Sujeto} & \textbf{Altura (cm)} & \textbf{Fotogramas} \\
+% \hline
+% idai001 & 162 & 56 \\
+% \hline
+% idai002 & 160 & 77 \\
+% \hline
+% idai003 & 184 & 4 \\
+% \hline
+% idai006 & 180 & 90 \\
+% \hline
+% idai007 & 169 & 65 \\
+% \hline
+% idai008 & 175 & 51 \\
+% \hline
+% idai009 & 178 & 4 \\
+% \hline
+% idai010 & 192 & 131 \\
+% \hline
+% idai011 & 174 & 6 \\
+% \hline
+% idai012 & 170 & 78 \\
+% \hline
+% idai014 & 174 & 49 \\
+% \hline
+% idai015 & 168 & 41 \\
+% \hline
+% \end{tabular}
+% \caption[Características descriptivas de los individuos del conjunto de datos IdentAI~\footcite{panacea2026}.]{
+%   Características descriptivas de los individuos del conjunto de datos IdentAI~\footcite{panacea2026}.
+% }
+% \end{table}
+% \end{frame}
 
 \begin{frame}
   \frametitle{Datos de validación: KITTI}
   \begin{itemize}
+    \item Conjunto de datos etiquetados para conducción autónoma.
     \item Se filtra el conjunto de imágenes por aquellas que contengan al menos una persona completamente visible.
   \end{itemize}
 \begin{figure}[!ht]
@@ -231,94 +299,65 @@ idai015 & 168 & 41 \\
 \end{figure}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Método clásico: retroproyección 2D a 3D.}
-  \begin{itemize}
-    \item Se utiliza la matriz de proyección de la cámara y una referencia conocida
-      para estimar la posición 3D de los puntos de la imagen.
-    \item Tras posicionar en la escena los pies y la cabeza, se estima la altura del objeto.
-  \end{itemize}
-\begin{figure}[!ht]
-  \begin{center}
-    \includegraphics[width=0.6\textwidth]{imagenes/chapter3/camera-backprojection.png}
-  \end{center}
-  \caption[Procedimiento de retroproyección 3D para estimación de altura~\footcite{VisionBookMIT}.]{
-    Procedimiento de retroproyección 3D para estimación de altura~\footcite{VisionBookMIT}.
-}
-\end{figure}
-\end{frame}
-
 \note{
-  A partir de una referencia conocida, como la altura de la cámara respecto al plano del suelo ($Y_w$) o la
-  distancia al sujeto en el eje de profundidad ($Z_w$), junto con la orientación de la cámara descrita por sus ángulos
-  de rotación (por ejemplo el de inclinación, $\theta$), es posible calcular el rayo de visión asociado a
-  un punto de la imagen, por ejemplo el de los pies, desde el sistema de coordenadas de la cámara al sistema de coordenadas del mundo.
-  Posteriormente, se utiliza la referencia conocida para calcular el factor de escala que permite situar
-  el punto de intersección del rayo que parte del centro óptico de la cámara ($Z_c$) sobre el plano del suelo
-  en los pies del individuo. Una vez localizado este punto de referencia, la retroproyección del punto asociado
-  a la cabeza permite estimar la altura del sujeto.
+  Por otro lado, se dispone también de otro conjunto de datos denominado KITTI.
+  Un conjunto de datos etiquetado para conducción autónoma con objetos identificados en la escena y la altura de los mismos.
+  Servirá para la comparativa con los resultados reportados en el artículo de referencia.
 }
 
-\subsection{Entorno}
-\begin{frame}
-  \frametitle{Tecnologías utilizadas}
-  \begin{table}[htp]
-      \begin{tabular}{cccc}
-        \begin{minipage}{.2\textwidth}
-          \includegraphics[width=\textwidth]{imagenes/chapter3/tech/Python}
-        \end{minipage}
-                                  &
-        \begin{minipage}{.2\textwidth}
-          \includegraphics[width=.65\textwidth]{imagenes/chapter3/tech/d2}
-        \end{minipage}
-                                  &
-        \begin{minipage}{.2\textwidth}
-          \includegraphics[width=\textwidth]{imagenes/chapter3/tech/Pytorch}
-        \end{minipage}
-                                  &
-        \begin{minipage}{.2\textwidth}
-          \includegraphics[width=.6\textwidth]{imagenes/chapter3/tech/OpenCV}
-        \end{minipage}
-                                  \\
-        \begin{minipage}{.2\textwidth}
-          \includegraphics[width=\textwidth]{imagenes/chapter3/tech/Numpy}
-        \end{minipage}
-                                                        &
-        \begin{minipage}{.2\textwidth}
-          \includegraphics[width=.9\textwidth]{imagenes/chapter3/tech/Scikit}
-        \end{minipage}
-                                                        &
-        \begin{minipage}{.2\textwidth}
-          \includegraphics[width=.9\textwidth]{imagenes/chapter3/tech/Polars}
-        \end{minipage}
-        &
-        \begin{minipage}{.2\textwidth}
-          \includegraphics[width=.55\textwidth]{imagenes/chapter3/tech/pandas}
-        \end{minipage} \\
-                                                        &
-        \begin{minipage}{.2\textwidth}
-          \includegraphics[width=.9\textwidth]{imagenes/chapter3/tech/Nvidia}
-        \end{minipage}
-                                                        &
-        \begin{minipage}{.2\textwidth}
-          \includegraphics[width=.9\textwidth]{imagenes/chapter3/tech/Colab}
-        \end{minipage}
-                                                        &
-                                                        \\
-      \end{tabular}
-  \end{table}
-\end{frame}
-
-\note{
-Para el desarrollo y ejecución de los modelos fue necesario el uso de
-la librería de DL Pytorch junto con las librerías CUDA para poder ejecutar
-los modelos en las tarjetas gráficas de NVIDIA. Para los cálculos numéricos y
-el manejo de datos se utilizaron Numpy y Polars. Teniendo en cuenta que para el
-cálculo de las métricas hemos utilizado la librería de scikit-learn.
-Para la visualización y fácil manipulación de las nubes de puntos se hizo uso
-de la librería de Open3D y Pyntcloud.
-}
-
-
-
-\note{}
+% \subsection{Entorno}
+% \begin{frame}
+%   \frametitle{Tecnologías utilizadas}
+%   \begin{table}[htp]
+%       \begin{tabular}{cccc}
+%         \begin{minipage}{.2\textwidth}
+%           \includegraphics[width=\textwidth]{imagenes/chapter3/tech/Python}
+%         \end{minipage}
+%                                   &
+%         \begin{minipage}{.2\textwidth}
+%           \includegraphics[width=.65\textwidth]{imagenes/chapter3/tech/d2}
+%         \end{minipage}
+%                                   &
+%         \begin{minipage}{.2\textwidth}
+%           \includegraphics[width=\textwidth]{imagenes/chapter3/tech/Pytorch}
+%         \end{minipage}
+%                                   &
+%         \begin{minipage}{.2\textwidth}
+%           \includegraphics[width=.6\textwidth]{imagenes/chapter3/tech/OpenCV}
+%         \end{minipage}
+%                                   \\
+%         \begin{minipage}{.2\textwidth}
+%           \includegraphics[width=\textwidth]{imagenes/chapter3/tech/Numpy}
+%         \end{minipage}
+%                                                         &
+%         \begin{minipage}{.2\textwidth}
+%           \includegraphics[width=.9\textwidth]{imagenes/chapter3/tech/Scikit}
+%         \end{minipage}
+%                                                         &
+%         \begin{minipage}{.2\textwidth}
+%           \includegraphics[width=.9\textwidth]{imagenes/chapter3/tech/Polars}
+%         \end{minipage}
+%         &
+%         \begin{minipage}{.2\textwidth}
+%           \includegraphics[width=.55\textwidth]{imagenes/chapter3/tech/pandas}
+%         \end{minipage} \\
+%                                                         &
+%         \begin{minipage}{.2\textwidth}
+%           \includegraphics[width=.9\textwidth]{imagenes/chapter3/tech/Nvidia}
+%         \end{minipage}
+%                                                         &
+%         \begin{minipage}{.2\textwidth}
+%           \includegraphics[width=.9\textwidth]{imagenes/chapter3/tech/Colab}
+%         \end{minipage}
+%                                                         &
+%                                                         \\
+%       \end{tabular}
+%   \end{table}
+% \end{frame}
+%
+% \note{
+%   Por finalizar este capítulo, para el desarrollo y ejecución de los modelos fue necesario el uso de
+%   diversas librerías y herramientas. De las cuáles destacan Pytorch y Cuda para ejecución
+%   de modelos en tarjetas gráficas de NVIDIA. Numpy y Polars para cálculos númericos.
+%   Y por último, OpenCV para operaciones de visión por computador en imágenes.
+% }

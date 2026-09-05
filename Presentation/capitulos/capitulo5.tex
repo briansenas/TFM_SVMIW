@@ -11,13 +11,21 @@
         \item Método por aprendizaje profundo.
       \end{itemize}
     \item Se observa el potencial del método por aprendizaje de automatizar tareas de metrología.
-    \item Se dispone de una implementación de~\footcite{SVMIW}, abriendo puertas trabajos futuros.
+    \item Se dispone de una implementación de Rui Zhu \emph{et al.}~\footcite{SVMIW}, abriendo puertas a trabajos futuros.
+      \begin{itemize}
+        \item \url{https://github.com/briansenas/TFM_SVMIW}
+      \end{itemize}
     \item Se identifica las limitaciones y posibles futuras investigaciones.
-    \item \url{https://github.com/briansenas/TFM_SVMIW}
   \end{enumerate}
 \end{frame}
 
-\note{}
+\note{
+  Con todo esto, se concluye haber logrado los objetivos del TFM, determinando la posibilidad de
+  resolución y automatización del problema. Permitiendo la extensión del método implementado a más recientes arquitecturas
+  de modelos, algoritmos de entrenamiento y conjuntos de datos.
+  Aunque el método no supera al clásico de calibración manual, permitir automatizar y democratizar el proceso.
+  Los resultados son preliminares, aún así se identifican las diferentes limitaciones y se propone las siguientes posibles líneas de investigación:
+}
 
 \subsection{Trabajos Futuros}
 \begin{frame}
@@ -29,8 +37,16 @@
       \begin{itemize}
         \item Por ejemplo, utilizando la coherencia entre fotogramas de un video~\footcite{ke2025videodepthvideomodels}.
       \end{itemize}
-    \item Mejorar la implementación de la vectorización de metrología.
+    \item Mejorar la implementación de la vectorización del proceso de metrología.
   \end{enumerate}
 \end{frame}
 
-\note{}
+\note{
+  Para evitar el efecto de regresión al a priori un ajuste equilibrado sobre la combinación lineal de las pérdidas,
+  junto a un control más metódico sobre el aprendizaje de las capas relacionadas podría regularizar ese comportamiento.
+  Adicionalmente, se podría utilizar avances del campo de estimación de profundidad, como la imposición de la coherencia
+  entre fotogramas cercanos de un video.
+  Por otro lado, cara a ampliar las aplicaciones del método, se podría entrenar a que realice estimaciones amodales
+  para tratar con personas u objetos semi-ocultos.
+  Esto es todo, gracias! ¿Preguntas?
+}

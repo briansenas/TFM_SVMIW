@@ -23,10 +23,22 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
 \end{table}
 \end{frame}
 
+\note{
+  La experimentación realizada se resumen en la siguiente tabla.
+  Se realiza una comparativa entre un estimador estático que siempre predice la altura media de 1.75 metros,
+  frente al método clásico y al método por aprendizaje profundo.
+  El método clásico necesita intervención manual y el método por aprendizaje, una vez entrenado, es capaz
+  de estimar sin referencias adicionales.
+}
+
 \subsection{Método clásico}
 
 \begin{frame}
   \frametitle{Método clásico}
+  \begin{itemize}
+    \item El error absoluto medio agrupado por cámara es de 6.7 centímetros.
+    \item El error absoluto medio agrupado por sujeto es de 5.8 centímetros.
+  \end{itemize}
   \begin{table}
     \centering
     \scriptsize
@@ -50,6 +62,13 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
   \end{table}
 \end{frame}
 
+\note{
+  Aquí se puede ver los resultados del método clásico para cada cámara del conjunto IdentAI.
+  Se obtiene un error medio absoluto de 6.7 centímetros y un error máximo de 41.6
+  centímetros. El método manual es susceptible a acumulación de errores por imprecisión humana
+  en diferentes pasos de calibración de la cámara y escena, lo que puede llevar a estas estimaciones extremas o atípicas.
+}
+
 \begin{frame}
   \frametitle{Visualización de predicciones.}
 \begin{figure}[!ht]
@@ -60,19 +79,108 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
 \end{figure}
 \end{frame}
 
-\begin{frame}
-  \frametitle{Visualización de predicciones.}
-\begin{figure}[!ht]
-  \centering
-  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/perfect_cam1.png}}
-  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/perfect_cam2.png}}\\
-\caption{Se observan las mejores predicciones de las cámaras 1 y 2 con el método clásico.}
-\end{figure}
-\end{frame}
+\note{
+  Aquí se observan algunas de estas estimaciones atípicas.
+  Los sujetos se encuentran al borde la imagen, donde las distorsiones radiales y tangenciales son
+  más pronunciadas, lo que podría ser un indicativo del error de la estimación obtenida.
+}
+
+% \begin{frame}
+%   \frametitle{Visualización de predicciones.}
+% \begin{figure}[!ht]
+%   \centering
+%   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/perfect_cam1.png}}
+%   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/perfect_cam2.png}}\\
+% \caption{Se observan las mejores predicciones de las cámaras 1 y 2 con el método clásico.}
+% \end{figure}
+% \end{frame}
 
 \subsection{Método semi-supervisado}
 \begin{frame}
   \frametitle{Método semi-supervisado: SVMIW}
+\begin{itemize}
+  \item Se obtienen resultados del mismo orden de magnitud con tan solo 30K iteraciones.
+  \item Se observan hasta 33 veces menos ejemplos durante el entrenamiento que CamCalib y 1.78 veces menos que ScaleNet.
+\end{itemize}
+\begin{table}[!ht]
+  \centering
+  \scriptsize
+  \begin{tabular}{|l|c|c|c|}
+  \hline
+  \rowcolor[HTML]{FFCB2F}
+  \textbf{Método} & \textbf{VFOV ($^\circ$)$\downarrow$} & \textbf{Pitch ($^\circ$)$\downarrow$} & \textbf{Roll ($^\circ$)$\downarrow$} \\
+  \hline
+  ScaleNet~\footcite{SVMIW} & 5.68 & 2.61 & 1.41 \\
+  \hline
+  CamCalib (KL Loss)~\footcite{SPEC} & 3.53 & 2.32 & 1.15 \\
+  \hline
+  CamCalib (Softargmax-L2)~\footnotemark[\value{footnote}] & 3.34 & 2.06 & 1.11 \\
+  \hline
+  CamCalib (Softargmax-biased-L2)~\footnotemark[\value{footnote}] & \textbf{3.24} & \textbf{1.94} & 1.02 \\
+  \hline
+  Modelo entero fase 0 (Softargmax-biased-L2) & 3.98 & 2.43 & \textbf{0.89} \\
+  \hline
+  Solo clasificadores fase 0 (Softargmax-biased-L2) & 6.09 & 3.78 & 1.54 \\
+  \hline
+  Modelo fase final (Softargmax-biased-L2) & 3.46 & 2.34 & 1.05 \\
+  \hline
+  \end{tabular}
+  \caption
+  {
+    Tabla comparativa de la precisión de la estimación de los parámetros de la cámara en Pano360~\footnotemark[\value{footnote}].
+}
+\end{table}
+\end{frame}
+
+\note{
+  Para hablar del método por aprendizaje profundo, primero se necesita evaluar la calidad de la implementación frente al artículo de referencia.
+  Por ello, se obtiene la siguiente tabla con resultados del artículo de Kocabas et al.
+  En ella, se compara el rendimiento del modelo en la estimación de los parámetros de la cámara en las diferentes escenas de PANO360.
+  Los valores obtenidos son del mismo orden de magnitud y sugieren que la implementación reproduce razonablemente bien el comportamiento esperado.
+  Aunque la comparación no es estrictamente directa debido a diferencias inevitables entre las particiones utilizadas (como pueden ser fotos eliminadas de la red social)
+}
+
+
+\begin{frame}
+  \begin{itemize}
+    \item Se obtiene errores de reproyección en el mismo orden de magnitud.
+    \item KITTI-person* consiste de 1352 imágenes frente a las 298 utilizadas por Rui Zhu~\emph{et al}~\footcite{SVMIW}.
+  \end{itemize}
+\begin{table}[!ht]
+  \centering
+  \scriptsize
+  \begin{tabular}{|l|c|c|c|}
+  \hline
+  \rowcolor[HTML]{FFCB2F}
+  \textbf{Dataset} & \textbf{Método} & \textbf{Error de reproyección} & \textbf{Error de medición}\\
+  \hline
+  \multirow{2}{*}{COCO-Scale} & ScaleNet SN-L3~\footnotemark[\value{footnote}]& 0.07 & -\\
+  \cline{2-4}
+                                     & Nuestro & 0.07 & - \\
+  \hline
+  KITTI-person & ScaleNet SN-L3~\footnotemark[\value{footnote}] & 0.03 & 0.10 metros\\
+  \hline
+  KITTI-person* & Nuestro & 0.04 & 0.09 metros\\
+  \hline
+  \end{tabular}
+  \caption[Tabla comparativa de los errores de reproyección obtenidos.]{
+  Tabla comparativa de los errores de reproyección obtenidos.
+}
+\end{table}
+\end{frame}
+
+\note{
+  Respecto a la estimación de escala, comparando con una tabla obtenida del artículo de referencia de Zhu et al,
+  se tiene que el error de reproyección y de estimación de altura en COCO-Scale y KITTI-person
+  también están en el mismo orden magnitud. Siendo ambas cosas indicativos de que el modelo parece ser capaz
+  de minimizar las funciones de pérdida y replicar el comportamiento esperado.
+}
+
+\begin{frame}
+  \begin{itemize}
+    \item El error absoluto medio a nivel de fotogramas es de 9.8 centímetros.
+    \item El error absoluto medio a nivel de sujeto es de 7.4 centímetros frente al 5.8 del método clásico.
+  \end{itemize}
 \begin{table}
   \scriptsize
   \begin{center}
@@ -95,47 +203,95 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
 \end{table}
 \end{frame}
 
-\begin{frame}
-\begin{table}[ht]
-  \scriptsize
-  \centering
-\begin{tabular}{|l|c|c|c|c|c|c|}
-\hline
-\rowcolor[HTML]{FFCB2F}
-\textbf{Sujeto}&\textbf{ Soporte }&\textbf{ Altura }&\textbf{ Estimación media }&$\sigma$&$\sigma^2$ &\textbf{ Error medio }\\
-\hline
-idai001 & 56 & 1.620 & 1.771 & 0.045 & 0.002 & 0.151 \\
-\hline
-idai002 & 77 & 1.600 & 1.788 & 0.051 & 0.003 & 0.188 \\
-\hline
-idai003 & 4 & 1.840 & 1.852 & 0.036 & 0.001 & 0.031 \\
-\hline
-idai006 & 90 & 1.800 & 1.829 & 0.074 & 0.005 & 0.066 \\
-\hline
-idai007 & 65 & 1.690 & 1.786 & 0.049 & 0.002 & 0.096 \\
-\hline
-idai008 & 51 & 1.750 & 1.750 & 0.025 & 0.001 & 0.021 \\
-\hline
-idai009 & 4 & 1.780 & 1.767 & 0.010 & 0.000 & 0.013 \\
-\hline
-idai010 & 131 & 1.920 & 1.801 & 0.069 & 0.005 & 0.123 \\
-\hline
-idai011 & 6 & 1.740 & 1.756 & 0.006 & 0.000 & 0.016 \\
-\hline
-idai012 & 78 & 1.700 & 1.794 & 0.061 & 0.004 & 0.094 \\
-\hline
-idai014 & 49 & 1.740 & 1.704 & 0.024 & 0.001 & 0.036 \\
-\hline
-idai015 & 41 & 1.680 & 1.724 & 0.029 & 0.001 & 0.049 \\
-\hline
-\end{tabular}
-\caption[Tabla de errores de estimación del método por aprendizaje profundo por individuo, expresados en metros.]{
-Tabla de errores de estimación del método por aprendizaje profundo por individuo, expresados en metros.
+\note{
+  No obstante, al finalizar los experimentos y estudiar los resultados en el conjunto de datos IdentAI,
+  se identifica que el modelo presenta un error absoluto medio elevado frente a los demás métodos.
+  La baja variabilidad antropométrica de los datos (distribución de estatura muy centrada en 1.75 metros),
+  junto a posibles problemas de aprendizaje del modelo hace que el estimador estático presente un error medio absoluto menor.
+  Aún así, dichos resultados se alcanzan de forma semi-supervisada y con un bajo número de iteraciones,
+  indicando el potencial que posee el método implementado de cara a automatizar y facilitar la estimación de la altura en entornos no controlados.
 }
-\end{table}
-\end{frame}
 
 \begin{frame}
+\begin{figure}[!ht]
+  \begin{center}
+    \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/svimw_height_dist.png}}
+    \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/svimw_pred_height_dist.png}}
+  \end{center}
+  \caption[Distribución de predicciones de altura del modelo por aprendizaje profundo.]{
+  Distribución de predicciones de altura del modelo por aprendizaje profundo.
+}
+\end{figure}
+\end{frame}
+
+\note{
+  Al estudiar las predicciones del modelo se observa un efecto de regresión hacia el a priori,
+  provocando que el modelo tienda a sobre-estimar para sujetos de baja estatura y subestimar para aquellos de gran estatura.
+  Esto no quiere decir que el modelo no sea capaz de realizar predicciones correctas para esos extremos.
+}
+
+\begin{frame}
+  \frametitle{Visualización de predicciones.}
+\begin{figure}[!ht]
+  \centering
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/perfect_cam1_svmiw.png}}
+  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/perfect_cam3_svmiw.png}}\\
+\caption{Se observan las mejores predicciones de las cámaras 1 y 3 con el método por aprendizaje.}
+\end{figure}
+\end{frame}
+
+\note{
+  En esta figura se observan predicciones coincidentes a dos decimales con valores por encima y por debajo del
+  promedio de 1.75. No obstante, el efecto afecta al resultado final dado que el
+  conjunto de datos posee muchos fotogramas para el sujeto con 1.90 metros y no siempre preserva la consistencia en las predicciones para todos los fotogramas.
+}
+
+% \begin{frame}
+% \begin{table}[ht]
+%   \scriptsize
+%   \centering
+% \begin{tabular}{|l|c|c|c|c|c|c|}
+% \hline
+% \rowcolor[HTML]{FFCB2F}
+% \textbf{Sujeto}&\textbf{ Soporte }&\textbf{ Altura }&\textbf{ Estimación media }&$\sigma$&$\sigma^2$ &\textbf{ Error medio }\\
+% \hline
+% idai001 & 56 & 1.620 & 1.771 & 0.045 & 0.002 & 0.151 \\
+% \hline
+% idai002 & 77 & 1.600 & 1.788 & 0.051 & 0.003 & 0.188 \\
+% \hline
+% idai003 & 4 & 1.840 & 1.852 & 0.036 & 0.001 & 0.031 \\
+% \hline
+% idai006 & 90 & 1.800 & 1.829 & 0.074 & 0.005 & 0.066 \\
+% \hline
+% idai007 & 65 & 1.690 & 1.786 & 0.049 & 0.002 & 0.096 \\
+% \hline
+% idai008 & 51 & 1.750 & 1.750 & 0.025 & 0.001 & 0.021 \\
+% \hline
+% idai009 & 4 & 1.780 & 1.767 & 0.010 & 0.000 & 0.013 \\
+% \hline
+% idai010 & 131 & 1.920 & 1.801 & 0.069 & 0.005 & 0.123 \\
+% \hline
+% idai011 & 6 & 1.740 & 1.756 & 0.006 & 0.000 & 0.016 \\
+% \hline
+% idai012 & 78 & 1.700 & 1.794 & 0.061 & 0.004 & 0.094 \\
+% \hline
+% idai014 & 49 & 1.740 & 1.704 & 0.024 & 0.001 & 0.036 \\
+% \hline
+% idai015 & 41 & 1.680 & 1.724 & 0.029 & 0.001 & 0.049 \\
+% \hline
+% \end{tabular}
+% \caption[Tabla de errores de estimación del método por aprendizaje profundo por individuo, expresados en metros.]{
+% Tabla de errores de estimación del método por aprendizaje profundo por individuo, expresados en metros.
+% }
+% \end{table}
+% \end{frame}
+
+\begin{frame}
+  \begin{itemize}
+    \item Se obtiene un error absoluto medio de estimación de altura de la cámara de 17.9 centímetros.
+    \item Minimizar el error de reproyección sin suposiciones adicionales de la escena
+      no garantiza que los parámetros geométricos estimados sean físicamente correctos.
+  \end{itemize}
 \begin{table}[!ht]
   \centering
   \scriptsize
@@ -159,34 +315,21 @@ Cam3 & 166 & 0.065 & 0.041 & 0.002 &0.059 & 0.091 & 0.183 \\
 \end{table}
 \end{frame}
 
-\begin{frame}
-\begin{figure}[!ht]
-  \begin{center}
-    \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/svimw_height_dist.png}}
-    \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/svimw_pred_height_dist.png}}
-  \end{center}
-  \caption[Distribución de predicciones de altura del modelo por aprendizaje profundo.]{
-  Distribución de predicciones de altura del modelo por aprendizaje profundo.
+\note{
+  Por último, cabe destacar el error absoluto medio de estimación de la altura de la cámara.
+  Se alcanza un error medio de 17.9 centímetros.
+  Esto es un indicativo que minimizar el error de reproyección sin suposiciones adicionales de la escena
+  no implica que las estimaciones tengan directamente sentido físico. Es decir, hay múltiples
+  variaciones de altura del objeto, de la cámara y profundidad del objeto en la misma que obtienen
+  el mismo bajo error de reproyección.
 }
-\end{figure}
-\end{frame}
 
-\begin{frame}
-  \frametitle{Visualización de predicciones.}
-\begin{figure}[!ht]
-  \centering
-  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/worst_fail_cam1_svmiw.png}}
-  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/worst_fail_cam2_svmiw.png}}\\
-\caption{Se observan las peores predicciones de las cámaras 1 y 2 con el método por aprendizaje.}
-\end{figure}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Visualización de predicciones.}
-\begin{figure}[!ht]
-  \centering
-  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/perfect_cam1_svmiw.png}}
-  \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/perfect_cam2_svmiw.png}}\\
-\caption{Se observan las mejores predicciones de las cámaras 1 y 2 con el método por aprendizaje.}
-\end{figure}
-\end{frame}
+% \begin{frame}
+%   \frametitle{Visualización de predicciones.}
+% \begin{figure}[!ht]
+%   \centering
+%   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/worst_fail_cam1_svmiw.png}}
+%   \subfloat{\includegraphics[width=0.5\textwidth]{imagenes/chapter4/worst_fail_cam2_svmiw.png}}\\
+% \caption{Se observan las peores predicciones de las cámaras 1 y 2 con el método por aprendizaje.}
+% \end{figure}
+% \end{frame}
