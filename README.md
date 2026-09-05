@@ -236,5 +236,7 @@ GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
 
 ## :books: Referencias
 <a id="1">[1]</a> R. Zhu et al., "Single View Metrology in the Wild" en Computer Vision - ECCV 2020, Springer INternation PUblishing, 2020, págs. 316-333
+
 <a id="2">[2]</a> Y. Wu, A. Kirillov, F. Massa, W.-Y. Lo y R. Girshick, Detectron2, https://github.com/facebookresearch/detectron2, 2019. 
+
 <a id="3">[3]</a> M. Kocabas, C.-H. P. Huang, J. Tesch, L. Müller, O. Hilliges y M. J. Black, ((SPEC: Seeing People in the Wild with an Estimated Camera,)) en International Conference on Computer Vision, 2021, págs. 11 035-11 045. 
