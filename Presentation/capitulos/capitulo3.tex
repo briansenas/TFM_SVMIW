@@ -20,33 +20,6 @@ y el recuadro que las encierra, podremos jugar a hacer reproyecciones entre las 
 para obtener la información de la altura de los objetos en escala absoluta.
 }
 
-% \begin{frame}
-%     \frametitle{Single View Metrology in the Wild}
-%     \begin{enumerate}
-%       \item Utilizando geometría perspectiva obtenemos las siguientes ecuaciones:
-%     \end{enumerate}
-%     \vspace{.5cm}
-%       \begin{equation}
-%           v_t = \frac{(f\, cos\theta + v_c\, sin\theta)\,h_{obj} + (-f\, sin\theta + v_c\, cos\theta)z - f\,h_{cam}}{h_{obj}tan\theta + z\,cos\theta}
-%       \end{equation}
-%       \begin{equation}
-%         v_b = \frac{-f\,sin\theta z + v_c cos\theta z - f\,h_{cam}}{z\, cos\theta}
-%       \end{equation}
-%     \begin{enumerate}
-%       \item Donde ``$v_t$'' y ``$v_b$'' son la parte superior e inferior de la persona en la imagen.
-%     \end{enumerate}
-%     \footcitetext{SVMIW}
-% \end{frame}
-%
-% \note{
-%   Más formalmente, utilizando geométrica perspectiva obtenemos las siguientes ecuaciones.
-%   Donde vt y vb son la parte inferior y superior de la persona en la imagen.
-%   A partir de suposiciones de la escena 3D (como el ángulo de rotación theta, la distancia focal,
-%   la altura del objeto y de la cámara), utilizando geometría proyectiva obtenemos el tamaño
-%   del objeto en el plano de imagen.
-%   Si utilizamos un módulo de detección de personas, ya podemos obtener nuestra primera pérdida de entrenamiento:
-% }
-
 \begin{frame}
     \frametitle{Single View Metrology in the Wild}
     \begin{enumerate}
@@ -239,49 +212,6 @@ en colaboración con la Universidad de Granada, con el objetivo de realizar inve
 En total hay 652 fotogramas, con 12 sujetos de diferente estatura, 4 tipo de escenas y 3 cámaras diferentes.
 }
 
-% \begin{frame}
-% \begin{itemize}
-% \item Se han seleccionado únicamente aquellas imágenes en las que la persona aparece completamente visible y en posición erguida.
-% \end{itemize}
-% \begin{table}[!htp]
-%   \scriptsize
-%   \centering
-% \begin{tabular}{|c|c|c|}
-% \hline
-% \rowcolor[HTML]{FFCB2F}
-% \textbf{Sujeto} & \textbf{Altura (cm)} & \textbf{Fotogramas} \\
-% \hline
-% idai001 & 162 & 56 \\
-% \hline
-% idai002 & 160 & 77 \\
-% \hline
-% idai003 & 184 & 4 \\
-% \hline
-% idai006 & 180 & 90 \\
-% \hline
-% idai007 & 169 & 65 \\
-% \hline
-% idai008 & 175 & 51 \\
-% \hline
-% idai009 & 178 & 4 \\
-% \hline
-% idai010 & 192 & 131 \\
-% \hline
-% idai011 & 174 & 6 \\
-% \hline
-% idai012 & 170 & 78 \\
-% \hline
-% idai014 & 174 & 49 \\
-% \hline
-% idai015 & 168 & 41 \\
-% \hline
-% \end{tabular}
-% \caption[Características descriptivas de los individuos del conjunto de datos IdentAI~\footcite{panacea2026}.]{
-%   Características descriptivas de los individuos del conjunto de datos IdentAI~\footcite{panacea2026}.
-% }
-% \end{table}
-% \end{frame}
-
 \begin{frame}
   \frametitle{Datos de validación: KITTI}
   \begin{itemize}
@@ -304,60 +234,3 @@ En total hay 652 fotogramas, con 12 sujetos de diferente estatura, 4 tipo de esc
   Un conjunto de datos etiquetado para conducción autónoma con objetos identificados en la escena y la altura de los mismos.
   Servirá para la comparativa con los resultados reportados en el artículo de referencia.
 }
-
-% \subsection{Entorno}
-% \begin{frame}
-%   \frametitle{Tecnologías utilizadas}
-%   \begin{table}[htp]
-%       \begin{tabular}{cccc}
-%         \begin{minipage}{.2\textwidth}
-%           \includegraphics[width=\textwidth]{imagenes/chapter3/tech/Python}
-%         \end{minipage}
-%                                   &
-%         \begin{minipage}{.2\textwidth}
-%           \includegraphics[width=.65\textwidth]{imagenes/chapter3/tech/d2}
-%         \end{minipage}
-%                                   &
-%         \begin{minipage}{.2\textwidth}
-%           \includegraphics[width=\textwidth]{imagenes/chapter3/tech/Pytorch}
-%         \end{minipage}
-%                                   &
-%         \begin{minipage}{.2\textwidth}
-%           \includegraphics[width=.6\textwidth]{imagenes/chapter3/tech/OpenCV}
-%         \end{minipage}
-%                                   \\
-%         \begin{minipage}{.2\textwidth}
-%           \includegraphics[width=\textwidth]{imagenes/chapter3/tech/Numpy}
-%         \end{minipage}
-%                                                         &
-%         \begin{minipage}{.2\textwidth}
-%           \includegraphics[width=.9\textwidth]{imagenes/chapter3/tech/Scikit}
-%         \end{minipage}
-%                                                         &
-%         \begin{minipage}{.2\textwidth}
-%           \includegraphics[width=.9\textwidth]{imagenes/chapter3/tech/Polars}
-%         \end{minipage}
-%         &
-%         \begin{minipage}{.2\textwidth}
-%           \includegraphics[width=.55\textwidth]{imagenes/chapter3/tech/pandas}
-%         \end{minipage} \\
-%                                                         &
-%         \begin{minipage}{.2\textwidth}
-%           \includegraphics[width=.9\textwidth]{imagenes/chapter3/tech/Nvidia}
-%         \end{minipage}
-%                                                         &
-%         \begin{minipage}{.2\textwidth}
-%           \includegraphics[width=.9\textwidth]{imagenes/chapter3/tech/Colab}
-%         \end{minipage}
-%                                                         &
-%                                                         \\
-%       \end{tabular}
-%   \end{table}
-% \end{frame}
-%
-% \note{
-%   Por finalizar este capítulo, para el desarrollo y ejecución de los modelos fue necesario el uso de
-%   diversas librerías y herramientas. De las cuáles destacan Pytorch y Cuda para ejecución
-%   de modelos en tarjetas gráficas de NVIDIA. Numpy y Polars para cálculos númericos.
-%   Y por último, OpenCV para operaciones de visión por computador en imágenes.
-% }
