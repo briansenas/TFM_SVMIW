@@ -339,8 +339,8 @@ presenta un comportamiento consistente en la partición utilizada.
 \end{table}
 En la Tabla~\ref{tab:AutoResults}
 se observan los resultados del método de estimación automática en IdentAI~\cite{panacea2026}. El error medio de
-las cámaras en conjunto es de 9.8 centímetros, se encuentra en el mismo orden de magnitud que el método de calibración manual de escena.
-Un error cercano al método de estimación estática de altura media, pero logrando permitir la estimación de la
+las cámaras en conjunto es de 9.8 centímetros y se encuentra en el mismo orden de magnitud que el método de calibración manual de escena.
+Este error es cercano al método de estimación estática de altura media, pero permitiendo la estimación de la
 altura de individuos cuya estatura no es 1.75 metros en diversas escenas.
 Adicionalmente, destacan los valores máximos que no llegan a sobrepasar los 33 centímetros de error, mientras que el método de calibración manual ha llegado a tener
 un error de 41.6 centímetros (valor atípico, un error extremo de estimación de altura por retroproyección).
@@ -357,8 +357,8 @@ aprendizaje de la capa de estimación de altura, así como la magnitud del gradi
 regularizar este comportamiento.
 El error promedio agrupado por individuo es de 7.4 centímetros, superior a los 5.8 centímetros del método
 de calibración manual y los 6.8 centímetros del método de predicción estática.
-La baja variabilidad antropométrica de los datos (distribución de estatura muy centrada en 1.75 metros),
-junto a posibles problemas de aprendizaje del modelo hacen que el estimador estático presente un error medio absoluto menor.
+La baja variabilidad antropométrica de los datos (distribución de estatura muy centrada en 1.75 metros) y
+posibles problemas de aprendizaje del modelo hacen que el estimador estático presente un error medio absoluto menor.
 Aún así, dichos resultados se alcanzan de forma semi-supervisada y con un bajo número de iteraciones,
 indicando el potencial que posee el método implementado de cara a automatizar y facilitar la estimación de la altura en entornos no controlados.
 
@@ -530,9 +530,9 @@ observan las mejores y peores estimaciones.
   Se observa que incluir un \emph{a priori} sobre las estimaciones mejora el error máximo
   frente al método de calibración manual.
   No obstante, la baja variabilidad antropométrica de los datos (distribución de estatura muy centrada en 1.75 metros), junto
-  a errores de estimaciones elevados en algunas escenas (posibles problemas de aprendizaje del modelo), hace que el método de estimación estática
-  del valor de altura media (1.75 metros) presente un menor error medio. Aún así, dichos resultados se alcanzan de forma semi-supervisada y con un bajo número de iteraciones,
-  indicando el potencial que posee dicho método de cara a automatizar y facilitar la estimación de la altura en entornos no controlados.
+  a errores de estimaciones elevados en algunas escenas, hace que el método de estimación estática
+  presente un menor error medio. Aún así, dichos resultados se alcanzan de forma semi-supervisada y con pocas iteraciones,
+  indicando el potencial que posee el método de cara a automatizar la estimación de la altura en entornos no controlados.
 }\label{tab:Results}
 \end{table}
 
