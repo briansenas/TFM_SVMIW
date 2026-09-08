@@ -5,7 +5,7 @@
     \begin{figure}[!ht]
       \center
       \includegraphics[width=.65\textwidth]{imagenes/chapter2/scene_model.pdf}
-      \caption{Modelo de escena de Rui Zhu \emph{et al}\footnotemark}
+      \caption{Modelo de escena de Zhu \emph{et al.}\footnotemark}
     \end{figure}
     \footcitetext{SVMIW}
 \end{frame}
@@ -45,7 +45,7 @@ para obtener la información de la altura de los objetos en escala absoluta.
   que debería corresponder al mismo Vt que indica el módulo de detección de personas.
   De esta forma, el módulo aprende a realizar estimaciones sobre la escena 3D que permita minimizar las discrepancias al proyectarla otra vez al plano de imagen.
   La ecuación inferior, es una regularización sobre las estimaciones para indicar al modelo que una persona habitualmente
-  mide 1.75 metros, facilitando y restringiendo así el proceso de búsqueda en el espacio de soluciones a valores físicamente coherentes.
+  mide 1.75 metros, restringiendo así el proceso de búsqueda en el espacio de soluciones a valores físicamente coherentes.
 }
 
 \begin{frame}
@@ -53,7 +53,7 @@ para obtener la información de la altura de los objetos en escala absoluta.
     \begin{figure}[!ht]
       \center
       \includegraphics[width=1\textwidth]{imagenes/chapter2/pipeline.pdf}
-      \caption{Pipeline propuesta por Rui Zhu \emph{et al}\footnotemark}
+      \caption{Pipeline propuesta por Zhu \emph{et al.}\footnotemark}
     \end{figure}
     \footcitetext{SVMIW}
 \end{frame}
@@ -61,8 +61,8 @@ para obtener la información de la altura de los objetos en escala absoluta.
 \note{
 Por resumir visualmente, esta es la pipeline propuesta.
 Dada la detección de la persona en la imagen, se realizan suposiciones de la escena 3D.
-Se introduce una regularización sobre dichas suposiciones indicando al modelo el tamaño medio de los objetos en la escena.
-Y se realiza la reproyección. Incluso múltiples veces para ir refinando las predicciones.
+Se introduce una regularización sobre dichas suposiciones indicando al modelo el tamaño medio de los objetos en la escena
+y se realiza la reproyección. Incluso múltiples veces para ir refinando las predicciones.
 Cada etapa o estimación tiene su pérdida asociada que se combinan en una única de forma ponderada.
 }
 
@@ -77,14 +77,14 @@ Cada etapa o estimación tiene su pérdida asociada que se combinan en una únic
         \end{itemize}
       \item El dataset de calibración de cámara SUN360\footcite{SUN360} ya no está disponible públicamente.
         \begin{itemize}
-          \item Se ha encontrado un sustituto de SUN360\footnotemark[\value{footnote}], PANO360\footcite{SPEC}
+          \item Se ha encontrado un sustituto de SUN360\footnotemark[\value{footnote}], PANO360\footcite{SPEC}.
         \end{itemize}
     \end{enumerate}
 \end{frame}
 
 \note{
   ¿Problemas? No se encuentra disponible ninguna implementación ni todos los datos de entrenamiento.
-  No obstante, aquí se encuentra la contribución principal:
+  No obstante, aquí está la contribución principal:
   Se ha replicado el artículo de referencia en el framework de visión por computador denominado detectron2,
   utilizando el dataset PANO360 en lugar del ya no disponible SUN360.
 }
@@ -107,11 +107,11 @@ Cada etapa o estimación tiene su pérdida asociada que se combinan en una únic
 \end{frame}
 
 \note{
-  Por otro lado, la comparativa se hará frente a un método clásico. La idea es,
-  en concreto, a partir de una referencia conocida, como la altura de la cámara
+  Además, se hace una comparativa frente a un método clásico.
+  Donde la idea es, en concreto, a partir de una referencia conocida, como la altura de la cámara
   respecto al plano del suelo ($Y_w$),
   junto con la orientación de la cámara descrita por sus ángulos de rotación (por ejemplo el
-  de inclinación, $\theta$), se puede calcular el rayo de visión asociado a
+  de inclinación, $\theta$), calcular el rayo de visión asociado a
   un punto de la imagen, por ejemplo el de los pies, desde el sistema de coordenadas de la cámara al sistema de coordenadas del mundo.
   Posteriormente, se utiliza la referencia conocida (p.ej. la altura de la cámara) para calcular el factor de escala que permite situar
   el punto de intersección del rayo que parte del centro óptico de la cámara ($Z_c$) sobre el plano de referencia (en nuestro caso el suelo)
@@ -139,7 +139,7 @@ Cada etapa o estimación tiene su pérdida asociada que se combinan en una únic
 \end{frame}
 
 \note{
-  Ahora sobre los materiales utilizados.
+  Ahora; sobre los materiales utilizados.
   Para entrenar el modelo de aprendizaje profundo, se dispone de 2 grandes conjuntos de datos.
   El primero es un subconjunto del dataset COCO, que consiste en un conjunto de imágenes etiquetadas de múltiples objetos
   en varias escenas. En nuestro caso, se filtra por aquellas escenas que tengan al menos una persona etiquetada
@@ -157,7 +157,7 @@ Cada etapa o estimación tiene su pérdida asociada que se combinan en una únic
     \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter3/Pano360/stripped-46549510}}
     \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter3/Pano360/stripped-50535259}}
   \end{center}
-  \caption{Ejemplos de escenas panorámicas de Pano360~\footcite{SPEC}}
+  \caption{Ejemplos de escenas panorámicas de Pano360~\footcite{SPEC}.}
 \end{figure}
 \end{frame}
 
@@ -176,9 +176,8 @@ Cada etapa o estimación tiene su pérdida asociada que se combinan en una únic
     \subfloat{\includegraphics[width=0.15\textwidth]{imagenes/chapter3/Calib/pano_acizdacpcaveub.jpg-5.jpg}}
     \subfloat{\includegraphics[width=0.15\textwidth]{imagenes/chapter3/Calib/pano_acizdacpcaveub.jpg-6.jpg}}
   \end{center}
-  \caption[Ejemplo de imágenes obtenidas de una escena panorámica utilizando el algoritmo de~\footcite{CalibDataGeneration}.]{
-  Ejemplo de imágenes obtenidas de una escena panorámica utilizando el algoritmo de~\footcite{CalibDataGeneration}.
-  En este caso, dada una imagen panorámica de SUN360~\footcite{SUN360}, se extraen 3 recortes con parámetros de cámara diferentes.
+  \caption[Imágenes obtenidas de una escena panorámica utilizando el algoritmo de Yannick~\emph{et al.}~\footcite{CalibDataGeneration}]{
+  Imágenes obtenidas de una escena panorámica utilizando el algoritmo de Yannick~\emph{et al.}~\footcite{CalibDataGeneration}
 }
 \end{figure}
 \end{frame}
@@ -202,7 +201,7 @@ Cada etapa o estimación tiene su pérdida asociada que se combinan en una únic
     \subfloat{\includegraphics[width=0.35\textwidth]{imagenes/chapter3/EntranceRamp.jpg}}
     \subfloat{\includegraphics[width=0.35\textwidth]{imagenes/chapter3/SeminarRoom.jpg}}\\
 \end{center}
-\caption{Ejemplo de grabaciones del conjunto de datos IdentAI~\footnotemark[\value{footnote}], realizadas en diferentes ubicaciones.}
+\caption{Ejemplo de grabaciones del conjunto de datos IdentAI~\footnotemark[\value{footnote}].}
 \end{figure}
 \end{frame}
 
@@ -230,7 +229,7 @@ En total hay 652 fotogramas, con 12 sujetos de diferente estatura, 4 tipo de esc
 \end{frame}
 
 \note{
-  Por otro lado, se dispone también de otro conjunto de datos denominado KITTI.
+  Por último, se dispone también de otro conjunto de datos denominado KITTI.
   Un conjunto de datos etiquetado para conducción autónoma con objetos identificados en la escena y la altura de los mismos.
   Servirá para la comparativa con los resultados reportados en el artículo de referencia.
 }

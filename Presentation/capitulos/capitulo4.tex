@@ -123,7 +123,7 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
 \end{frame}
 
 \note{
-  Para hablar del método por aprendizaje profundo, primero se necesita evaluar la calidad de la implementación frente al artículo de referencia.
+  Ahora; Para hablar del método por aprendizaje profundo, primero se necesita evaluar la calidad de la implementación frente al artículo de referencia.
   Por ello, se obtiene la siguiente tabla con resultados del artículo de Kocabas et al.
   En ella, se compara el rendimiento del modelo en la estimación de los parámetros de la cámara en las diferentes escenas de PANO360.
   Los valores obtenidos son del mismo orden de magnitud y sugieren que la implementación reproduce razonablemente bien el comportamiento esperado.
@@ -134,7 +134,7 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
 \begin{frame}
   \begin{itemize}
     \item Se obtiene errores de reproyección en el mismo orden de magnitud.
-    \item KITTI-person* consiste de 1352 imágenes frente a las 298 utilizadas por Rui Zhu~\emph{et al}~\footcite{SVMIW}.
+    \item KITTI-person* consiste de 1352 imágenes frente a las 298 utilizadas por Zhu~\emph{et al}~\footcite{SVMIW}.
   \end{itemize}
 \begin{table}[!ht]
   \centering
@@ -162,8 +162,8 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
 \note{
   Respecto a la estimación de escala, comparando con una tabla obtenida del artículo de referencia de Zhu et al,
   se tiene que el error de reproyección y de estimación de altura en COCO-Scale y KITTI-person
-  también están en el mismo orden magnitud. Siendo ambas cosas indicativos de que el modelo parece ser capaz
-  de minimizar las funciones de pérdida y replicar el comportamiento esperado.
+  también están en el mismo orden magnitud. Siendo ambas cosas, otra vez, indicativos de que la implementación
+  parece ser capaz replicar el comportamiento esperado.
 }
 
 \begin{frame}
@@ -215,7 +215,7 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
 \end{frame}
 
 \note{
-  Al estudiar las predicciones del modelo se observa un efecto de regresión hacia el a priori,
+  Al estudiar las predicciones del modelo se observa un efecto de regresión hacia el a priori introducido,
   provocando que el modelo tienda a sobre-estimar para sujetos de baja estatura y subestimar para aquellos de gran estatura.
   Esto no quiere decir que el modelo no sea capaz de realizar predicciones correctas para esos extremos.
 }
@@ -233,7 +233,8 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
 \note{
   En esta figura se observan predicciones coincidentes a dos decimales con valores por encima y por debajo del
   promedio de 1.75. No obstante, el efecto afecta al resultado final dado que el
-  conjunto de datos posee muchos fotogramas para el sujeto con 1.90 metros y no siempre preserva la consistencia en las predicciones para todos los fotogramas.
+  conjunto de datos posee muchos fotogramas para el sujeto con 1.90 metros y no siempre preserva la consistencia en las predicciones
+  para todos los fotogramas.
 }
 
 
@@ -269,7 +270,7 @@ Cam3 & 166 & 0.065 & 0.041 & 0.002 &0.059 & 0.091 & 0.183 \\
 \note{
   Por último, cabe destacar el error absoluto medio de estimación de la altura de la cámara.
   Se alcanza un error medio de 17.9 centímetros.
-  Esto es un indicativo que minimizar el error de reproyección sin suposiciones adicionales de la escena
+  Esto es un indicativo que minimizar el error de reproyección de esta forma, sin suposiciones adicionales de la escena,
   no implica que las estimaciones tengan directamente sentido físico. Es decir, hay múltiples
   variaciones de altura del objeto, de la cámara y profundidad del objeto en la misma que obtienen
   el mismo bajo error de reproyección.
