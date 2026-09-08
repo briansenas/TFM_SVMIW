@@ -1,23 +1,24 @@
 [:es: Español](#spanish) | [:gb: English](#english)
 ---
+
 <h1 align="center"> Estimación de altura humana "in the wild" mediante calibración geométrica y aprendizaje profundo </h1>
 <h4 align="center">  Curso 2025-2026, Máster Ciencia de Datos e Ingeniería de Computadores, ETSIIT UGR.</h4>
 <h5 align="center"> Trabajo de Fin de Máster </h5><a id='spanish'></a>
 
 <img style="display:block;width:100%;margin:auto;padding-bottom:25px" src="https://github.com/briansenas/TFM_SVMIW/blob/main/imgs/coco-scale-sample-crop.png?raw=True"/>
 
-<div style="display:flex"> 
+<div style="display:flex">
 <div style="flex:50%;max-width:30%"><font size="4"> <emph><strong>Autor</strong></emph>: Brian Sena Simons</font> </div>
 <div style="flex:50%;text-align:right"><font size="4"> <emph><strong>Directores</emph></strong>: Dr. Pablo Mesejo Santiago y Dr. Enrique Bermejo Nievas </font></div>
 </div>
 
-## :pushpin: Introducción 
-Este TFM trata de la implementación del artículo de Zhu <emph>et al</emph>[[1]](#1), 
-en el framework de visión por computador "Detectron2"[[2]](#2). En lugar del ya no disponible conjunto de datos SUN360, se utiliza Pano360[[3]](#3). Los valores obtenidos en Pano360 y COCO-Scale son del mismo orden de magnitud que los artículos 
-de referencia y, aunque la comparación no es estrictamente directa debido a diferencias entre las particiones utilizadas, sugieren que la implementación reproduce razonablemente el comportamiento descrito. Finalmente, se evalúa su rendimiento en un conjunto de datos independiente IdentAI y se identifican las limitaciones. 
+## :pushpin: Introducción
+
+Este TFM trata de la implementación del artículo de Zhu <emph>et al</emph>[[1]](#1),
+en el framework de visión por computador "Detectron2"[[2]](#2). En lugar del ya no disponible conjunto de datos SUN360, se utiliza Pano360[[3]](#3). Los valores obtenidos en Pano360 y COCO-Scale son del mismo orden de magnitud que los artículos
+de referencia y, aunque la comparación no es estrictamente directa debido a diferencias entre las particiones utilizadas, sugieren que la implementación reproduce razonablemente el comportamiento descrito. Finalmente, se evalúa su rendimiento en un conjunto de datos independiente IdentAI y se identifican las limitaciones.
 
 Para una lectura detallada de los modelos y experimentación pulsar [aquí](https://github.com/briansenas/TFM_SVMIW/blob/main/Document/proyecto.tex).
-
 
 ## 📚 Tabla de contenidos
 
@@ -30,7 +31,7 @@ Para una lectura detallada de los modelos y experimentación pulsar [aquí](http
 
 ## 🎥 Herramientas de cámara
 
-Para más información sobre el módelo implementado sobre el trabajo de Zhu <emph>et al</emph>[[1]](#1), entrar al repositorio [d2-scale-net](https://github.com/briansenas/detectron2-scale-net/tree/feature/multiple-classes). Una vez instalado los requisitos de Detectron2[[2]](#2) se podrá hacer uso del script `train_calib.py` para entrenar el modelo. Para más información, ver Apéndice "A.5. Lanzar experimentos".
+Para más información sobre el modelo implementado basado en el trabajo de Zhu <emph>et al</emph>[[1]](#1), entrar al repositorio [d2-scale-net](https://github.com/briansenas/detectron2-scale-net/tree/feature/multiple-classes). Una vez instalado los requisitos de Detectron2[[2]](#2) se podrá hacer uso del script `train_calib.py` para entrenar el modelo. Para más información, ver Apéndice "A.5. Lanzar experimentos".
 
 Respecto a los scripts de Python, se proporciona un conjunto modular de herramientas de línea de comandos para gestionar flujos de trabajo de cámaras basados en vídeo, como:
 
@@ -107,8 +108,8 @@ python main.py -h
 
 ## 🧠 Notas
 
-* Asegúrate de que `ffmpeg` está instalado y disponible en el `PATH` de tu sistema. En Linux: `sudo apt install ffmpeg`.
-* El modelo YOLO utilizado por defecto es `yolov8n.pt`, aunque puedes utilizar otros modelos preentrenados o modelos personalizados.
+- Asegúrate de que `ffmpeg` está instalado y disponible en el `PATH` de tu sistema. En Linux: `sudo apt install ffmpeg`.
+- El modelo YOLO utilizado por defecto es `yolov8n.pt`, aunque puedes utilizar otros modelos preentrenados o modelos personalizados.
 
 ---
 
@@ -116,16 +117,16 @@ python main.py -h
 
 GNU GENERAL PUBLIC LICENSE Versión 3, 29 de junio de 2007
 
-
 [:es: Español](#spanish) | [:gb: English](#english)
 ---
+
 <h1 align="center"> Human height estimation "in the wild" through geometric calibration and deep learning</h1>
 <h4 align="center">  2025-2026 Course, Master in Data Science and Computer Engineering, ETSIIT UGR.</h4>
 <h5 align="center"> Master's thesis </h5><a id='english'></a>
 
 <img style="display:block;width:100%;margin:auto;padding-bottom:25px" src="https://github.com/briansenas/TFM_SVMIW/blob/main/imgs/coco-scale-sample-crop.png?raw=True"/>
 
-<div style="display:flex"> 
+<div style="display:flex">
 <div style="flex:50%;max-width:30%"><font size="4"> <emph><strong>Author</strong></emph>: Brian Sena Simons</font> </div>
 <div style="flex:50%;text-align:right"><font size="4"> <emph><strong>Directores</emph></strong>: Dr. Pablo Mesejo Santiago y Dr. Enrique Bermejo Nievas </font></div>
 </div>
@@ -223,8 +224,8 @@ python main.py -h
 
 ## 🧠 Notes
 
-* Make sure `ffmpeg` is installed and accessible in your system path. For linux: `sudo apt install ffmpeg`.
-* The YOLO model defaults to `yolov8n.pt`, but you can use other pretrained models or custom ones.
+- Make sure `ffmpeg` is installed and accessible in your system path. For linux: `sudo apt install ffmpeg`.
+- The YOLO model defaults to `yolov8n.pt`, but you can use other pretrained models or custom ones.
 
 ---
 
@@ -235,8 +236,9 @@ GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
 ---
 
 ## :books: Referencias
+
 <a id="1">[1]</a> R. Zhu et al., "Single View Metrology in the Wild" en Computer Vision - ECCV 2020, Springer INternation PUblishing, 2020, págs. 316-333
 
-<a id="2">[2]</a> Y. Wu, A. Kirillov, F. Massa, W.-Y. Lo y R. Girshick, Detectron2, https://github.com/facebookresearch/detectron2, 2019. 
+<a id="2">[2]</a> Y. Wu, A. Kirillov, F. Massa, W.-Y. Lo y R. Girshick, Detectron2, <https://github.com/facebookresearch/detectron2>, 2019.
 
-<a id="3">[3]</a> M. Kocabas, C.-H. P. Huang, J. Tesch, L. Müller, O. Hilliges y M. J. Black, ((SPEC: Seeing People in the Wild with an Estimated Camera,)) en International Conference on Computer Vision, 2021, págs. 11 035-11 045. 
+<a id="3">[3]</a> M. Kocabas, C.-H. P. Huang, J. Tesch, L. Müller, O. Hilliges y M. J. Black, ((SPEC: Seeing People in the Wild with an Estimated Camera,)) en International Conference on Computer Vision, 2021, págs. 11 035-11 045.
