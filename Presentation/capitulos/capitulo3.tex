@@ -111,10 +111,10 @@ Cada etapa o estimación tiene su pérdida asociada que se combinan en una únic
   Donde la idea es, en concreto, a partir de una referencia conocida, como la altura de la cámara
   respecto al plano del suelo ($Y_w$),
   junto con la orientación de la cámara descrita por sus ángulos de rotación (por ejemplo el
-  de inclinación, $\theta$), se calcula el rayo de visión asociado a
+  de inclinación, $\theta$), calcular el rayo de visión asociado a
   un punto de la imagen, por ejemplo el de los pies, desde el sistema de coordenadas de la cámara al sistema de coordenadas del mundo.
   Posteriormente, se utiliza la referencia conocida (p.ej. la altura de la cámara) para calcular el factor de escala que permite situar
-  el punto de intersección del rayo que parte del centro óptico de la cámara ($Z_c$) sobre el plano de referencia (en nuestro caso el suelo)
+  el punto de intersección del rayo que parte del centro óptico de la cámara ($Z_c$) sobre el plano de referencia (en nuestro caso el suelo).
   Una vez localizado este punto de referencia, el procedimiento similar para el punto asociado a la cabeza permite estimar la altura del sujeto.
 }
 
