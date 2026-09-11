@@ -5,8 +5,7 @@
 \begin{table}[!ht]
   \centering
   \scriptsize
-  \begin{tabularx}{\linewidth}{|X|X|X|X|}
-\hline
+  \begin{tabularx}{\linewidth}{|X|X|X|X|} \hline
 \rowcolor[HTML]{FFCB2F}
 \textbf{Método} & \textbf{Enfoque} & \textbf{Requisitos previos} & \textbf{Propósito} \\
 \hline
@@ -42,22 +41,22 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
   \begin{table}
     \centering
     \scriptsize
-  \begin{tabular}{|l|c|c|c|c|c|c|c|}
+  \begin{tabular}{|l|c|c|c|c|}
   \hline
   \rowcolor[HTML]{FFCB2F}
-  \textbf{Cámara} & \textbf{Soporte} & $\mu$ & $\sigma$ & $\sigma^2$ & \textbf{Mediana} & $Q_3$ & \textbf{Máximo} \\
+  \textbf{Cámara} & \textbf{Soporte} & $\mu$ & $\sigma$ & \textbf{Máximo} \\
   \hline
-  Cam1 & 209 & 0.092 & 0.078 & 0.006 &0.070 & 0.134 & 0.416 \\
+  Cam1 & 209 & 9.2 & 7.8 & 41.6 \\
   \hline
-  Cam2 & 277 & 0.052 & 0.038 & 0.001 &0.046 & 0.073 & 0.194 \\
+  Cam2 & 277 & 5.2 & 3.8 & 19.4 \\
   \hline
-  Cam3 & 166 & 0.062 & 0.035 & 0.001 &0.063 & 0.087 & 0.149 \\
+  Cam3 & 166 & 6.2 & 3.5 & 14.9 \\
   \hline
-  \textbf{Total} & \textbf{652} & \textbf{0.067} & \textbf{0.056} & \textbf{0.003} & \textbf{0.055} & \textbf{0.091} & \textbf{0.416} \\
+  \textbf{Total} & \textbf{652} & \textbf{6.7} & \textbf{5.6} & \textbf{41.6} \\
   \hline
   \end{tabular}
   \caption{
-  Tabla de errores de estimación del método de calibración manual, expresados en metros.
+  Tabla de errores de estimación del método de calibración manual, expresados en centímetros.
   }
   \end{table}
 \end{frame}
@@ -150,11 +149,11 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
   \hline
   \multirow{2}{*}{COCO-Scale} & ScaleNet SN-L3\footnotemark[\value{footnote}]& 0.07 & -\\
   \cline{2-4}
-                                     & Nuestro & 0.07 & - \\
+                              & \cellcolor{gray!25} Nuestro & \cellcolor{gray!25} 0.07 & \cellcolor{gray!25}- \\
   \hline
   KITTI-person & ScaleNet SN-L3\footnotemark[\value{footnote}] & 0.03 & 0.10 metros\\
   \hline
-  KITTI-person* & Nuestro & 0.04 & 0.09 metros\\
+  KITTI-person* & \cellcolor{gray!25}Nuestro & \cellcolor{gray!25}0.04 & \cellcolor{gray!25}0.09 metros\\
   \hline
   \end{tabular}
   \caption[Tabla comparativa de los errores de reproyección obtenidos.]{
@@ -179,21 +178,21 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
 \begin{table}
   \scriptsize
   \begin{center}
-    \begin{tabular}{|l|c|c|c|c|c|c|c|}
+    \begin{tabular}{|l|c|c|c|c|}
       \rowcolor[HTML]{FFCB2F}
       \hline
-      \textbf{Método} & $\mu$ & $\sigma$ & $\sigma^2$ & \textbf{Mediana} & $Q_3$ & \textbf{Máximo}\\
+      \textbf{Dataset} & \textbf{Método} & $\mu$ & $\sigma$ & \textbf{Máximo}\\
       \hline
-      Estático (1.75 metros) & 0.088 & 0.060 & 0.004 & 0.060 & 0.150 & \textbf{0.170} \\
-      \hline
-      Calibración Manual & \textbf{0.067} & \textbf{0.056} & \textbf{0.003} & \textbf{0.055} & \textbf{0.091} & 0.416 \\
-      \hline
-      Nuestro & 0.098 & 0.069 & 0.005 & 0.081 & 0.152 & 0.328 \\
+      \multirow{3}{*}{IdentAI}                 & Estático (1.75 metros) & 8.8 & 6.0 & 17.0 \\
+      \cline{2-5}
+                       & Calibración Manual & \textbf{6.7} & \textbf{5.6} & 41.6 \\
+      \cline{2-5}
+                       & \cellcolor{gray!25} Nuestro & \cellcolor{gray!25} 9.8 & \cellcolor{gray!25} 6.9 & \cellcolor{gray!25} 32.8 \\
       \hline
     \end{tabular}
   \end{center}
-  \caption[Tabla resumen de comparativa final, con errores expresados en metros.]{
-  Tabla resumen de comparativa final, con errores expresados en metros.
+  \caption[Tabla resumen de comparativa final, con errores expresados en centímetros.]{
+  Tabla resumen de comparativa final, con errores expresados en centímetros.
   }
 \end{table}
 \end{frame}
@@ -254,22 +253,22 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
 \begin{table}[!ht]
   \centering
   \scriptsize
-\begin{tabular}{|l|c|c|c|c|c|c|c|}
+\begin{tabular}{|l|c|c|c|c|}
 \hline
 \rowcolor[HTML]{FFCB2F}
-\textbf{Cámara} & \textbf{Soporte} & $\mu$ & $\sigma$ & $\sigma^2$ & \textbf{Mediana} & $Q_3$ & \textbf{Máximo} \\
+\textbf{Cámara} & \textbf{Soporte} & $\mu$ & $\sigma$ & \textbf{Máximo} \\
 \hline
-Cam1 & 209 & 0.295 & 0.102 & 0.010 &0.323 & 0.361 & 0.421 \\
+Cam1 & 209 & 29.5 & 10.2 & 42.1 \\
 \hline
-Cam2 & 277 & 0.161 & 0.077 & 0.006 &0.172 & 0.212 & 0.399 \\
+Cam2 & 277 & 16.1 & 7.7 & 39.9 \\
 \hline
-Cam3 & 166 & 0.065 & 0.041 & 0.002 &0.059 & 0.091 & 0.183 \\
+Cam3 & 166 & 6.5 & 4.1 & 18.3 \\
 \hline
-\textbf{Total} & \textbf{652} & \textbf{0.179} & \textbf{0.118} & \textbf{0.014} & \textbf{0.169} & \textbf{0.285} & \textbf{0.421} \\
+\textbf{Total} & \textbf{652} & \textbf{17.9} & \textbf{11.8} & \textbf{42.1} \\
 \hline
 \end{tabular}
-\caption[Tabla de errores de estimación de la altura de la cámara con aprendizaje automático, expresados en metros.]{
-  Tabla de errores de estimación de la altura de la cámara con aprendizaje automático, expresados en metros.
+\caption[Tabla de errores de estimación de la altura de la cámara con aprendizaje automático, expresados en centímetros.]{
+  Tabla de errores de estimación de la altura de la cámara con aprendizaje automático, expresados en centímetros.
 }
 \end{table}
 \end{frame}
