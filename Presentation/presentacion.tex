@@ -46,6 +46,14 @@
   andothers={et ~al\adddot}
 }
 
+\renewbibmacro*{cite:short}{%
+  \printnames{labelname}%
+  \setunit{\nameyeardelim}%
+  \printdate%
+  \setunit{\addcomma\space}%
+  \printfield{title}%
+}
+
 \addbibresource{bibliografia/bibliografia.bib}
 
 \setbeamercovered{transparent}
