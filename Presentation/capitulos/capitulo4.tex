@@ -104,20 +104,23 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
   \hline
   CamCalib (KL Loss)~\footcite{SPEC} & 3.53 & 2.32 & 1.15 \\
   \hline
-  CamCalib (Softargmax-L2)~\footnotemark[\value{footnote}] & 3.34 & 2.06 & 1.11 \\
+  CamCalib (Softargmax-L2)\footnotemark[\value{footnote}] & 3.34 & 2.06 & 1.11 \\
   \hline
-  CamCalib (Softargmax-biased-L2)~\footnotemark[\value{footnote}] & \textbf{3.24} & \textbf{1.94} & 1.02 \\
+  CamCalib (Softargmax-biased-L2)\footnotemark[\value{footnote}] & \textbf{3.24} & \textbf{1.94} & 1.02 \\
   \hline
+  \rowcolor{gray!25}
   Modelo entero fase 0 (Softargmax-biased-L2) & 3.98 & 2.43 & \textbf{0.89} \\
   \hline
+  \rowcolor{gray!25}
   Solo clasificadores fase 0 (Softargmax-biased-L2) & 6.09 & 3.78 & 1.54 \\
   \hline
+  \rowcolor{gray!25}
   Modelo fase final (Softargmax-biased-L2) & 3.46 & 2.34 & 1.05 \\
   \hline
   \end{tabular}
   \caption
   {
-    Tabla comparativa de la precisión de la estimación de los parámetros de la cámara en Pano360~\footnotemark[\value{footnote}].
+    Tabla comparativa de la precisión de la estimación de los parámetros de la cámara en Pano360\footnotemark[\value{footnote}].
 }
 \end{table}
 \end{frame}
@@ -145,11 +148,11 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
   \rowcolor[HTML]{FFCB2F}
   \textbf{Dataset} & \textbf{Método} & \textbf{Error de reproyección} & \textbf{Error de medición}\\
   \hline
-  \multirow{2}{*}{COCO-Scale} & ScaleNet SN-L3~\footnotemark[\value{footnote}]& 0.07 & -\\
+  \multirow{2}{*}{COCO-Scale} & ScaleNet SN-L3\footnotemark[\value{footnote}]& 0.07 & -\\
   \cline{2-4}
                                      & Nuestro & 0.07 & - \\
   \hline
-  KITTI-person & ScaleNet SN-L3~\footnotemark[\value{footnote}] & 0.03 & 0.10 metros\\
+  KITTI-person & ScaleNet SN-L3\footnotemark[\value{footnote}] & 0.03 & 0.10 metros\\
   \hline
   KITTI-person* & Nuestro & 0.04 & 0.09 metros\\
   \hline
