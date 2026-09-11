@@ -1,7 +1,7 @@
 \section{Materiales y métodos}
-\subsection{Single View Metrology in the Wild}
+\subsection{Método por aprendizaje profundo}
 \begin{frame}
-    \frametitle{Single View Metrology in the Wild}
+    \frametitle{Método por aprendizaje profundo}
     \begin{figure}[!ht]
       \center
       \includegraphics[width=.65\textwidth]{imagenes/chapter2/scene_model.pdf}
@@ -11,8 +11,7 @@
 \end{frame}
 
 \note{
-En él, argumentan poder estimar la escala absoluta de la imagen entrenando
-en datos semi-supervisados a partir del modelo de escena que se ve en pantalla.
+En él, argumentan poder estimar la escala absoluta a partir del modelo de escena que se ve en pantalla.
 Es el modelo típico proyectivo de una cámara estenopeica.
 La idea es, si logramos estimar ciertos parámetros de la escena,
 como el ángulo de rotación de la cámara con respecto al horizonte, así como detectar las personas
@@ -21,7 +20,7 @@ para obtener la información de la altura de los objetos en escala absoluta.
 }
 
 \begin{frame}
-    \frametitle{Single View Metrology in the Wild}
+    \frametitle{Método por aprendizaje profundo}
     \begin{enumerate}
       \item Las pérdidas introducidas por el artículo son:
     \end{enumerate}
@@ -43,13 +42,13 @@ para obtener la información de la altura de los objetos en escala absoluta.
   Las pérdidas introducidas son las siguientes, donde la principal ecuación es la superior, la 1. En la cual se mide el error de reproyección de la escena. Dada nuestras suposiciones,
   por medio de geometría proyectiva obtenemos un Vt, es decir, la posición superior del recuadro que delimita la persona en la imagen,
   que debería corresponder al mismo Vt que indica el módulo de detección de personas.
-  De esta forma, el módulo aprende a realizar estimaciones sobre la escena 3D que permita minimizar las discrepancias al proyectarla otra vez al plano de imagen.
+  De esta forma, el modelo aprende a realizar estimaciones sobre la escena 3D que permita minimizar las discrepancias al proyectarla otra vez al plano de imagen.
   La ecuación inferior, es una regularización sobre las estimaciones para indicar al modelo que una persona habitualmente
   mide 1.75 metros, restringiendo así el proceso de búsqueda en el espacio de soluciones a valores físicamente coherentes.
 }
 
 \begin{frame}
-    \frametitle{Single View Metrology in the Wild}
+    \frametitle{Método por aprendizaje profundo}
     \begin{figure}[!ht]
       \center
       \includegraphics[width=1\textwidth]{imagenes/chapter2/pipeline.pdf}
@@ -112,9 +111,9 @@ Cada etapa o estimación tiene su pérdida asociada que se combinan en una únic
   respecto al plano del suelo ($Y_w$),
   junto con la orientación de la cámara descrita por sus ángulos de rotación (por ejemplo el
   de inclinación, $\theta$), calcular el rayo de visión asociado a
-  un punto de la imagen, por ejemplo el de los pies, desde el sistema de coordenadas de la cámara al sistema de coordenadas del mundo.
+  un punto de la imagen, como por ejemplo el de los pies (fíjense en las líneas verdes de la cámara a los pies).
   Posteriormente, se utiliza la referencia conocida (p.ej. la altura de la cámara) para calcular el factor de escala que permite situar
-  el punto de intersección del rayo que parte del centro óptico de la cámara ($Z_c$) sobre el plano de referencia (en nuestro caso el suelo).
+  el punto de intersección del rayo que parte del centro óptico de la cámara ($Z_c$) sobre el plano de referencia (en nuestro caso el suelo) para localizar el punto 3D de los pies.
   Una vez localizado este punto de referencia, el procedimiento similar para el punto asociado a la cabeza permite estimar la altura del sujeto.
 }
 
@@ -139,7 +138,7 @@ Cada etapa o estimación tiene su pérdida asociada que se combinan en una únic
 \end{frame}
 
 \note{
-  Ahora; sobre los materiales utilizados.
+  Una vez entendido los métodos, hablemos de los materiales utilizados.
   Para entrenar el modelo de aprendizaje profundo, se dispone de 2 grandes conjuntos de datos.
   El primero es un subconjunto del dataset COCO, que consiste en un conjunto de imágenes etiquetadas de múltiples objetos
   en varias escenas. En nuestro caso, se filtra por aquellas escenas que tengan al menos una persona etiquetada
