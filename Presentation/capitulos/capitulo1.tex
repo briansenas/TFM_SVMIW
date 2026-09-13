@@ -2,21 +2,23 @@
 \subsection{Contexto}
 \begin{frame}
   \frametitle{Contexto}
-  \begin{figure}[!ht]
-  \begin{center}
-      \includegraphics[width=\textwidth]{imagenes/chapter1/teaser.pdf}
-  \end{center}
-  \caption{Descripción del procedimiento de metrología monocular sacada de Zhu~\emph{et al.}\footcite{SVMIW}}
-  \end{figure}
+    \begin{itemize}
+      \item La \textbf{metrología monocular} consiste en realizar \textbf{estimaciones de medidas} de la escena a partir de \textbf{una sola vista}.
+    \end{itemize}
+    \begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[width=.8\textwidth]{imagenes/chapter1/gimp-tfm-chapter1.png}
+    \end{center}
+    \caption{Ejemplo de metrología monocular para estimación de altura.}
+    \end{figure}
 \end{frame}
 
 \note{
 Para ilustrar visualmente lo que se busca conseguir con este proyecto, se tiene la siguiente figura
-sacada del artículo de referencia de Zhu et al. La idea
-principal es dada una imagen de entrada -- una sola vista de la escena -- poder, como en la parte central derecha, realizar una
+sobre el procedimiento de metrología monocular.
+La idea principal es dada una imagen de entrada -- una sola vista de la escena -- poder realizar una
 medición en escala absoluta -- es decir, en metros -- de los objetos en escena. Esto abre
-puertas a varias aplicaciones que se discutirán a continuación; como por ejemplo la
-inserción, en escala real, de objetos en la escena. Fíjense en la silla insertada al lado de la mujer.
+puertas a varias aplicaciones que se discutirán a continuación.
 }
 
 \begin{frame}
@@ -24,11 +26,11 @@ inserción, en escala real, de objetos en la escena. Fíjense en la silla insert
   \begin{columns}
     \column{0.5\textwidth}
     \begin{itemize}
-      \item Los métodos clásicos dependen de la calibración y conocimientos \emph{a priori} de la escena\footnotemark.
-      \item El auge del aprendizaje profundo ha abierto nuevas oportunidades.
+      \item \textbf{Los métodos clásicos dependen de la calibración} y conocimientos \emph{a priori} de la escena\footnotemark.
+      \item El \textbf{auge del aprendizaje profundo} ha abierto nuevas oportunidades.
         \begin{itemize}
-          \item Desafíos importantes: ambigüedad inherente a la escala absoluta.
-          \item Motivación: La metrología monocular es una alternativa asequible, que afectaría a múltiples ámbitos industriales y científicos.
+          \item \textbf{Desafíos importantes}: ambigüedad inherente a la escala absoluta.
+          \item \textbf{Motivación}: La metrología monocular asequible afectaría a múltiples ámbitos industriales y científicos.
         \end{itemize}
     \end{itemize}
     \column{0.5\textwidth}
@@ -62,10 +64,10 @@ inserción, en escala real, de objetos en la escena. Fíjense en la silla insert
   \begin{columns}
     \column{0.5\textwidth}
     \begin{itemize}
-      \item \textbf{Entornos forenses}\footnotemark: Estimación de sospechosos y víctimas a partir de grabaciones.
-      \item \textbf{Biomecánica}\footnotemark[\value{footnote}]: Análisis postural o del movimiento en atletas.
-      \item \textbf{Reconstrucción de escenas}\footnotemark[\value{footnote}]: Cálculo de medidas reales de estructuras.
-      \item \textbf{Geometría en pinturas}\footnotemark[\value{footnote}]: Comparación de alturas, formas geométricas o patrones.
+      \item \textbf{Entornos forenses}\footnotemark: Estimación de la altura de sospechosos a partir de grabaciones.
+      \item \textbf{Biomecánica}\footnotemark[\value{footnote}]: Análisis del movimiento.
+      \item \textbf{Reconstrucción de escenas}\footnotemark[\value{footnote}].
+      \item \textbf{Geometría en pinturas}\footnotemark[\value{footnote}].
     \end{itemize}
     \column{0.5\textwidth}
     \begin{figure}[!ht]

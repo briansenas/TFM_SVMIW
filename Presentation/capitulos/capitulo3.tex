@@ -1,12 +1,28 @@
 \section{Materiales y métodos}
 \subsection{Método por aprendizaje profundo}
 \begin{frame}
+\begin{columns}
+  \column{0.4\textwidth}
+  \begin{itemize}
+    \item \textbf{Datos etiquetados}:
+      \begin{itemize}
+        \item Ángulos de la cámara.
+        \item Recuadro de detección de la persona en la imagen.
+      \end{itemize}
+  \item \textbf{Datos no etiquetados}:
+      \begin{itemize}
+        \item Altura de la persona.
+        \item Altura de la cámara.
+      \end{itemize}
+  \end{itemize}
+  \column{0.6\textwidth}
     \frametitle{Método por aprendizaje profundo}
     \begin{figure}[!ht]
       \center
-      \includegraphics[width=.65\textwidth]{imagenes/chapter2/scene_model.pdf}
+      \includegraphics[width=\textwidth]{imagenes/chapter2/scene_model.pdf}
       \caption{Modelo de escena de Zhu \emph{et al.}\footnotemark}
     \end{figure}
+  \end{columns}
     \footcitetext{SVMIW}
 \end{frame}
 
@@ -17,24 +33,35 @@ La idea es, si logramos estimar ciertos parámetros de la escena,
 como el ángulo de rotación de la cámara con respecto al horizonte, así como detectar las personas
 y el recuadro que las encierra, podremos jugar a hacer reproyecciones entre las escenas 3D y 2D
 para obtener la información de la altura de los objetos en escala absoluta.
+Se entrena simultáneamente en dos conjuntos de datos a la vez, siendo semi-supervisado ya que en ninguno se encuentra el valor real de la
+altura del objeto o de la cámara. En uno se tiene los valores reales para el recuadro delimitador de la persona y en el otro los ángulos de rotación de la cámara.
 }
 
 \begin{frame}
     \frametitle{Método por aprendizaje profundo}
+    \begin{columns}
+      \column{0.5\textwidth}
     \begin{itemize}
-      \item Las pérdidas introducidas por el artículo son:
+      \item Las pérdidas introducidas son:
     \end{itemize}
-    \vspace{.3cm}
-\begin{equation}
+\begin{equation*}
   \mathcal{L}_{vt} ({v_t^i}_{i=1}^N) = \frac{1}{N}\sum_{i=1}^N ||v_{t_{det}}^i - v_t^i||
-\end{equation}
-\begin{equation}
+\end{equation*}
+\begin{equation*}
   \mathcal{L}_{h_{obj}} ({h_{obj}^i}_{i=1}^N) = \frac{1}{N}\sum_{i=1}^N \mathcal{P}(h_{obj}^i;\mu,\sigma)
-\end{equation}
+\end{equation*}
         \begin{itemize}
-          \item Donde $\mathcal{L}_{v_t}$ es el error de reproyección y $\mathcal{L}_{h_{obj}}$ es el \emph{a priori} ($175cm\pm20cm$).
-        \item Siendo $v_t$ la posición superior del recuadro delimitador del objeto.
+          \item Donde $\mathcal{L}_{v_t}$ es el error de reproyección y $\mathcal{L}_{h_{obj}}$ es el \emph{a priori} ($175\,cm\pm20\,cm$).
         \end{itemize}
+    \column{0.5\textwidth}
+    \begin{figure}
+      \begin{center}
+        \includegraphics[width=0.95\textwidth]{imagenes/chapter2/scene_model_cropped.pdf}
+      \end{center}
+      \caption{Plano de imagen planteado por Zhu~\emph{et al}.\footnotemark}
+    \end{figure}
+
+  \end{columns}
     \footcitetext{SVMIW}
 \end{frame}
 
@@ -69,14 +96,14 @@ Cada etapa o estimación tiene su pérdida asociada que se combinan en una únic
 \begin{frame}
     \frametitle{Problemas encontrados}
     \begin{itemize}
-      \item No está disponible el modelo pre-entrenado por los autores.
+      \item No está disponible el modelo preentrenado por los autores.
       \item No está disponible el código de entrenamiento.
         \begin{itemize}
-          \item Se ha replicado la implementación del artículo utilizando ``detectron2''~\footcite{detectron2}.
+          \item Se ha reimplementado el método descrito en el artículo utilizando ``Detectron2''~\footcite{detectron2}.
         \end{itemize}
       \item El dataset de calibración de cámara SUN360~\footcite{SUN360} ya no está disponible públicamente.
         \begin{itemize}
-          \item Se ha encontrado un sustituto de SUN360\footnotemark[\value{footnote}], PANO360~\footcite{SPEC}.
+          \item Se ha utilizado Pano360~\footcite{SPEC} como sustituto de SUN360\footnotemark[\number\numexpr\value{footnote}-1\relax]
         \end{itemize}
     \end{itemize}
 \end{frame}
@@ -91,8 +118,8 @@ Cada etapa o estimación tiene su pérdida asociada que se combinan en una únic
 \begin{frame}
   \frametitle{Método clásico: retroproyección 2D a 3D.}
   \begin{itemize}
-    \item Se utiliza la matriz de proyección de la cámara y una referencia conocida
-      para estimar la posición 3D de los puntos de la imagen.
+    \item Se utiliza la matriz de proyección de la cámara y \textbf{una referencia conocida}
+      para \textbf{estimar la posición 3D de los puntos} de la imagen.
     \item Tras posicionar en la escena los pies y la cabeza, se estima la altura del objeto.
   \end{itemize}
 \begin{figure}[!ht]
@@ -149,8 +176,8 @@ Cada etapa o estimación tiene su pérdida asociada que se combinan en una únic
   \frametitle{Datos de entrenamiento: Pano360}
 \begin{figure}[!ht]
   \begin{itemize}
-    \item Se obtiene un total de 30033 imágenes de la red social Flickr.
-    \item 347.304 imágenes de entrenamiento y 12.732 de validación.
+    \item Se obtiene un total de 30.033 imágenes de la red social Flickr.
+    \item Se generan 347.304 imágenes de entrenamiento y 12.732 de validación.
   \end{itemize}
   \begin{center}
     \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter3/Pano360/stripped-46549510}}
@@ -170,7 +197,14 @@ Cada etapa o estimación tiene su pérdida asociada que se combinan en una únic
   \frametitle{Generación de datos a partir de panorámicas}
 \begin{figure}[!ht]
   \begin{center}
-    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter3/Calib/pano_acizdacpcaveub.jpg}}\hfil
+    \hfill
+    % Brace above the three images
+    \begin{tikzpicture}[baseline]
+        \draw[decorate,decoration={brace,amplitude=8pt}]
+            (1.2cm,0) -- (9cm,0)
+            node[midway,above=10pt] {\textbf{Cámaras simuladas.}};
+    \end{tikzpicture}\\
+    \subfloat{\includegraphics[width=0.4\textwidth]{imagenes/chapter3/Calib/pano_acizdacpcaveub.jpg}}\hfill
     \subfloat{\includegraphics[width=0.25\textwidth]{imagenes/chapter3/Calib/pano_acizdacpcaveub.jpg-4.jpg}}
     \subfloat{\includegraphics[width=0.15\textwidth]{imagenes/chapter3/Calib/pano_acizdacpcaveub.jpg-5.jpg}}
     \subfloat{\includegraphics[width=0.15\textwidth]{imagenes/chapter3/Calib/pano_acizdacpcaveub.jpg-6.jpg}}
@@ -187,6 +221,28 @@ Cada etapa o estimación tiene su pérdida asociada que se combinan en una únic
 }
 
 \subsection{Datos de validación}
+\begin{frame}
+  \frametitle{Datos de validación: KITTI-person}
+  \begin{itemize}
+    \item KITTI~\footcite{Kitti} es un conjunto de \textbf{datos etiquetados para conducción autónoma}.
+    \item Se filtra el conjunto de imágenes por aquellas que contengan \textbf{al menos una persona completamente visible (KITTI-person)}.
+  \end{itemize}
+\begin{figure}[!ht]
+  \begin{center}
+    \subfloat{\includegraphics[width=0.7\textwidth]{imagenes/chapter3/Kitti/000073.png}}
+    %\subfloat{\includegraphics[width=0.6\textwidth]{imagenes/chapter4/Kitti/000074.png}}
+  \end{center}
+  \caption{
+    Ejemplo de escena etiquetada de KITTI\footnotemark[\value{footnote}].
+}
+\end{figure}
+\end{frame}
+
+\note{
+  Para la validación, primeramente se dispone del conjunto de datos denominado KITTI.
+  Es un conjunto de datos etiquetado para conducción autónoma con objetos identificados en la escena y la altura de los mismos.
+  Servirá para la comparativa con los resultados reportados en el artículo de referencia.
+}
 \begin{frame}
   \frametitle{Datos de validación: IdentAI}
   \begin{itemize}
@@ -208,27 +264,4 @@ Cada etapa o estimación tiene su pérdida asociada que se combinan en una únic
 Para la validación final. Se dispone del conjunto que se denomina IdentAI, fue recogido en diversas localizaciones del entorno urbano mediante un sistema multicámara,
 en colaboración con la Universidad de Granada, con el objetivo de realizar investigaciones en el ámbito de la identificación humana.
 En total hay 652 fotogramas, con 12 sujetos de diferente estatura, 4 tipo de escenas y 3 cámaras diferentes.
-}
-
-\begin{frame}
-  \frametitle{Datos de validación: KITTI}
-  \begin{itemize}
-    \item Conjunto de datos etiquetados para conducción autónoma.
-    \item Se filtra el conjunto de imágenes por aquellas que contengan al menos una persona completamente visible.
-  \end{itemize}
-\begin{figure}[!ht]
-  \begin{center}
-    \subfloat{\includegraphics[width=0.7\textwidth]{imagenes/chapter3/Kitti/000073.png}}
-    %\subfloat{\includegraphics[width=0.6\textwidth]{imagenes/chapter4/Kitti/000074.png}}
-  \end{center}
-  \caption[Ejemplo de escena etiquetada de KITTI~\footcite{Kitti}.]{
-    Ejemplo de escena etiquetada de KITTI~\footcite{Kitti}.
-}
-\end{figure}
-\end{frame}
-
-\note{
-  Por último, se dispone también de otro conjunto de datos denominado KITTI.
-  Un conjunto de datos etiquetado para conducción autónoma con objetos identificados en la escena y la altura de los mismos.
-  Servirá para la comparativa con los resultados reportados en el artículo de referencia.
 }

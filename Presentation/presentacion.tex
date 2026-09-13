@@ -11,6 +11,8 @@
 \usepackage{changepage}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{hhline}
+\usepackage{appendixnumberbeamer}
 
 \lstset{
   language=Python,
@@ -58,6 +60,7 @@
 
 \setbeamercovered{transparent}
 
+\setbeamertemplate{page number in head/foot}[appendixframenumber]
 \setbeamertemplate{endpage}{%
   \subsection*{Dudas, preguntas o comentarios.}
   \begin{frame}[noframenumbering]
@@ -70,7 +73,7 @@
     \end{frame}
 }
 
-\AtEndDocument{\usebeamertemplate{endpage}}
+% \AtEndDocument{\usebeamertemplate{endpage}}
 \begin{document}
 
 \titulo{Estimación de altura humana ``in the wild'' mediante calibración geométrica y aprendizaje profundo}
@@ -94,5 +97,10 @@
 \input{capitulos/capitulo3}
 \input{capitulos/capitulo4}
 \input{capitulos/capitulo5}
+
+\usebeamertemplate{endpage}
+
+\appendix
+\input{appendix/appendix}
 
 \end{document}

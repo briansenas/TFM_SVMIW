@@ -5,14 +5,13 @@
     \begin{columns}
       \column{0.6\textwidth}
     \begin{itemize}
-      \item \textbf{No hay muchas publicaciones}, aunque sí una tendencia positiva.
+      \item \textbf{El número de publicaciones es reducido}, aunque presenta una tendencia creciente.
         \begin{itemize}
-          \item Tampoco hay muchos datasets con altura de las personas etiquetados.
+          \item Tampoco existen muchos conjuntos de datos con la altura de las personas etiquetada.
         \end{itemize}
-      \item La tarea consiste en intentar medir en escala absoluta (en metros).
+      \item La tarea consiste en estimar medidas en escala absoluta (en metros).
         \begin{itemize}
-          \item Factores importantes: \textbf{contenido, contraste y distorsiones}.
-          \item Objetivo: explotar ciertas invariantes geométricas.
+          \item \textbf{Objetivo}: explotar ciertas invariantes geométricas.
         \end{itemize}
     \end{itemize}
     \column{0.4\textwidth}
@@ -37,14 +36,14 @@
     \begin{columns}
       \column{0.5\textwidth}
       \begin{itemize}
-        \item Una parte fundamental del procedimiento consiste en la calibración de cámara\footnotemark.
+        \item Una \textbf{parte fundamental del procedimiento} consiste en la calibración de cámara\footnotemark.
         \begin{itemize}
         \item Utilizando un patrón geométrico conocido.
         \item Búsqueda de invariantes.
         \item Auto-calibración multi-vista.
         \end{itemize}
-      \item Permite eliminar distorsiones\footnotemark.
-      \item Depende de la precisión y no siempre es generalizable.
+      \item \textbf{Permite corregir distorsiones}\footnotemark.
+      \item Depende de la precisión y \textbf{no siempre es generalizable}.
       \end{itemize}
       \column{0.5\textwidth}
       \begin{figure}
@@ -54,7 +53,9 @@
         \caption{Modelo de proyección de cámara.}
       \end{figure}
   \end{columns}
+    \addtocounter{footnote}{-1}
     \footcitetext{CalibrationSurvey}
+    \stepcounter{footnote}
     \footcitetext{VisionBookMIT}
 \end{frame}
 
@@ -75,7 +76,7 @@
     \begin{columns}
     \column{0.5\textwidth}
     \begin{itemize}
-      \item Criminisi \emph{et al.}   sentó las bases metodológicas\footnotemark.
+      \item \textbf{Criminisi \emph{et al.} sentaron las bases metodológicas}\footnotemark.
       \item Describe técnicas para extracción de información geométrica.
         \begin{itemize}
           \item Ratio cruzado.
@@ -108,14 +109,14 @@
 \begin{frame}
   \frametitle{Aprendizaje profundo}
   \begin{itemize}
-    \item El aprendizaje profundo alcanza increíbles resultados en diversos campos.
+    \item \textbf{El aprendizaje profundo alcanza increíbles resultados en diversos campos}.
       \begin{itemize}
         \item Detección de personas.
         \item Estimación de profundidad.
         \item Estimación de la altura.
       \end{itemize}
-    \item Existen diversos métodos para la calibración automática de escena por aprendizaje profundo.
-    \item Algunos combinan principios geométricos con modelos de aprendizaje profundo\footnotemark.
+    \item Hay métodos para la calibración automática de escena por aprendizaje profundo.
+    \item Algunos \textbf{combinan principios geométricos con modelos de aprendizaje profundo}\footnotemark.
   \end{itemize}
   \footcitetext{SVMIW}
 \end{frame}

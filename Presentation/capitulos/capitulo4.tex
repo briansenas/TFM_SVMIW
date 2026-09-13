@@ -2,24 +2,55 @@
 \subsection{Introducción}
 \begin{frame}
   \frametitle{Introducción}
+  \begin{columns}
+    \column{0.6\textwidth}
 \begin{table}[!ht]
   \centering
   \scriptsize
-  \begin{tabularx}{\linewidth}{|X|X|X|X|} \hline
+  \begin{tabularx}{\linewidth}{|X|X|X|} \hline
 \rowcolor[HTML]{FFCB2F}
-\textbf{Método} & \textbf{Enfoque} & \textbf{Requisitos previos} & \textbf{Propósito} \\
+\textbf{Método} & \textbf{Requisitos} & \textbf{Propósito} \\
 \hline
-Estimador estático (1.75 metros). & Método de referencia. & Ninguno. & Establecer una referencia mínima.\\
+Estimador estático de 1.75 metros. & Ninguno. & Referencia mínima.\\
 \hline
-Método de calibración manual. & Método de metrología clásica, por geometría de escena. & Calibración de la cámara y toma de medidas de la escena. & Evaluar frente a un método tradicional. \\
+Método de calibración manual. & Calibración de cámara y escena. & Referencia tradicional. \\
 \hline
-Método automático. & Método por aprendizaje profundo. & Datos de entrenamiento etiquetados & Evaluar un método de estimación sin referencias de la escena.\\
+Método por aprendizaje profundo. & Datos de entrenamiento etiquetados & Implementación.\\
 \hline
 \end{tabularx}
-\caption[Tabla resumen del diseño experimental.]{
-  Tabla resumen del diseño experimental.
+\caption[Tabla resumen de los métodos a comparar.]{
+  Tabla resumen de los métodos a comparar.
 }
 \end{table}
+\column{0.4\textwidth}
+\begin{table}[!ht]
+  \scriptsize
+  \centering
+  \begin{tabular}{|c|c|}
+    \hline
+    \rowcolor[HTML]{FFCB2F}
+    \textbf{Propósito} & \textbf{Dataset}\\
+    \hline
+    \multirow{2}{*}{Entrenamiento} & Pano360\footnotemark \\
+    \cline{2-2}
+                                   & COCO-Scale\footnotemark\\
+    \hline
+    \multirow{2}{*}{Evaluación} & KITTI-person\footnotemark\\
+    \cline{2-2}
+                                & IdentAI\footnotemark\\
+    \hline
+  \end{tabular}
+  \caption{Tabla resumen de materiales.}
+\end{table}
+\end{columns}
+\addtocounter{footnote}{-3}
+\footcitetext{SPEC}
+\stepcounter{footnote}
+\footcitetext{SVMIW}
+\stepcounter{footnote}
+\footcitetext{Kitti}
+\stepcounter{footnote}
+\footcitetext{panacea2026}
 \end{frame}
 
 \note{
@@ -27,7 +58,8 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
   Se realiza una comparativa entre un estimador estático que siempre predice la altura media de 1.75 metros,
   frente al método clásico y al método por aprendizaje profundo.
   El método clásico necesita intervención manual y el método por aprendizaje, una vez entrenado, es capaz
-  de estimar sin referencias adicionales.
+  de estimar sin referencias adicionales. El método por aprendizaje se entrena en Pano360 y COCO-Scale simultáneamente,
+  y se evalua en KITTI-person e IdentAI.
 }
 
 \subsection{Método clásico}
@@ -35,8 +67,8 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
 \begin{frame}
   \frametitle{Método clásico}
   \begin{itemize}
-    \item El error absoluto medio agrupado por cámara es de 6.7 centímetros.
-    \item El error absoluto medio agrupado por sujeto es de 5.8 centímetros.
+    \item El \textbf{error absoluto medio} de los 652 fotogramas es de \textbf{6.7 centímetros}.
+    \item El \textbf{error máximo} obtenido es de \textbf{41.6 centímetros}.
   \end{itemize}
   \begin{table}
     \centering
@@ -56,7 +88,7 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
   \hline
   \end{tabular}
   \caption{
-  Tabla de errores de estimación del método de calibración manual, expresados en centímetros.
+  Tabla de errores de estimación del método de calibración manual en IdentAI, expresados en centímetros.
   }
   \end{table}
 \end{frame}
@@ -88,8 +120,9 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
 \begin{frame}
   \frametitle{Método por aprendizaje profundo}
 \begin{itemize}
-  \item Se obtienen resultados del mismo orden de magnitud con tan solo 30K iteraciones.
-  \item Se observan hasta 33 veces menos ejemplos durante el entrenamiento que CamCalib y 1.78 veces menos que ScaleNet.
+  \item Se obtienen resultados del \textbf{mismo orden de magnitud} en Pano360\footcite{SPEC}.
+  \item \textbf{CamCalib} es la implementación de Kocabas~\emph{et al.}\footnotemark[\value{footnote}] para calibración de cámara.
+  \item \textbf{ScaleNet} es la implementación de Zhu~\emph{et al.}~\footcite{SVMIW}
 \end{itemize}
 \begin{table}[!ht]
   \centering
@@ -99,13 +132,13 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
   \rowcolor[HTML]{FFCB2F}
   \textbf{Método} & \textbf{VFOV ($^\circ$)$\downarrow$} & \textbf{Pitch ($^\circ$)$\downarrow$} & \textbf{Roll ($^\circ$)$\downarrow$} \\
   \hline
-  ScaleNet~\footcite{SVMIW} & 5.68 & 2.61 & 1.41 \\
+  ScaleNet\footnotemark[\value{footnote}] & 5.68 & 2.61 & 1.41 \\
   \hline
-  CamCalib (KL Loss)~\footcite{SPEC} & 3.53 & 2.32 & 1.15 \\
+  CamCalib (KL Loss)\footnotemark[\number\numexpr\value{footnote}-1\relax] & 3.53 & 2.32 & 1.15 \\
   \hline
-  CamCalib (Softargmax-L2)\footnotemark[\value{footnote}] & 3.34 & 2.06 & 1.11 \\
+  CamCalib (Softargmax-L2)\footnotemark[\number\numexpr\value{footnote}-1\relax] & 3.34 & 2.06 & 1.11 \\
   \hline
-  CamCalib (Softargmax-biased-L2)\footnotemark[\value{footnote}] & \textbf{3.24} & \textbf{1.94} & 1.02 \\
+  CamCalib (Softargmax-biased-L2)\footnotemark[\number\numexpr\value{footnote}-1\relax] & \textbf{3.24} & \textbf{1.94} & 1.02 \\
   \hline
   \rowcolor{gray!25}
   Modelo entero fase 0 (Softargmax-biased-L2) & 3.98 & 2.43 & \textbf{0.89} \\
@@ -119,7 +152,7 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
   \end{tabular}
   \caption
   {
-    Tabla comparativa de la precisión de la estimación de los parámetros de la cámara en Pano360\footnotemark[\value{footnote}].
+    Tabla comparativa de la precisión de la estimación de los parámetros de la cámara en Pano360\footnotemark[\number\numexpr\value{footnote}-1\relax].
 }
 \end{table}
 \end{frame}
@@ -127,7 +160,8 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
 \note{
   Ahora; Para hablar del método por aprendizaje profundo, primero se necesita evaluar la calidad de la implementación frente al artículo de referencia.
   Por ello, se obtiene la siguiente tabla con resultados del artículo de Kocabas et al.
-  En ella, se compara el rendimiento del modelo en la estimación de los parámetros de la cámara en las diferentes escenas de PANO360.
+  En ella, se compara el rendimiento de su modelo CamCalib en la estimación de los parámetros de la cámara en las diferentes escenas de PANO360,
+  en la cual se incluye ScaleNet, la implementación original de Zhu et al, y la nuestra al final de la misma.
   Los valores obtenidos son del mismo orden de magnitud y sugieren que la implementación reproduce razonablemente bien el comportamiento esperado.
   Aunque la comparación no es estrictamente directa debido a diferencias inevitables entre las particiones utilizadas (como pueden ser fotos eliminadas de la red social)
 }
@@ -136,8 +170,8 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
 \begin{frame}
   \frametitle{Método por aprendizaje profundo}
   \begin{itemize}
-    \item Se obtiene errores de reproyección en el mismo orden de magnitud.
-    \item KITTI-person* consiste de 1352 imágenes frente a las 298 utilizadas por Zhu~\emph{et al}~\footcite{SVMIW}.
+    \item Se obtienen errores de reproyección en el \textbf{mismo orden de magnitud}.
+    \item KITTI-person* consta de 1352 imágenes frente a las 298 utilizadas por Zhu~\emph{et al}~\footcite{SVMIW}.
   \end{itemize}
 \begin{table}[!ht]
   \centering
@@ -148,7 +182,7 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
   \textbf{Dataset} & \textbf{Método} & \textbf{Error de reproyección} & \textbf{Error de medición}\\
   \hline
   \multirow{2}{*}{COCO-Scale} & ScaleNet SN-L3\footnotemark[\value{footnote}]& 0.07 & -\\
-  \cline{2-4}
+  \hhline{|~|-|-|-|}
                               & \cellcolor{gray!25} Nuestro & \cellcolor{gray!25} 0.07 & \cellcolor{gray!25}- \\
   \hline
   KITTI-person & ScaleNet SN-L3\footnotemark[\value{footnote}] & 0.03 & 0.10 metros\\
@@ -157,7 +191,7 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
   \hline
   \end{tabular}
   \caption[Tabla comparativa de los errores de reproyección obtenidos.]{
-  Tabla comparativa de los errores de reproyección obtenidos.
+  Tabla comparativa de los errores de reproyección y de medición obtenidos.
 }
 \end{table}
 \end{frame}
@@ -172,8 +206,7 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
 \begin{frame}
   \frametitle{Método por aprendizaje profundo}
   \begin{itemize}
-    \item El error absoluto medio a nivel de fotogramas es de 9.8 centímetros.
-    \item El error absoluto medio a nivel de sujeto es de 7.4 centímetros frente al 5.8 del método clásico.
+    \item El \textbf{error absoluto medio} a nivel de fotogramas es de \textbf{9.8 centímetros}.
   \end{itemize}
 \begin{table}
   \scriptsize
@@ -186,15 +219,20 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
       \multirow{3}{*}{IdentAI}                 & Estático (1.75 metros) & 8.8 & 6.0 & 17.0 \\
       \cline{2-5}
                        & Calibración Manual & \textbf{6.7} & \textbf{5.6} & 41.6 \\
-      \cline{2-5}
+      \hhline{|~|-|-|-|-|}
+
                        & \cellcolor{gray!25} Nuestro & \cellcolor{gray!25} 9.8 & \cellcolor{gray!25} 6.9 & \cellcolor{gray!25} 32.8 \\
       \hline
     \end{tabular}
   \end{center}
-  \caption[Tabla resumen de comparativa final, con errores expresados en centímetros.]{
-  Tabla resumen de comparativa final, con errores expresados en centímetros.
+  \caption[Tabla resumen de comparativa final en IdentAI, con errores expresados en centímetros.]{
+  Tabla resumen de comparativa final en IdentAI, con errores expresados en centímetros.
   }
 \end{table}
+  \begin{itemize}
+    \item El error absoluto medio \textbf{a nivel de sujeto} es de 7.4 centímetros.
+    \item El \textbf{método clásico} presenta un error \textbf{a nivel de sujeto} de 5.8 centímetros.
+  \end{itemize}
 \end{frame}
 
 \note{
@@ -203,7 +241,7 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
   La baja variabilidad antropométrica de los datos (distribución de estatura muy centrada en 1.75 metros),
   junto a posibles problemas de aprendizaje del modelo hace que el estimador estático presente un error medio absoluto menor.
   Aún así, dichos resultados se alcanzan de forma semi-supervisada y con un bajo número de iteraciones,
-  indicando el potencial que posee el método implementado de cara a automatizar y facilitar la estimación de la altura en entornos no controlados.
+  indicando el potencial que presenta el método implementado de cara a automatizar y facilitar la estimación de la altura en entornos no controlados.
 }
 
 \begin{frame}
@@ -238,7 +276,7 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
 \note{
   En esta figura se observan predicciones coincidentes a dos decimales con valores por encima y por debajo del
   promedio de 1.75. No obstante, el efecto afecta al resultado final dado que el
-  conjunto de datos posee muchos fotogramas para el sujeto con 1.90 metros y no siempre preserva la consistencia en las predicciones
+  conjunto de datos presenta muchos fotogramas para el sujeto con 1.90 metros y no siempre preserva la consistencia en las predicciones
   para todos los fotogramas.
 }
 
@@ -246,9 +284,9 @@ Método automático. & Método por aprendizaje profundo. & Datos de entrenamient
 \begin{frame}
   \frametitle{Método por aprendizaje profundo}
   \begin{itemize}
-    \item Se obtiene un error absoluto medio de estimación de altura de la cámara de 17.9 centímetros.
+    \item Se obtiene un \textbf{error absoluto medio} de estimación de \textbf{altura de la cámara} de 17.9 centímetros.
     \item Minimizar el error de reproyección sin suposiciones adicionales de la escena
-      no garantiza que los parámetros geométricos estimados sean físicamente correctos.
+      \textbf{no garantiza} que los \textbf{parámetros geométricos} estimados sean \textbf{físicamente correctos}.
   \end{itemize}
 \begin{table}[!ht]
   \centering
