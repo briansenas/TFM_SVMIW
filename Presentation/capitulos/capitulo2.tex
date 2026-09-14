@@ -1,35 +1,4 @@
 \section{Estado del arte}
-\subsection[Búsqueda Scopus]{Búsqueda Scopus}
-\begin{frame}
-    \frametitle{Tendencia Scopus}
-    \begin{columns}
-      \column{0.6\textwidth}
-    \begin{itemize}
-      \item \textbf{El número de publicaciones es reducido}, aunque presenta una tendencia creciente.
-        \begin{itemize}
-          \item Tampoco existen muchos conjuntos de datos con la altura de las personas etiquetada.
-        \end{itemize}
-      \item La tarea consiste en estimar medidas en escala absoluta (en metros).
-        \begin{itemize}
-          \item \textbf{Objetivo}: explotar ciertas invariantes geométricas.
-        \end{itemize}
-    \end{itemize}
-    \column{0.4\textwidth}
-    \begin{figure}
-      \begin{center}
-        \includegraphics[width=\textwidth]{imagenes/chapter1/Scopus-Analyze-Year}
-      \end{center}
-      \caption{Tendencia de publicaciones en el campo según Scopus.}
-    \end{figure}
-  \end{columns}
-  \vspace{-.2cm}
-\end{frame}
-\note{
-  La metrología de vista única, como se mencionaba anteriormente, está captando cada vez más atención, véase la Figura de publicaciones relacionadas sacada de Scopus.
-  La tendencia es positiva, aunque sean pocos los números de artículos publicados.
-  Esto puede que esté relacionado con las dificultades del campo y la poca disponibilidad de datos etiquetados con alturas reales.
-  %Hay varios factores que afectan a las estimaciones: problemas lumínicos, escenas con poca información geométrica o las distorsiones en la escena.
-}
 \subsection{Estado del arte}
 \begin{frame}
     \frametitle{Fundamentos}
@@ -64,10 +33,10 @@
   Para ello, es necesario conocer ciertos parámetros proyectivos de nuestra cámara,
   como la distancia focal, las distorsiones radiales de la lente y el punto principal.
   Se pueden obtener mediante un proceso llamado calibración.
-  Hay varias formas para realizar la calibración, la mayoría de procesos son tediosos y manuales,
+  Hay varias formas para realizar la calibración. Sin embargo, la mayoría de procesos son tediosos y manuales;
   como moverse por la escena con un patrón de ajedrez cuya geometría se conoce y
   se procura conservar durante la proyección.
-  Para preserva sus características, los parámetros estimados permiten rectificar la imagen, eliminando posibles distorsiones de lente.
+  Para preserva sus características, los parámetros estimados permiten rectificar la imagen, corregiendo posibles distorsiones de lente.
   La limitación de estos métodos es que dependen de la precisión de los algoritmos que obtienen estos parámetros y los tipos de escenas, siendo no siempre generalizables.
 }
 
